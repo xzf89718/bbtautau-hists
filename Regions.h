@@ -14,10 +14,10 @@ enum class eRegionType { SR, CR };
 
 
 // ELEM
-class RegionsInfo
+class RegionInfo
 {
 public:
-    RegionsInfo(const string& nm, const string& nmtex, eRegionType tp) noexcept
+    RegionInfo(const string& nm, const string& nmtex, eRegionType tp) noexcept
         : name(nm), nameTeX(nmtex), type(tp) {}
 
 public:
@@ -33,9 +33,9 @@ class Regions
 public:
     Regions();
     void add(const string& nm, const string& nmtex, eRegionType tp) const;
-    inline const vector<RegionsInfo>& content() const { return *m_regions; }
+    inline vector<RegionInfo*>* content() const { return m_regions.get(); }
 private:
-    unique_ptr<vector<RegionsInfo>> m_regions;
+    unique_ptr<vector<RegionInfo*>> m_regions;
 };
 
 #endif // REGIONS_H

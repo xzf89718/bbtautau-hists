@@ -3,6 +3,10 @@
 
 #include "HistTool.h"
 
+#include <string>
+
+using std::string;
+
 class DrawStackTool : public HistTool
 {
 public:

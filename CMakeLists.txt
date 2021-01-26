@@ -8,10 +8,10 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wpedantic -Wextra")
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
@@ -35,13 +35,13 @@ add_library(ConfigLib SHARED
     Regions.cpp Regions.h
     Variables.cpp Variables.h)
 
-add_library(HistToolLib SHARED
+add_library(HistToolLib SHARED 
     HistTool.cpp HistTool.h
     DrawStackTool.cpp DrawStackTool.h)
 
 target_link_libraries(UtilsLib PUBLIC ${ROOT_LIBRARIES})
-target_link_libraries(ConfigLib PUBLIC UtilsLib ${ROOT_LIBRARIES})
+target_link_libraries(ConfigLib PUBLIC stdc++fs UtilsLib ${ROOT_LIBRARIES})
 target_link_libraries(HistToolLib PUBLIC UtilsLib ConfigLib ${ROOT_LIBRARIES})
 
-add_executable(bbtautau-hists main.cpp)
+add_executable(bbtautau-hists main.cpp Tests.h)
 target_link_libraries(bbtautau-hists ConfigLib HistToolLib UtilsLib)

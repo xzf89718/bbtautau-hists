@@ -31,9 +31,9 @@ class Variables
 public:
     Variables();
     void add(const string& nm, const string& nmtex, unsigned rb, float* bing = nullptr) const;
-    inline const vector<VariableInfo>& content() const { return *m_vars; }
+    inline vector<VariableInfo*>* content() const { return m_vars.get(); }
 private:
-    unique_ptr<vector<VariableInfo>> m_vars;
+    unique_ptr<vector<VariableInfo*>> m_vars;
 };
 
 #endif // VARIABLES_H

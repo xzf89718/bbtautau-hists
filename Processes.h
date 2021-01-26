@@ -30,16 +30,30 @@ enum class eProcess {
 class ProcessInfo
 {
 public:
-    ProcessInfo(const string& nm, const string& nmtex, eProcessType tp, eProcess proc, EColor col) noexcept
-        : name(nm), nameTeX(nmtex), type(tp), process(proc), color(col) {}
+    ProcessInfo(const string& nm, const string& nmtex, eProcessType tp, 
+                eProcess proc, const string& nmproc, EColor col) noexcept
+        : name(nm), nameTeX(nmtex), type(tp)
+        , process(proc), processName(nmproc), color(col) {}
 public:
     string name; // same as histogram perfix
     string nameTeX;
     eProcessType type;
     eProcess process;
+    string processName;
     EColor color;
     int rbg = 0xFFFFFF; // TODO: master of color platte
     TH1* histogram = nullptr; // depends on region and variable (will be set in Config)
+    bool isMerged = false;
+
+    bool operator< (const ProcessInfo& p) const 
+    { 
+        return (histogram && p.histogram) && (histogram->Integral() < p.histogram->Integral());
+    }
+
+    bool operator> (const ProcessInfo& p) const 
+    { 
+        return (histogram && p.histogram) && (histogram->Integral() > p.histogram->Integral());
+    }
 };
 
 
@@ -48,10 +62,11 @@ class Processes
 {
 public:
     Processes() noexcept;
-    void add(const string& nm, const string& nmtex, eProcessType tp, eProcess proc, EColor col) const;
-    inline const vector<ProcessInfo>& content() const { return *m_procs; }
+    void add(const string& nm, const string& nmtex, eProcessType tp, 
+             eProcess proc, const string& nmproc, EColor col) const;
+    inline vector<ProcessInfo*>* content() const { return m_procs.get(); }
 private:
-    unique_ptr<vector<ProcessInfo>> m_procs;
+    unique_ptr<vector<ProcessInfo*>> m_procs;
 };
 
 #endif // PROCESSES_H

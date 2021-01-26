@@ -15,9 +15,9 @@ using std::string;
 
 namespace Utils {
 
-    void updateHistogram(TH1* h, ProcessInfo& p);
+    void histAssign(TH1* h, ProcessInfo* p);
 
-    string histString(const ProcessInfo& p, const RegionsInfo& r, const VariableInfo& v);
+    string histString(const ProcessInfo* p, const RegionInfo* r, const VariableInfo* v);
 }
 
 #endif // UTILS_H
