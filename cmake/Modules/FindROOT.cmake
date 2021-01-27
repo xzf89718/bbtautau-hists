@@ -1,3 +1,5 @@
+# Tested with v6.20.06 on IHEP
+
 # - Finds ROOT instalation
 # This module sets up ROOT information
 # It defines:

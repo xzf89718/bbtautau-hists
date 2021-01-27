@@ -19,10 +19,10 @@ SET(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARG
 SET(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
 
 find_package(ROOT REQUIRED COMPONENTS Core Hist Tree RIO Net)
-include_directories(SYSTEM ${ROOT_INCLUDE_DIR})
 find_package(Boost)
+
+include_directories(SYSTEM ${ROOT_INCLUDE_DIR})
 if(Boost_FOUND)
-    message(${Boost_INCLUDE_DIRS})
     include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
@@ -40,8 +40,8 @@ add_library(HistToolLib SHARED
     DrawStackTool.cpp DrawStackTool.h)
 
 target_link_libraries(UtilsLib PUBLIC ${ROOT_LIBRARIES})
-target_link_libraries(ConfigLib PUBLIC stdc++fs UtilsLib ${ROOT_LIBRARIES})
-target_link_libraries(HistToolLib PUBLIC UtilsLib ConfigLib ${ROOT_LIBRARIES})
+target_link_libraries(ConfigLib PUBLIC stdc++fs ${ROOT_LIBRARIES})
+target_link_libraries(HistToolLib PUBLIC stdc++fs ${ROOT_LIBRARIES})
 
-add_executable(bbtautau-hists main.cpp Tests.h)
+add_executable(bbtautau-hists main.cpp Example.h)
 target_link_libraries(bbtautau-hists ConfigLib HistToolLib UtilsLib)

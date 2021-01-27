@@ -16,11 +16,11 @@ class VariableInfo
 {
 public:
     VariableInfo(const string& nm, const string& nmtex, unsigned rb, float* bing = nullptr) noexcept
-        : name(nm), nameTeX(nmtex), nRebin(rb), binning(bing) {}
+        : name(nm), name_tex(nmtex), nRebin(rb), binning(bing) {}
 
 public:
     string name;
-    string nameTeX;
+    string name_tex;
     unsigned nRebin;
     float* binning;
 };
@@ -30,8 +30,14 @@ class Variables
 {
 public:
     Variables();
+    ~Variables();
+    Variables(Variables& vs) = delete;
+    Variables& operator=(Variables& vs) = delete;
+
+public:
     void add(const string& nm, const string& nmtex, unsigned rb, float* bing = nullptr) const;
     inline vector<VariableInfo*>* content() const { return m_vars.get(); }
+
 private:
     unique_ptr<vector<VariableInfo*>> m_vars;
 };

@@ -44,7 +44,7 @@ public:
 
 public:
     void load(const string& fn, const string& dir="");
-    void updateHistogramPtr(const RegionInfo* r, const VariableInfo* v);
+    void updateHistogramPtr(RegionInfo* r, VariableInfo* v);
 
 protected:
     unique_ptr<TFile> m_fin;

@@ -48,7 +48,7 @@ void Config::load(const string& fn, const string& dir)
 }
 
 
-void Config::updateHistogramPtr(const RegionInfo* r, const VariableInfo* v)
+void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
 {
     if (!m_loaded)
     {
@@ -67,11 +67,11 @@ void Config::updateHistogramPtr(const RegionInfo* r, const VariableInfo* v)
         if (d->GetListOfKeys()->Contains(fullname.c_str()))
         {
             TH1* h = (TH1*)d->Get(fullname.c_str());
-            Utils::histAssign(h, p);
+            Utils::histAssign(h, p, r, v);
         }
         else
         {
-            clog << fullname << " is not in " << m_dir << " (skip it)\n";
+            clog << fullname << " is not in " << m_dir << "[" << r->name << "] (skip it)\n";
         }
         // else that p.histogram will remain as nullptr
         // later when make plot this should checked

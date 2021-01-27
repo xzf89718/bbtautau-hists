@@ -18,11 +18,11 @@ class RegionInfo
 {
 public:
     RegionInfo(const string& nm, const string& nmtex, eRegionType tp) noexcept
-        : name(nm), nameTeX(nmtex), type(tp) {}
+        : name(nm), name_tex(nmtex), type(tp) {}
 
 public:
     string name;
-    string nameTeX;
+    string name_tex;
     eRegionType type;
 };
 
@@ -32,8 +32,14 @@ class Regions
 {
 public:
     Regions();
+    ~Regions();
+    Regions(Regions& rs) = delete;
+    Regions& operator=(Regions& rs) = delete;
+
+public:
     void add(const string& nm, const string& nmtex, eRegionType tp) const;
     inline vector<RegionInfo*>* content() const { return m_regions.get(); }
+
 private:
     unique_ptr<vector<RegionInfo*>> m_regions;
 };
