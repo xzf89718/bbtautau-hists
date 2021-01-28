@@ -86,7 +86,7 @@ void DrawStackTool::paint(const Config* c) const
     });
 }
 
-void DrawStackTool::manipulate(const Config* c)
+void DrawStackTool::manipulate(Config* c)
 {
     HistTool::manipulate(c);
 
@@ -101,14 +101,10 @@ void DrawStackTool::manipulate(const Config* c)
         return p->type == eProcessType::BKG; });
 
     sort(m_it_bkg, m_it_sig, [this](const ProcessInfo* p1, const ProcessInfo* p2) {
-        if (m_info->logy) return *p1 < *p2; 
-        else return *p1 > *p2; 
-    });
+        return *p1 < *p2; });
 
     sort(m_it_sig, ps->end(), [this](const ProcessInfo* p1, const ProcessInfo* p2) {
-        if (m_info->logy) return *p1 < *p2; 
-        else return *p1 > *p2; 
-    });
+        return *p1 < *p2; });
 }
 
 void DrawStackTool::run(const Config* c) const
@@ -148,11 +144,8 @@ void DrawStackTool::run(const Config* c) const
     TH1* data = (*m_it_data)->histogram;
     THStack* stack = new THStack();
     for_each(m_it_bkg, m_it_sig, [&stack](const ProcessInfo* p) {
+        p->histogram->Scale(p->norm_factor);
         stack->Add(p->histogram); });
-
-    for_each(m_it_sig, m_it_end, [this](const ProcessInfo* p) {
-        p->histogram->Scale(m_info->signal_scale);
-        p->histogram->Draw("HIST SAME"); });
 
     TH1* bkg = (TH1*)stack->GetStack()->Last()->Clone();
     stack->Draw("HIST");
@@ -171,9 +164,14 @@ void DrawStackTool::run(const Config* c) const
     bkg->SetName("Unc.");
     bkg->Draw("E2 SAME");
 
-    data->Draw("E1 SAME");
+    if (!m_info->blind)
+        data->Draw("E1 SAME");
 
-    double y = 0.92 - 0.07 * (ps->size() + 1);
+    for_each(m_it_sig, m_it_end, [this](const ProcessInfo* p) {
+        p->histogram->Scale(m_info->signal_scale);
+        p->histogram->Draw("HIST SAME"); });
+
+    double y = 0.92 - 0.06 * (ps->size() + 1);
     TLegend* legend = new TLegend(0.69, y, 0.90, 0.92);
     legend->SetTextFont(42);
     legend->SetFillStyle(0);
@@ -235,7 +233,8 @@ void DrawStackTool::run(const Config* c) const
     TH1* rat = (TH1*)data->Clone();
     rat->Divide(bkg_scale);
     rat->SetTitle("lower_pad");
-    rat->Draw("E1 SAME");
+    if (!m_info->blind)
+        rat->Draw("E1 SAME");
 
     ostringstream oss_out;
     oss_out << output_path << "/" 

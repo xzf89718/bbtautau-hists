@@ -13,7 +13,7 @@
 
 using std::string;
 using std::vector;
-using std::unique_ptr;
+using std::shared_ptr;
 
 // ENUMS
 enum class eProcessType { DATA, BKG, SIG };
@@ -45,11 +45,13 @@ public:
     string process_name;
     int color; // EColor
     int rbg = 0xFFFFFF; // TODO: master of color platte
+    double norm_factor = 1.0; // fitted norm
     TH1* histogram = nullptr; // depends on region and variable (will be set in Config)
     bool isMerged = false;
-    RegionInfo* current_region;
-    VariableInfo* current_variable;
-
+    RegionInfo* current_region = nullptr;
+    VariableInfo* current_variable = nullptr;
+    
+public:
     bool operator< (const ProcessInfo& p) const 
     { 
         return histogram->Integral() < p.histogram->Integral();
@@ -75,6 +77,12 @@ public:
     void add(const string& nm, const string& nmtex, eProcessType tp, 
              eProcess proc, const string& nmproc, int col) const;
     inline vector<ProcessInfo*>* content() const { return m_procs.get(); }
+
+public:
+    /**
+     * @brief return current fitted normalisation factor
+     */
+    double normFactors(ProcessInfo* p) const;
 
 private:
     unique_ptr<vector<ProcessInfo*>> m_procs;

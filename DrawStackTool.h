@@ -13,6 +13,7 @@ using std::vector;
 class DrawStackInfo
 {
 public:
+    bool blind = true;
     bool logx = false;
     bool logy = false;
     bool atlas = true;
@@ -32,7 +33,7 @@ public:
 public:
     virtual bool check(const Config* c) const override;
     // merge and sort bkgs
-    virtual void manipulate(const Config* c) override;
+    virtual void manipulate(Config* c) override;
     // colorful
     virtual void paint(const Config* c) const;
     // drawing

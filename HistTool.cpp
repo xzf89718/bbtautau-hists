@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <set>
 #include <map>
 #include <iomanip>
@@ -34,7 +35,7 @@ bool HistTool::check(const Config* c) const
     return true;
 }
 
-void HistTool::manipulate(const Config* c) 
+void HistTool::manipulate(Config* c) 
 {
     vector<ProcessInfo*>* ps_in_c = c->processes->content();
     clog << "merging\n";
@@ -42,7 +43,7 @@ void HistTool::manipulate(const Config* c)
     for_each(ps_in_c->begin(), ps_in_c->end(), [&procs](ProcessInfo* p) {
         procs[p->process].push_back(p); });
 
-    for_each(procs.begin(), procs.end(), [&ps_in_c](pair<const eProcess, vector<ProcessInfo*>>& pair) {
+    for_each(procs.begin(), procs.end(), [&ps_in_c, &c](pair<const eProcess, vector<ProcessInfo*>>& pair) {
         // TODO: basically copy, copy assignment?
         ProcessInfo* front = pair.second.front();
         ProcessInfo* merged = new ProcessInfo(
@@ -58,6 +59,9 @@ void HistTool::manipulate(const Config* c)
         merged->current_region = front->current_region;
         merged->current_variable = front->current_variable;
         
+        c->current_region = merged->current_region;
+        c->current_variable = merged->current_variable;
+
         ps_in_c->emplace_back(merged);
     });
 
@@ -70,9 +74,14 @@ void HistTool::manipulate(const Config* c)
     // if do draw stack, the bkg and sig must be sorted!
 }
 
-void HistTool::makeYield(const Config* c, const string& fn) const
-{
-    ofstream fout(fn);
+void HistTool::makeYield(const Config* c) const
+{   
+    ostringstream oss;
+    oss << output_path << "/" 
+        << c->current_region->name << "_" 
+        << c->current_variable->name << ".txt";
+
+    ofstream fout(oss.str());
     vector<ProcessInfo*>* ps = c->processes->content();
 
     // total backgrouds
@@ -101,5 +110,5 @@ void HistTool::makeYield(const Config* c, const string& fn) const
     errBkg = sqrt(errBkg);
     fout << FIVE_COLUMN_TABLE("Total Bkg", entriesBkg, sumBkg, errBkg, errBkg / sumBkg); 
 
-    clog << "Yields saved in " << fn << '\n';
+    clog << "Yields saved in " << oss.str() << '\n';
 }

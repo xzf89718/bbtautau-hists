@@ -55,6 +55,9 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
         throw std::runtime_error("You must load first");
     }
 
+    current_region = r;
+    current_variable = v;
+
     TDirectory* d = nullptr;
     if (m_dir != "")
         d = (TDirectory*)m_fin->Get(m_dir.c_str());
@@ -71,7 +74,7 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
         }
         else
         {
-            clog << fullname << " is not in " << m_dir << "[" << r->name << "] (skip it)\n";
+            clog << fullname << " is not in " << m_dir << " (skip it)\n";
         }
         // else that p.histogram will remain as nullptr
         // later when make plot this should checked

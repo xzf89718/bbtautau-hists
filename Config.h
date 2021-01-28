@@ -46,6 +46,10 @@ public:
     void load(const string& fn, const string& dir="");
     void updateHistogramPtr(RegionInfo* r, VariableInfo* v);
 
+public:
+    RegionInfo* current_region;
+    VariableInfo* current_variable;    
+
 protected:
     unique_ptr<TFile> m_fin;
     std::string m_dir;

@@ -16,8 +16,8 @@ public:
 
 public:
     virtual bool check(const Config* c) const;
-    virtual void manipulate(const Config* c);
-    virtual void makeYield(const Config* c, const string& fn) const;
+    virtual void manipulate(Config* c);
+    virtual void makeYield(const Config* c) const;
 
 public:
     virtual void paint(const Config* c) const = 0;
