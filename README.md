@@ -1,5 +1,10 @@
 # bbtautau-hists
 
+a plotting tool for bbtautau boys
+
+## dependency
+c++17, ROOT, CMake
+
 ## setup
 ```bash
 git clone git@github.com:peppapiggyme/bbtautau-hists.git
