@@ -45,6 +45,7 @@ public:
 public:
     void load(const string& fn, const string& dir="");
     void updateHistogramPtr(RegionInfo* r, VariableInfo* v);
+    void setManipulated(bool m) { m_manipulated = m; }
 
 public:
     RegionInfo* current_region;
@@ -54,6 +55,7 @@ protected:
     unique_ptr<TFile> m_fin;
     std::string m_dir;
     bool m_loaded;
+    bool m_manipulated;
 };
 
 #endif // CONFIG_H

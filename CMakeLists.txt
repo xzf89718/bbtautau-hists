@@ -4,10 +4,6 @@ project(bbtautau-hists LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -19,12 +15,7 @@ SET(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARG
 SET(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
 
 find_package(ROOT REQUIRED COMPONENTS Core Hist Tree RIO Net)
-find_package(Boost)
-
 include_directories(SYSTEM ${ROOT_INCLUDE_DIR})
-if(Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS})
-endif()
 
 add_library(UtilsLib SHARED
     Utils.cpp Utils.h)

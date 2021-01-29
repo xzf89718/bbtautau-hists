@@ -26,7 +26,8 @@ enum class eProcess {
     WJETS, WtauvJETS, WtauvHF, WtauvLF, WlvJETS, WlvLF, WlvHF,
     H, VH, WH, ZH, ttH, ggH, VBFH,
     DIBOSON, WW, WZ, ZZ, FAKE, QCD, MULTIJET,
-    SIG, SMHH, HH, XtoHH, StoHH
+    SIG, SMHH, HH, XtoHH, StoHH,
+    HHKL1, HHKL5FROM1, HHKL5FROM10, HHKL10, HHKL10FROM1
 };
 
 // ENTRY

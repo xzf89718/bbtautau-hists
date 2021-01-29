@@ -20,6 +20,7 @@ Config::Config(const BasicInfo* b, const Processes* ps, const Regions* rs, const
     m_fin = nullptr;
     m_dir = "";
     m_loaded = false;
+    m_manipulated = false;
 }
 
 Config::~Config() noexcept
@@ -55,6 +56,11 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
         throw std::runtime_error("You must load first");
     }
 
+    if (m_manipulated)
+    {
+        throw std::runtime_error("Update histogram pointer for manipulated histograms is not supported!");
+    }
+
     current_region = r;
     current_variable = v;
 
@@ -78,6 +84,7 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
         }
         // else that p.histogram will remain as nullptr
         // later when make plot this should checked
+        // -> well handled by HistTool::check()
     }
     
 }

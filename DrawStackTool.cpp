@@ -88,7 +88,7 @@ void DrawStackTool::paint(const Config* c) const
 
 void DrawStackTool::manipulate(Config* c)
 {
-    HistTool::manipulate(c);
+    HistTool::manipulate(c); // always do this first
 
     vector<ProcessInfo*>* ps = c->processes->content();
     m_it_data = ps->begin();
@@ -171,12 +171,12 @@ void DrawStackTool::run(const Config* c) const
         p->histogram->Scale(m_info->signal_scale);
         p->histogram->Draw("HIST SAME"); });
 
-    double y = 0.92 - 0.06 * (ps->size() + 1);
-    TLegend* legend = new TLegend(0.69, y, 0.90, 0.92);
+    double y = 0.92 - 0.05 * (ps->size() + 1);
+    TLegend* legend = new TLegend(0.66, y, 0.90, 0.92);
     legend->SetTextFont(42);
     legend->SetFillStyle(0);
     legend->SetBorderSize(0);
-    legend->SetTextSize(0.04);
+    legend->SetTextSize(0.035);
     legend->SetTextAlign(32);
 
     legend->AddEntry(data, "Data", "lep");
@@ -216,6 +216,7 @@ void DrawStackTool::run(const Config* c) const
     err->Divide(bkg_scale);
     err->SetFillStyle(1001);
     err->SetFillColor(TColor::GetColor(133, 173, 173));
+    err->SetMarkerColor(TColor::GetColor(133, 173, 173));
     err->SetMarkerSize(0);
     err->SetName("Unc.");
     err->GetXaxis()->SetTitle((*m_it_data)->current_variable->name_tex.c_str());

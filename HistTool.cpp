@@ -13,7 +13,7 @@
 using namespace std;
 
 # define FIVE_COLUMN_TABLE(A, B, C, D, E) \
-       std::left << setw(25) << A \
+       std::left << setw(30) << A \
     << std::left << setw(15) << B \
     << std::left << setw(15) << C \
     << std::left << setw(15) << D \
@@ -37,6 +37,7 @@ bool HistTool::check(const Config* c) const
 
 void HistTool::manipulate(Config* c) 
 {
+    c->setManipulated(true);
     vector<ProcessInfo*>* ps_in_c = c->processes->content();
     clog << "merging\n";
     map<eProcess, vector<ProcessInfo*>> procs;
