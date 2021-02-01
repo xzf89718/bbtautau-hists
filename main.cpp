@@ -1,4 +1,6 @@
 #include "Example.h"
+#include "Example_zifeng.h"
+
 #include "TROOT.h"
 
 #include <iostream>
@@ -11,7 +13,7 @@ int main(/*int argc, char *argv[]*/)
     
     cout << "Hello!" << endl;
 
-    test_hadhad();
-
+    //test_hadhad();
+    test_zifeng_hadhad();   
     return 0;
 }

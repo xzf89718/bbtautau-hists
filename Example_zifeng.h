@@ -11,7 +11,7 @@ using std::cout;
 using std::endl;
 using std::clog;
 
-void test_hadhad()
+void test_zifeng_hadhad()
 {
     BasicInfo* b = new BasicInfo("#sqrt{s} = 13 TeV", "L=139fb^{-1}");
 
@@ -98,15 +98,16 @@ void test_hadhad()
         ps->add("ZHtautau",     "SM Higgs",                     eProcessType::BKG,      eProcess::H,            "SM Higgs",                     kMagenta);
         ps->add("ggFHtautau",   "SM Higgs",                     eProcessType::BKG,      eProcess::H,            "SM Higgs",                     kMagenta);
         ps->add("VBFHtautau",   "SM Higgs",                     eProcessType::BKG,      eProcess::H,            "SM Higgs",                     kMagenta);
-        ps->add("hhttbbKL1p0",  "HH (#kappa_{#lambda}=1.0)",    eProcessType::SIG,      eProcess::HH,           "HH (#kappa_{#lambda}=1.0)",    kRed);
-        ps->add("hhttbbKL5p0",  "HH (#kappa_{#lambda}=5.0)",    eProcessType::SIG,      eProcess::HH,           "HH (#kappa_{#lambda}=5.0)",    kRed);
-
+       //  ps->add("hhttbbKL1p0",  "HH (#kappa_{#lambda}=1.0)",    eProcessType::SIG,      eProcess::HH,           "HH (#kappa_{#lambda}=1.0)",    kRed);
+       //  ps->add("hhttbbKL5p0",  "HH (#kappa_{#lambda}=5.0)",    eProcessType::SIG,      eProcess::HH,           "HH (#kappa_{#lambda}=5.0)",    kRed);
+       ps->add("hhttbb", "HH -> ttbb", eProcessType::SIG, eProcess::HH, "HH -> ttbb", kRed);
+        
         Config* c = new Config(b, ps, rs, vs);
         // c->load("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-klambda-v1.root", "Preselection");
-        c->load("/home/zifeng/HistCxAOD/hist_output/hist-OUTPUT.root", "Preselection");
+        c->load("/home/zifeng/HistCxAOD/submitDir18/hist-OUTPUT18.root", "Preselection");
         c->updateHistogramPtr(rs->content()->front(), v);
         DrawStackTool* ds = new DrawStackTool(info);
-        ds->output_path = "/home/zifeng/HistCxAOD/plots";
+        ds->output_path = "/home/zifeng/HistCxAOD/plots_18";
         if (ds->check(c))
         {
             ds->manipulate(c);
