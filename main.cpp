@@ -1,4 +1,5 @@
 #include "Example.h"
+#include "Example_klambda.h"
 #include "TROOT.h"
 
 #include <iostream>
@@ -11,7 +12,9 @@ int main(/*int argc, char *argv[]*/)
     
     cout << "Hello!" << endl;
 
-    test_hadhad();
+    // test_hadhad();
+
+    test_hadhad_klambda();
 
     return 0;
 }

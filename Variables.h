@@ -16,12 +16,12 @@ class VariableInfo
 {
 public:
     VariableInfo(const string& nm, const string& nmtex, unsigned rb, float* bing = nullptr) noexcept
-        : name(nm), name_tex(nmtex), nRebin(rb), binning(bing) {}
+        : name(nm), name_tex(nmtex), n_rebin(rb), binning(bing) {}
 
 public:
     string name;
     string name_tex;
-    unsigned nRebin;
+    unsigned n_rebin;
     float* binning;
 };
 

@@ -33,7 +33,7 @@ void test_hadhad()
     vs->add("dPhiBBTauTau",         "#Delta #phi{bb,#tau#tau}",                          4 );
     vs->add("dRBBTauTau",           "#Delta R{bb,#tau#tau}",                             5 );
     vs->add("pTBalance",            "p_{T}^{b,b} / p_{T}^{#tau,#tau}",                   5 );
-    vs->add("MET",                  "E_{T}^{miss} [GeV]",                                10);
+    vs->add("MET",                  "E_{T}^{miss} [GeV]",                                5 );
     vs->add("nJets",                "Number of Jets",                                    1 );
     vs->add("Yield",                "Event Yield",                                       1 );
     vs->add("metSig",               "MET significance",                                  2 );

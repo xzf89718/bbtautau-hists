@@ -27,8 +27,10 @@ add_library(ConfigLib SHARED
     Variables.cpp Variables.h)
 
 add_library(HistToolLib SHARED 
+    CommonInclude.h
     HistTool.cpp HistTool.h
-    DrawStackTool.cpp DrawStackTool.h)
+    DrawStackTool.cpp DrawStackTool.h
+    CompTool.cpp CompTool.h)
 
 target_link_libraries(UtilsLib PUBLIC ${ROOT_LIBRARIES})
 target_link_libraries(ConfigLib PUBLIC stdc++fs ${ROOT_LIBRARIES})

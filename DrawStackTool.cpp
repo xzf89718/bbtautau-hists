@@ -1,16 +1,5 @@
 #include "DrawStackTool.h"
-
-#include "TCanvas.h"
-#include "TH1.h"
-#include "THStack.h"
-#include "TLegend.h"
-#include "TLegendEntry.h"
-#include "TLatex.h"
-#include "TText.h"
-#include "TColor.h"
-#include "TStyle.h"
-#include "TPad.h"
-#include "TROOT.h"
+#include "CommonInclude.h"
 
 #include <sstream>
 #include <algorithm>
@@ -59,8 +48,8 @@ bool DrawStackTool::check(const Config* c) const
 void DrawStackTool::paint(const Config* c) const
 {
     vector<ProcessInfo*>* ps = c->processes->content();
-    for_each(ps->begin(), ps->end(), [](const ProcessInfo* p) {
-        p->histogram->Rebin(10);
+    for_each(ps->begin(), ps->end(), [&c](const ProcessInfo* p) {
+        p->histogram->Rebin(c->current_variable->n_rebin);
         switch (p->type)
         {
         case eProcessType::DATA:
