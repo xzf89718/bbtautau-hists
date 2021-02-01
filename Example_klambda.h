@@ -113,7 +113,7 @@ void test_hadhad_klambda()
 
         {
             for (const std::string& klambda : {"n20p0", "n10p0", "n5p0", "0p0", 
-                                               "2p4", "5p0", "20p0"})
+                                               "3p0", "5p0", "20p0"})
             {
                 auto nice_kl = [&klambda]() {
                     std::string ret = klambda;

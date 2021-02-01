@@ -1,5 +1,6 @@
 #include "Example.h"
 #include "Example_klambda.h"
+#include "Example_yield.h"
 #include "TROOT.h"
 
 #include <iostream>
@@ -15,6 +16,8 @@ int main(/*int argc, char *argv[]*/)
     // test_hadhad();
 
     test_hadhad_klambda();
+
+    // test_hadhad_yield();
 
     return 0;
 }

@@ -136,7 +136,7 @@ void CompTool::run(const Config* c) const
     err->GetXaxis()->SetTitleOffset(1.2 * resize);
     err->GetXaxis()->SetTitleSize(0.045 * resize);
     err->GetXaxis()->SetLabelSize(0.04 * resize);
-    err->GetYaxis()->SetTitle("Data / Pred.");
+    err->GetYaxis()->SetTitle("Ratio");
     err->GetYaxis()->SetTitleOffset(0.8 * resize);
     err->GetYaxis()->SetTitleSize(0.045 * resize);
     err->GetYaxis()->SetLabelSize(0.04 * resize);
