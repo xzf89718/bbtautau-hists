@@ -26,8 +26,9 @@ enum class eProcess {
     WJETS, WtauvJETS, WtauvHF, WtauvLF, WlvJETS, WlvLF, WlvHF,
     H, VH, WH, ZH, ttH, ggH, VBFH,
     DIBOSON, WW, WZ, ZZ, FAKE, QCD, MULTIJET,
+    ZJETSMG, ZllLFMG, ZllHFMG,
     SIG, SMHH, HH, XtoHH, StoHH,
-    HHKL1, HHKL5FROM1, HHKL5FROM10, HHKL10, HHKL10FROM1,
+    HHKL1, HHKL3FROM1, HHKL0FROM1, HHKL10, HHKL10FROM1,
     HHKLXFROM1, HHKLXFROM10
 };
 
@@ -85,6 +86,10 @@ public:
      * @brief return current fitted normalisation factor
      */
     double normFactors(ProcessInfo* p) const;
+    /**
+     * @brief if true, will modify p->norm_factor, else it will keep as 1.0
+     */
+    bool assign_norm_factors = true;
 
 private:
     unique_ptr<vector<ProcessInfo*>> m_procs;

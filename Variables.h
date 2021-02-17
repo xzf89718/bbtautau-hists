@@ -15,14 +15,15 @@ using std::unique_ptr;
 class VariableInfo
 {
 public:
-    VariableInfo(const string& nm, const string& nmtex, unsigned rb, float* bing = nullptr) noexcept
-        : name(nm), name_tex(nmtex), n_rebin(rb), binning(bing) {}
+    VariableInfo(const string& nm, const string& nmtex, unsigned rb, double* bing = nullptr, std::size_t n = 0) noexcept
+        : name(nm), name_tex(nmtex), n_rebin(rb), binning(bing), n_bins(n) {}
 
 public:
     string name;
     string name_tex;
     unsigned n_rebin;
-    float* binning;
+    double* binning;
+    std::size_t n_bins;
 };
 
 
@@ -35,7 +36,7 @@ public:
     Variables& operator=(Variables& vs) = delete;
 
 public:
-    void add(const string& nm, const string& nmtex, unsigned rb, float* bing = nullptr) const;
+    void add(const string& nm, const string& nmtex, unsigned rb, double* bing = nullptr, std::size_t n = 0) const;
     inline vector<VariableInfo*>* content() const { return m_vars.get(); }
 
 private:
