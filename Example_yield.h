@@ -11,9 +11,9 @@ using std::cout;
 using std::endl;
 using std::clog;
 
-void test_hadhad_yield()
+void test_hadhad_yield(const std::string& filename)
 {
-    BasicInfo* b = new BasicInfo("#sqrt{s} = 13 TeV", "L=139fb^{-1}");
+    BasicInfo* b = new BasicInfo("#sqrt{s} = 13 TeV", "L = 139 fb^{-1}");
 
     Regions* rs = new Regions();
     rs->add("2tag2pjet_0ptv_LL_OS",     "2 b-tag, 2 loose #tau, OS",        eRegionType::SR);
@@ -33,6 +33,8 @@ void test_hadhad_yield()
     for (RegionInfo* r : *(rs->content()))
     {
         Processes* ps = new Processes();
+        ps->assign_norm_factors = false;
+
         ps->add("data",                 "data",                         eProcessType::DATA,     eProcess::DATA,         "data",                         kBlack);
         ps->add("Zttbb",                "Z#tau#tau + bb",               eProcessType::BKG,      eProcess::ZllHF,        "Z+hf",                         kBlue-10);
         ps->add("Zttbc",                "Z#tau#tau + bc",               eProcessType::BKG,      eProcess::ZllHF,        "Z+hf",                         kBlue-10);
@@ -112,7 +114,7 @@ void test_hadhad_yield()
         ps->add("hhttbbKL10p0",             "#kappa_{#lambda}=10 ",         eProcessType::SIG,      eProcess::HHKL10,   "#kappa_{#lambda}=10 ",     kMagenta+2);
 
         Config* c = new Config(b, ps, rs, vs);
-        c->load("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
+        c->load(filename, "Preselection");
 
         c->updateHistogramPtr(r, vs->content()->front());
         DrawStackTool* ds = new DrawStackTool(info);

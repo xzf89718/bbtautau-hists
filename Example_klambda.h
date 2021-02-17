@@ -11,9 +11,9 @@ using std::cout;
 using std::endl;
 using std::clog;
 
-void test_hadhad_klambda()
+void test_hadhad_klambda(const std::string& filename)
 {
-    BasicInfo* b = new BasicInfo("#sqrt{s} = 13 TeV", "L=139fb^{-1}");
+    BasicInfo* b = new BasicInfo("#sqrt{s} = 13 TeV", "L = 139 fb^{-1}");
 
     Regions* rs = new Regions();
     rs->add("2tag2pjet_0ptv_LL_OS",     "2 b-tag, 2 loose #tau, OS",        eRegionType::SR);
@@ -61,11 +61,12 @@ void test_hadhad_klambda()
     {
         {
             Processes* ps = new Processes();
+            ps->assign_norm_factors = false;
             ps->add("hhttbbKL10p0",         "HH (#kappa_{#lambda}=10) generated",   eProcessType::SIG,  eProcess::HHKL10,       "HH (#kappa_{#lambda}=10) generated",  kBlue+1);
             ps->add("hhttbbKL10p0from1p0",  "HH (#kappa_{#lambda}=10) reweighted",  eProcessType::SIG,  eProcess::HHKLXFROM1,   "HH (#kappa_{#lambda}=10) reweighted", kRed+1);
 
             Config* c = new Config(b, ps, rs, vs);
-            c->load("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
+            c->load(filename, "Preselection");
             info->parameter = "from1p0";
             c->updateHistogramPtr(rs->content()->front(), v);
             CompTool* ct = new CompTool(info);
@@ -87,6 +88,7 @@ void test_hadhad_klambda()
 
         {
             Processes* ps = new Processes();
+            ps->assign_norm_factors = false;
             ps->add("hhttbbKL1p0",          "HH (#kappa_{#lambda}=1) generated",   eProcessType::SIG,  eProcess::HHKL10,        "HH (#kappa_{#lambda}=10) generated",  kBlue+1);
             ps->add("hhttbbKL1p0from10p0",  "HH (#kappa_{#lambda}=1) reweighted",  eProcessType::SIG,  eProcess::HHKLXFROM10,   "HH (#kappa_{#lambda}=10) reweighted", kRed+1);
 
@@ -121,6 +123,7 @@ void test_hadhad_klambda()
                     ret[ret.length()-2] = '.'; 
                     return ret; };
                 Processes* ps = new Processes();
+                ps->assign_norm_factors = false;
                 ps->add("hhttbbKL"+klambda+"from1p0",   
                         "HH (#kappa_{#lambda}="+nice_kl()+") from #kappa_{#lambda}=1",   
                         eProcessType::SIG,  eProcess::HHKLXFROM1,  

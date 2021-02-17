@@ -11,9 +11,9 @@ using std::cout;
 using std::endl;
 using std::clog;
 
-void test_hadhad()
+void test_hadhad(const std::string& filename)
 {
-    BasicInfo* b = new BasicInfo("#sqrt{s} = 13 TeV", "L=139fb^{-1}");
+    BasicInfo* b = new BasicInfo("#sqrt{s} = 13 TeV", "L = 139 fb^{-1}");
 
     Regions* rs = new Regions();
     rs->add("2tag2pjet_0ptv_LL_OS",     "2 b-tag, 2 loose #tau, OS",        eRegionType::SR);
@@ -60,7 +60,7 @@ void test_hadhad()
     info->blind = false;
     info->ratio_high = 1.38;
     info->ratio_low = 0.62;
-    info->signal_scale = 50;
+    info->signal_scale = 500;
 
     for (VariableInfo* v : *(vs->content()))
     {
@@ -98,15 +98,16 @@ void test_hadhad()
         ps->add("ZHtautau",             "SM Higgs",                     eProcessType::BKG,      eProcess::H,            "SM Higgs",                     kYellow-5);
         ps->add("ggFHtautau",           "SM Higgs",                     eProcessType::BKG,      eProcess::H,            "SM Higgs",                     kYellow-5);
         ps->add("VBFHtautau",           "SM Higgs",                     eProcessType::BKG,      eProcess::H,            "SM Higgs",                     kYellow-5);
-        ps->add("hhttbbKL10p0",         "HH (#kappa_{#lambda}=10 gen)", eProcessType::SIG,      eProcess::HHKL10,       "HH (#kappa_{#lambda}=10 gen)",  kRed);
-        ps->add("hhttbbKL10p0from1p0",  "HH (#kappa_{#lambda}=10 rwt)", eProcessType::SIG,      eProcess::HHKL10FROM1,  "HH (#kappa_{#lambda}=10 rwt)", kMagenta+2);
+        ps->add("hhttbbKL0p0from1p0",   "HH (#kappa_{#lambda}=0)",      eProcessType::SIG,      eProcess::HHKL0FROM1,   "HH (#kappa_{#lambda}=0)",      kMagenta);
+        ps->add("hhttbbKL1p0",          "HH (#kappa_{#lambda}=1)",      eProcessType::SIG,      eProcess::HHKL1,        "HH (#kappa_{#lambda}=1)",      kRed);
+        ps->add("hhttbbKL3p0from1p0",   "HH (#kappa_{#lambda}=3)",      eProcessType::SIG,      eProcess::HHKL3FROM1,   "HH (#kappa_{#lambda}=3)",      kBlue);
 
         Config* c = new Config(b, ps, rs, vs);
-        c->load("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-klambda-v1.root", "Preselection");
+        c->load(filename, "Preselection");
 
         c->updateHistogramPtr(rs->content()->front(), v);
         DrawStackTool* ds = new DrawStackTool(info);
-        ds->output_path = "/tmp/zhangbw/";
+        ds->output_path = "/tmp/zhangbw/bbtautau_sr";
         if (ds->check(c))
         {
             ds->manipulate(c);
