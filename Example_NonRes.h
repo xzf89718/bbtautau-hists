@@ -47,7 +47,7 @@ void test_hadhad_NonRes(const std::string& filename)
     vs_presel->add("Jet0Eta",              "Leading b-jet #eta (before corr.)",                 2 );
     vs_presel->add("Jet1Eta",              "Sub-leading b-jet #eta (before corr.)",             2 );
     vs_presel->add("Tau0Pt",               "Leading #tau_{had} p_{T} [GeV]",                    5 );
-    vs_presel->add("Tau1Pt",               "Sub-leading #tau_{had} p_{T} (before corr.) [GeV]", 5 );
+    vs_presel->add("Tau1Pt",               "Sub-leading #tau_{had} p_{T} [GeV]",                5 );
     vs_presel->add("Tau0Eta",              "Leading #tau_{had} #eta",                           2 );
     vs_presel->add("Tau1Eta",              "Sub-leading #tau_{had} #eta",                       2 );
     vs_presel->add("Tau0Ntrk",             "Leading #tau_{had} N_{tracks}",                     1 );

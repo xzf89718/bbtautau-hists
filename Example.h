@@ -49,7 +49,7 @@ void test_hadhad(const std::string& filename)
     vs->add("Jet0Eta",              "Leading b-jet #eta (before corr.)",                 2 );
     vs->add("Jet1Eta",              "Sub-leading b-jet #eta (before corr.)",             2 );
     vs->add("Tau0Pt",               "Leading #tau_{had} p_{T} [GeV]",                    10);
-    vs->add("Tau1Pt",               "Sub-leading #tau_{had} p_{T} (before corr.) [GeV]", 10);
+    vs->add("Tau1Pt",               "Sub-leading #tau_{had} p_{T} [GeV]",                10);
     vs->add("Tau0Eta",              "Leading #tau_{had} #eta",                           2 );
     vs->add("Tau1Eta",              "Sub-leading #tau_{had} #eta",                       2 );
     vs->add("Tau0Ntrk",             "Leading #tau_{had} N_{tracks}",                     1 );
