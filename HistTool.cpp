@@ -57,6 +57,8 @@ void HistTool::manipulate(Config* c)
             merged->histogram->Add(p->histogram); });
 
         merged->isMerged = true;
+        /// @note: make sure the process are not mixed
+        merged->norm_factor = front->norm_factor;
         merged->current_region = front->current_region;
         merged->current_variable = front->current_variable;
         
@@ -86,6 +88,7 @@ void HistTool::makeYield(const Config* c) const
     vector<ProcessInfo*>* ps = c->processes->content();
 
     // total backgrouds
+    bool hasBkg = false;
     int entriesBkg = 0;
     double sumBkg  = 0.0;
     double errBkg  = 0.0;
@@ -99,17 +102,20 @@ void HistTool::makeYield(const Config* c) const
         int nentries = p->histogram->GetEntries();
         double integral = p->histogram->IntegralAndError(from, to, error, "");
         double eOverI = *(long*)(&integral) ? error / integral : 0.;
-        fout << FIVE_COLUMN_TABLE(p->name, nentries, integral, error, eOverI);
+        fout << FIVE_COLUMN_TABLE(p->name, nentries, integral * p->norm_factor, error * p->norm_factor, eOverI);
 
         if (p->type == eProcessType::BKG)
         {
+            hasBkg = true;
             entriesBkg += nentries;
-            sumBkg += integral; 
-            errBkg += error * error;
+            sumBkg += integral * p->norm_factor; 
+            errBkg += error * error * p->norm_factor * p->norm_factor;
         }
     }
-    errBkg = sqrt(errBkg);
-    fout << FIVE_COLUMN_TABLE("Total Bkg", entriesBkg, sumBkg, errBkg, errBkg / sumBkg); 
+    if (hasBkg) {
+        errBkg = sqrt(errBkg);
+        fout << FIVE_COLUMN_TABLE("Total Bkg", entriesBkg, sumBkg, errBkg, errBkg / sumBkg); 
+    }
 
     clog << "Yields saved in " << oss.str() << '\n';
 }
