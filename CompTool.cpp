@@ -32,8 +32,13 @@ bool CompTool::check(const Config* c) const
 void CompTool::paint(const Config* c) const
 {
     vector<ProcessInfo*>* ps = c->processes->content();
-    for_each(ps->begin(), ps->end(), [&c](const ProcessInfo* p) {
-        p->histogram->Rebin(c->current_variable->n_rebin);
+    for_each(ps->begin(), ps->end(), [&c](ProcessInfo* p) {
+        if (c->current_variable->binning) {
+            TH1* rebinned = p->histogram->Rebin(c->current_variable->n_bins, p->histogram->GetName(), c->current_variable->binning);
+            p->histogram = (TH1*)rebinned->Clone();
+        } else {
+            p->histogram->Rebin(c->current_variable->n_rebin);
+        }
         p->histogram->SetLineWidth(2);
         p->histogram->SetLineStyle(1);
         p->histogram->SetMarkerColor(p->color);
@@ -76,6 +81,11 @@ void CompTool::run(const Config* c) const
 
     upper_pad->cd();
 
+    if (m_info->shape_only) {
+        ps->front()->histogram->Scale(1.0 / ps->front()->histogram->Integral());
+    } else {
+        ps->front()->histogram->Scale(ps->front()->norm_factor);
+    }
     TH1* base = ps->front()->histogram;
     base->Draw("HIST E1");
     base->GetXaxis()->SetLabelSize(0);
@@ -88,6 +98,11 @@ void CompTool::run(const Config* c) const
     base->GetYaxis()->ChangeLabel(1, -1, 0);
 
     for_each(ps->begin()+1, ps->end(), [this](const ProcessInfo* p) {
+        if (m_info->shape_only) {
+            p->histogram->Scale(1.0 / p->histogram->Integral());
+        } else {
+            p->histogram->Scale(p->norm_factor);
+        }
         p->histogram->Draw("HIST E1 SAME"); });
 
     double y = 0.92 - 0.05 * (ps->size() + 1);
@@ -136,8 +151,8 @@ void CompTool::run(const Config* c) const
     err->GetXaxis()->SetTitleOffset(1.2 * resize);
     err->GetXaxis()->SetTitleSize(0.045 * resize);
     err->GetXaxis()->SetLabelSize(0.04 * resize);
-    err->GetYaxis()->SetTitle("Ratio");
-    err->GetYaxis()->SetTitleOffset(0.8 * resize);
+    err->GetYaxis()->SetTitle(m_info->ratio_tex.c_str());
+    err->GetYaxis()->SetTitleOffset(1.2 * resize);
     err->GetYaxis()->SetTitleSize(0.045 * resize);
     err->GetYaxis()->SetLabelSize(0.04 * resize);
     err->GetYaxis()->SetNdivisions(505);
@@ -147,7 +162,7 @@ void CompTool::run(const Config* c) const
     for_each(ps->begin()+1, ps->end(), [&base](const ProcessInfo* p) {
         TH1* rat = (TH1*)p->histogram->Clone();
         rat->Divide(base);
-        rat->Draw("E1 SAME"); });
+        rat->Draw("E0 SAME"); });
 
     ostringstream oss_out;
     oss_out << output_path << "/" 

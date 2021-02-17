@@ -158,6 +158,7 @@ void DrawStackTool::run(const Config* c) const
 
     for_each(m_it_sig, m_it_end, [this](const ProcessInfo* p) {
         p->histogram->Scale(m_info->signal_scale);
+        p->histogram->Scale(p->norm_factor);
         p->histogram->Draw("HIST SAME"); });
 
     double y = 0.92 - 0.05 * (ps->size() + 1);
@@ -172,7 +173,8 @@ void DrawStackTool::run(const Config* c) const
     for_each(m_it_bkg, m_it_sig, [&legend](const ProcessInfo* p) {
         legend->AddEntry(p->histogram, p->name_tex.c_str(), "f"); });
     for_each(m_it_sig, m_it_end, [&legend, this](const ProcessInfo* p) {
-        legend->AddEntry(p->histogram, (p->name_tex + "x" + to_string((int)m_info->signal_scale)).c_str(), "l"); });
+        legend->AddEntry(p->histogram, 
+                        (to_string((int)(m_info->signal_scale * p->norm_factor)) + " x " + p->name_tex).c_str(), "l"); });
     legend->AddEntry(bkg, "Unc.", "f");
 
     legend->Draw("SAME");
@@ -203,9 +205,8 @@ void DrawStackTool::run(const Config* c) const
         bkg_scale->SetBinError(i, 0.0);
     }
     err->Divide(bkg_scale);
-    err->SetFillStyle(1001);
-    err->SetFillColor(TColor::GetColor(133, 173, 173));
-    err->SetMarkerColor(TColor::GetColor(133, 173, 173));
+    err->SetFillStyle(3254);
+    err->SetFillColor(kGray + 3);
     err->SetMarkerSize(0);
     err->SetName("Unc.");
     err->GetXaxis()->SetTitle((*m_it_data)->current_variable->name_tex.c_str());
@@ -224,7 +225,7 @@ void DrawStackTool::run(const Config* c) const
     rat->Divide(bkg_scale);
     rat->SetTitle("lower_pad");
     if (!m_info->blind)
-        rat->Draw("E1 SAME");
+        rat->Draw("E0 SAME");
 
     ostringstream oss_out;
     oss_out << output_path << "/" 

@@ -16,10 +16,12 @@ public:
     bool logx = false;
     bool logy = false;
     bool atlas = true;
+    bool shape_only = false;
     double ratio_high = 1.24;
     double ratio_low = 0.76;
     const char* atlas_label = "Simulation Internal";
     std::string parameter;
+    std::string ratio_tex = "Ratio";
     // add new configs here
 };
 
