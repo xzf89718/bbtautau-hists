@@ -36,5 +36,11 @@ target_link_libraries(UtilsLib PUBLIC ${ROOT_LIBRARIES})
 target_link_libraries(ConfigLib PUBLIC stdc++fs ${ROOT_LIBRARIES})
 target_link_libraries(HistToolLib PUBLIC stdc++fs ${ROOT_LIBRARIES})
 
-add_executable(bbtautau-hists main.cpp Example.h)
+add_executable(bbtautau-hists main.cpp 
+    Example.h 
+    Example_yield.h 
+    Example_klambda.h 
+    Example_ZtautauMG.h
+    Example_NonRes.h)
+
 target_link_libraries(bbtautau-hists ConfigLib HistToolLib UtilsLib)
