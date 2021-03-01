@@ -56,6 +56,21 @@ void HistTool::manipulate(Config* c)
         for_each(pair.second.begin() + 1, pair.second.end(), [&merged](const ProcessInfo* p) { 
             merged->histogram->Add(p->histogram); });
 
+        if (!(front->systematic_histograms.empty()))
+        {
+            for (auto & pp : front->systematic_histograms)
+            {
+                std::cout << pp.first << std::endl;
+                merged->systematic_histograms[pp.first] = (TH1*)front->systematic_histograms[pp.first]->Clone();
+                for_each(pair.second.begin() + 1, pair.second.end(), [&merged, &pp](const ProcessInfo* p) {
+                    std::cout << p->name << std::endl;
+                    if (!p->systematic_histograms.empty()) {
+                        merged->systematic_histograms[pp.first]->Add(p->systematic_histograms.at(pp.first));
+                    }
+                });
+            }
+        }
+
         merged->isMerged = true;
         /// @note: make sure the process are not mixed
         merged->norm_factor = front->norm_factor;

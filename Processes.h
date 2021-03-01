@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 using std::string;
 using std::vector;
@@ -50,6 +51,7 @@ public:
     int rbg = 0xFFFFFF; // TODO: master of color platte
     double norm_factor = 1.0; // fitted norm
     TH1* histogram = nullptr; // depends on region and variable (will be set in Config)
+    std::unordered_map<std::string, TH1*> systematic_histograms;
     bool isMerged = false;
     RegionInfo* current_region = nullptr;
     VariableInfo* current_variable = nullptr;

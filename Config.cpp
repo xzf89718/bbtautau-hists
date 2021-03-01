@@ -14,8 +14,9 @@ BasicInfo::BasicInfo(const string& ecm, const string& lumi) noexcept
 
 }
 
-Config::Config(const BasicInfo* b, const Processes* ps, const Regions* rs, const Variables* vs) noexcept
-    : basic(b), processes(ps), regions(rs), variables(vs)
+Config::Config(const BasicInfo* b, const Processes* ps, 
+               const Regions* rs, const Variables* vs, const Systematics* ss) noexcept
+    : basic(b), processes(ps), regions(rs), variables(vs), systematics(ss)
 {
     m_fin = nullptr;
     m_dir = "";
@@ -85,6 +86,31 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
         // else that p.histogram will remain as nullptr
         // later when make plot this should checked
         // -> well handled by HistTool::check()
+
+        ///@todo: use enums to handle ups and downs
+        if (systematics)
+        {
+            for (SystematicInfo* s : *(systematics->content()))
+            {
+                const std::string& fullnameWithSystUp = Utils::histStringSyst(p, r, v, s) + "__1up";
+                const std::string& fullnameWithSystDown = Utils::histStringSyst(p, r, v, s) + "__1down";
+                TDirectory* d_syst = nullptr;
+                d_syst = (TDirectory*)d->Get("Systematics");
+                if (d_syst->GetListOfKeys()->Contains(fullnameWithSystUp.c_str()) &&
+                    d_syst->GetListOfKeys()->Contains(fullnameWithSystDown.c_str()))
+                {
+                    TH1* hUp = (TH1*)d_syst->Get(fullnameWithSystUp.c_str());
+                    TH1* hDown = (TH1*)d_syst->Get(fullnameWithSystDown.c_str());
+                    Utils::histAssignSyst(hUp, p, Utils::systString(s) + "__1up");
+                    Utils::histAssignSyst(hDown, p, Utils::systString(s) + "__1down");
+                }
+                else
+                {
+                    clog << fullnameWithSystUp << " is not in " << m_dir << " (skip it)\n";
+                    clog << fullnameWithSystDown << " is not in " << m_dir << " (skip it)\n";
+                }
+            }
+        }
     }
     
 }
