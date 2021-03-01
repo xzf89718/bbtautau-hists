@@ -15,7 +15,7 @@ Variables::~Variables()
     content()->clear();
 }
 
-void Variables::add(const string &nm, const string &nmtex, unsigned rb, float *bing) const
+void Variables::add(const string &nm, const string &nmtex, unsigned rb, double *bing, size_t n) const
 {
-    m_vars->emplace_back(new VariableInfo(nm, nmtex, rb, bing));
+    m_vars->emplace_back(new VariableInfo(nm, nmtex, rb, bing, n));
 }
