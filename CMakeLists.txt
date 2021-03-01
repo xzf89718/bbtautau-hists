@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_CXX_EXTENSIONS ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wpedantic -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wpedantic -Wextra -g")
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 SET(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
@@ -24,7 +24,8 @@ add_library(ConfigLib SHARED
     Config.cpp Config.h
     Processes.cpp Processes.h
     Regions.cpp Regions.h
-    Variables.cpp Variables.h)
+    Variables.cpp Variables.h
+    Systematics.cpp Systematics.h)
 
 add_library(HistToolLib SHARED 
     CommonInclude.h
