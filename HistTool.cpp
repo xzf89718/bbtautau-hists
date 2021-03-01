@@ -13,7 +13,7 @@
 using namespace std;
 
 # define FIVE_COLUMN_TABLE(A, B, C, D, E) \
-       std::left << setw(25) << A \
+       std::left << setw(30) << A \
     << std::left << setw(15) << B \
     << std::left << setw(15) << C \
     << std::left << setw(15) << D \
@@ -37,6 +37,7 @@ bool HistTool::check(const Config* c) const
 
 void HistTool::manipulate(Config* c) 
 {
+    c->setManipulated(true);
     vector<ProcessInfo*>* ps_in_c = c->processes->content();
     clog << "merging\n";
     map<eProcess, vector<ProcessInfo*>> procs;
@@ -55,7 +56,24 @@ void HistTool::manipulate(Config* c)
         for_each(pair.second.begin() + 1, pair.second.end(), [&merged](const ProcessInfo* p) { 
             merged->histogram->Add(p->histogram); });
 
+        if (!(front->systematic_histograms.empty()))
+        {
+            for (auto & pp : front->systematic_histograms)
+            {
+                std::cout << pp.first << std::endl;
+                merged->systematic_histograms[pp.first] = (TH1*)front->systematic_histograms[pp.first]->Clone();
+                for_each(pair.second.begin() + 1, pair.second.end(), [&merged, &pp](const ProcessInfo* p) {
+                    std::cout << p->name << std::endl;
+                    if (!p->systematic_histograms.empty()) {
+                        merged->systematic_histograms[pp.first]->Add(p->systematic_histograms.at(pp.first));
+                    }
+                });
+            }
+        }
+
         merged->isMerged = true;
+        /// @note: make sure the process are not mixed
+        merged->norm_factor = front->norm_factor;
         merged->current_region = front->current_region;
         merged->current_variable = front->current_variable;
         
@@ -85,6 +103,7 @@ void HistTool::makeYield(const Config* c) const
     vector<ProcessInfo*>* ps = c->processes->content();
 
     // total backgrouds
+    bool hasBkg = false;
     int entriesBkg = 0;
     double sumBkg  = 0.0;
     double errBkg  = 0.0;
@@ -98,17 +117,20 @@ void HistTool::makeYield(const Config* c) const
         int nentries = p->histogram->GetEntries();
         double integral = p->histogram->IntegralAndError(from, to, error, "");
         double eOverI = *(long*)(&integral) ? error / integral : 0.;
-        fout << FIVE_COLUMN_TABLE(p->name, nentries, integral, error, eOverI);
+        fout << FIVE_COLUMN_TABLE(p->name, nentries, integral * p->norm_factor, error * p->norm_factor, eOverI);
 
         if (p->type == eProcessType::BKG)
         {
+            hasBkg = true;
             entriesBkg += nentries;
-            sumBkg += integral; 
-            errBkg += error * error;
+            sumBkg += integral * p->norm_factor; 
+            errBkg += error * error * p->norm_factor * p->norm_factor;
         }
     }
-    errBkg = sqrt(errBkg);
-    fout << FIVE_COLUMN_TABLE("Total Bkg", entriesBkg, sumBkg, errBkg, errBkg / sumBkg); 
+    if (hasBkg) {
+        errBkg = sqrt(errBkg);
+        fout << FIVE_COLUMN_TABLE("Total Bkg", entriesBkg, sumBkg, errBkg, errBkg / sumBkg); 
+    }
 
     clog << "Yields saved in " << oss.str() << '\n';
 }

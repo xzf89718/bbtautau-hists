@@ -1,16 +1,5 @@
 #include "DrawStackTool.h"
-
-#include "TCanvas.h"
-#include "TH1.h"
-#include "THStack.h"
-#include "TLegend.h"
-#include "TLegendEntry.h"
-#include "TLatex.h"
-#include "TText.h"
-#include "TColor.h"
-#include "TStyle.h"
-#include "TPad.h"
-#include "TROOT.h"
+#include "CommonInclude.h"
 
 #include <sstream>
 #include <algorithm>
@@ -59,8 +48,8 @@ bool DrawStackTool::check(const Config* c) const
 void DrawStackTool::paint(const Config* c) const
 {
     vector<ProcessInfo*>* ps = c->processes->content();
-    for_each(ps->begin(), ps->end(), [](const ProcessInfo* p) {
-        p->histogram->Rebin(10);
+    for_each(ps->begin(), ps->end(), [&c](const ProcessInfo* p) {
+        p->histogram->Rebin(c->current_variable->n_rebin);
         switch (p->type)
         {
         case eProcessType::DATA:
@@ -88,7 +77,7 @@ void DrawStackTool::paint(const Config* c) const
 
 void DrawStackTool::manipulate(Config* c)
 {
-    HistTool::manipulate(c);
+    HistTool::manipulate(c); // always do this first
 
     vector<ProcessInfo*>* ps = c->processes->content();
     m_it_data = ps->begin();
@@ -169,21 +158,23 @@ void DrawStackTool::run(const Config* c) const
 
     for_each(m_it_sig, m_it_end, [this](const ProcessInfo* p) {
         p->histogram->Scale(m_info->signal_scale);
+        p->histogram->Scale(p->norm_factor);
         p->histogram->Draw("HIST SAME"); });
 
-    double y = 0.92 - 0.06 * (ps->size() + 1);
-    TLegend* legend = new TLegend(0.69, y, 0.90, 0.92);
+    double y = 0.92 - 0.05 * (ps->size() + 1);
+    TLegend* legend = new TLegend(0.66, y, 0.90, 0.92);
     legend->SetTextFont(42);
     legend->SetFillStyle(0);
     legend->SetBorderSize(0);
-    legend->SetTextSize(0.04);
+    legend->SetTextSize(0.035);
     legend->SetTextAlign(32);
 
     legend->AddEntry(data, "Data", "lep");
     for_each(m_it_bkg, m_it_sig, [&legend](const ProcessInfo* p) {
         legend->AddEntry(p->histogram, p->name_tex.c_str(), "f"); });
     for_each(m_it_sig, m_it_end, [&legend, this](const ProcessInfo* p) {
-        legend->AddEntry(p->histogram, (p->name_tex + "x" + to_string((int)m_info->signal_scale)).c_str(), "l"); });
+        legend->AddEntry(p->histogram, 
+                        (to_string((int)(m_info->signal_scale * p->norm_factor)) + " x " + p->name_tex).c_str(), "l"); });
     legend->AddEntry(bkg, "Unc.", "f");
 
     legend->Draw("SAME");
@@ -214,8 +205,8 @@ void DrawStackTool::run(const Config* c) const
         bkg_scale->SetBinError(i, 0.0);
     }
     err->Divide(bkg_scale);
-    err->SetFillStyle(1001);
-    err->SetFillColor(TColor::GetColor(133, 173, 173));
+    err->SetFillStyle(3254);
+    err->SetFillColor(kGray + 3);
     err->SetMarkerSize(0);
     err->SetName("Unc.");
     err->GetXaxis()->SetTitle((*m_it_data)->current_variable->name_tex.c_str());
@@ -234,7 +225,7 @@ void DrawStackTool::run(const Config* c) const
     rat->Divide(bkg_scale);
     rat->SetTitle("lower_pad");
     if (!m_info->blind)
-        rat->Draw("E1 SAME");
+        rat->Draw("E0 SAME");
 
     ostringstream oss_out;
     oss_out << output_path << "/" 

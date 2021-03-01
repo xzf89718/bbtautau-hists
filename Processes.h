@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 using std::string;
 using std::vector;
@@ -26,7 +27,10 @@ enum class eProcess {
     WJETS, WtauvJETS, WtauvHF, WtauvLF, WlvJETS, WlvLF, WlvHF,
     H, VH, WH, ZH, ttH, ggH, VBFH,
     DIBOSON, WW, WZ, ZZ, FAKE, QCD, MULTIJET,
-    SIG, SMHH, HH, XtoHH, StoHH
+    ZJETSMG, ZllLFMG, ZllHFMG,
+    SIG, SMHH, HH, XtoHH, StoHH,
+    HHKL1, HHKL3FROM1, HHKL0FROM1, HHKL10, HHKL10FROM1,
+    HHKLXFROM1, HHKLXFROM10
 };
 
 // ENTRY
@@ -47,6 +51,7 @@ public:
     int rbg = 0xFFFFFF; // TODO: master of color platte
     double norm_factor = 1.0; // fitted norm
     TH1* histogram = nullptr; // depends on region and variable (will be set in Config)
+    std::unordered_map<std::string, TH1*> systematic_histograms;
     bool isMerged = false;
     RegionInfo* current_region = nullptr;
     VariableInfo* current_variable = nullptr;
@@ -83,6 +88,10 @@ public:
      * @brief return current fitted normalisation factor
      */
     double normFactors(ProcessInfo* p) const;
+    /**
+     * @brief if true, will modify p->norm_factor, else it will keep as 1.0
+     */
+    bool assign_norm_factors = true;
 
 private:
     unique_ptr<vector<ProcessInfo*>> m_procs;
