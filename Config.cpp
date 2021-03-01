@@ -81,7 +81,7 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
         }
         else
         {
-            clog << fullname << " is not in " << m_dir << " (skip it)\n";
+            clog << "INFO: " << fullname << " is not in " << m_dir << " (skip it)\n";
         }
         // else that p.histogram will remain as nullptr
         // later when make plot this should checked
@@ -106,8 +106,8 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
                 }
                 else
                 {
-                    clog << fullnameWithSystUp << " is not in " << m_dir << " (skip it)\n";
-                    clog << fullnameWithSystDown << " is not in " << m_dir << " (skip it)\n";
+                    clog << "INFO: " << fullnameWithSystUp << " is not in " << m_dir << " (skip it)\n";
+                    clog << "INFO: " << fullnameWithSystDown << " is not in " << m_dir << " (skip it)\n";
                 }
             }
         }
