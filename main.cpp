@@ -20,7 +20,7 @@ int main(/*int argc, char *argv[]*/)
     gROOT->SetBatch(1);
     
     cout << "Hello!" << endl;
-    Plots_KLReweigt();
+    //Plots_KLReweigt();
     //test_hadhad();
     //test_zifeng_hadhad();   
 
@@ -33,6 +33,7 @@ int main(/*int argc, char *argv[]*/)
     // test_hadhad_ZtautauMG("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-Ztautau.root");
 
     //test_hadhad_NonRes("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-NonRes-v0.root");
-
+    
+    test_hadhad_klambda();
     return 0;
 }
