@@ -15,33 +15,33 @@ SET(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARG
 SET(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
 
 find_package(ROOT REQUIRED COMPONENTS Core Hist Tree RIO Net)
-include_directories(SYSTEM ${ROOT_INCLUDE_DIR})
+include_directories(SYSTEM ${ROOT_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/examples)
 
 add_library(UtilsLib SHARED
-    Utils.cpp Utils.h)
+    src/Utils.cpp src/Utils.h)
 
 add_library(ConfigLib SHARED
-    Config.cpp Config.h
-    Processes.cpp Processes.h
-    Regions.cpp Regions.h
-    Variables.cpp Variables.h
-    Systematics.cpp Systematics.h)
+    src/Config.cpp src/Config.h
+    src/Processes.cpp src/Processes.h
+    src/Regions.cpp src/Regions.h
+    src/Variables.cpp src/Variables.h
+    src/Systematics.cpp src/Systematics.h)
 
 add_library(HistToolLib SHARED 
-    CommonInclude.h
-    HistTool.cpp HistTool.h
-    DrawStackTool.cpp DrawStackTool.h
-    CompTool.cpp CompTool.h)
+    src/CommonInclude.h
+    src/HistTool.cpp src/HistTool.h
+    src/DrawStackTool.cpp src/DrawStackTool.h
+    src/CompTool.cpp src/CompTool.h)
 
 target_link_libraries(UtilsLib PUBLIC ${ROOT_LIBRARIES})
 target_link_libraries(ConfigLib PUBLIC stdc++fs ${ROOT_LIBRARIES})
 target_link_libraries(HistToolLib PUBLIC stdc++fs ${ROOT_LIBRARIES})
 
-add_executable(bbtautau-hists main.cpp 
-    Example.h 
-    Example_yield.h 
-    Example_klambda.h 
-    Example_ZtautauMG.h
-    Example_NonRes.h)
+add_executable(bbtautau-hists exec/main.cpp 
+    examples/Example.h 
+    examples/Example_yield.h 
+    examples/Example_klambda.h 
+    examples/Example_ZtautauMG.h
+    examples/Example_NonRes.h)
 
 target_link_libraries(bbtautau-hists ConfigLib HistToolLib UtilsLib)
