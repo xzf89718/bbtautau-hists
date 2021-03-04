@@ -24,7 +24,7 @@ enum class eProcess {
     TTBAR, TTBARTRUE, TTBARFAKE, TTBARTT, TTBARTF, TTBARFT, TTBARFF,
     STOP, STOPT, STOPS, STOPWT,
     ZJETS, ZtautauJETS, ZtautauHF, ZtautauLF, ZllJETS, ZllLF, ZllHF,
-    WJETS, WtauvJETS, WtauvHF, WtauvLF, WlvJETS, WlvLF, WlvHF,
+    WJETS, WtauvJETS, WtauvHF, WtauvLF, WlvJETS, WlvLF, WlvHF, ttV,
     H, VH, WH, ZH, ttH, ggH, VBFH,
     DIBOSON, WW, WZ, ZZ, FAKE, QCD, MULTIJET,
     ZJETSMG, ZllLFMG, ZllHFMG,

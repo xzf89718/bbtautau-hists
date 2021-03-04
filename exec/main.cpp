@@ -1,8 +1,4 @@
-#include "Example.h"
-#include "Example_klambda.h"
-#include "Example_yield.h"
-#include "Example_ZtautauMG.h"
-#include "Example_NonRes.h"
+#include "ExamplesInclude.h"
 #include "TROOT.h"
 
 #include <iostream>
@@ -23,7 +19,9 @@ int main(/*int argc, char *argv[]*/)
 
     // test_hadhad_ZtautauMG("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-Ztautau-v1.root");
 
-    test_hadhad_NonRes("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-NonRes-v0.root");
+    // test_hadhad_NonRes("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-NonRes-v0.root");
+
+    hadhadsr_v15_yield("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-HadHadWSI-v1.all.root");
 
     return 0;
 }
