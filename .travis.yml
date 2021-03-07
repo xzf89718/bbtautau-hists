@@ -1,0 +1,18 @@
+sudo: required
+
+language: cpp
+
+services:
+  - docker
+  
+env: SH="docker run atlasamglab/stats:latest /bin/bash -c"
+
+before_install:
+  - docker run -d --name atlasroot -v $(pwd):/travis -w /travis atlasamglab/stats:latest
+  - docker ps -a
+
+script:
+  - ${SH} "which root"
+  - ${SH} "mkdir -p build && cd build"
+  - ${SH} "cmake ../ && make -j"
+  - ${SH} "ls"
