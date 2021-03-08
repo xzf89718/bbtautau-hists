@@ -11,8 +11,10 @@ before_install:
   - docker run -d --name atlasroot -v $(pwd):/travis -w /travis atlasamglab/stats:latest
   - docker ps -a
 
-script:
+install:
   - ${SH} "which root"
   - ${SH} "mkdir -p build && cd build"
   - ${SH} "cmake ../ && make -j"
-  - ${SH} "ls"
+
+script:
+  - ${SH} "./bbtautau-hists"
