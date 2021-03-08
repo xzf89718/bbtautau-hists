@@ -33,7 +33,8 @@ void test_hadhad_yield(const std::string& filename)
     for (RegionInfo* r : *(rs->content()))
     {
         Processes* ps = new Processes();
-        ps->assign_norm_factors = false;
+        // Use normalisation factor ?
+        ps->assign_norm_factors = true;
 
         ps->add("data",                 "data",                         eProcessType::DATA,     eProcess::DATA,         "data",                         kBlack);
         ps->add("Zttbb",                "Z#tau#tau + bb",               eProcessType::BKG,      eProcess::ZllHF,        "Z+hf",                         kBlue-10);

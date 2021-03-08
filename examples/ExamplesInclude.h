@@ -3,4 +3,5 @@
 #include "Example_yield.h"
 #include "Example_ZtautauMG.h"
 #include "Example_NonRes.h"
+#include "HadHadSR_v15.h"
 #include "HadHadSR_v15_yield.h"

@@ -21,6 +21,8 @@ int main(/*int argc, char *argv[]*/)
 
     // test_hadhad_NonRes("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-NonRes-v0.root");
 
+    // hadhadsr_v15("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-HadHad-v1.root");
+
     // hadhadsr_v15_yield("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-HadHadWSI-v1.all.root");
 
     cout << "Ciao!" << endl;
