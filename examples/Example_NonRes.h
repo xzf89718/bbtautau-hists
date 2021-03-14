@@ -67,10 +67,10 @@ void test_hadhad_NonRes(const std::string& filename)
     for (VariableInfo* v : *(vs_presel->content()))
     {
         Processes* ps = new Processes();
-        // ps->add("hhttbbKL1p0",      "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kBlue+1);
-        // ps->add("hhttbbPy8KL1p0",   "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kRed+1);
-        ps->add("hhttbbKL10p0",      "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kBlue+1);
-        ps->add("hhttbbPy8KL10p0",   "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kRed+1);
+        ps->add("hhttbbKL1p0",      "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kBlue+1);
+        ps->add("hhttbbPy8KL1p0",   "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kRed+1);
+        // ps->add("hhttbbKL10p0",      "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kBlue+1);
+        // ps->add("hhttbbPy8KL10p0",   "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kRed+1);
 
         Config* c = new Config(b, ps, rs, vs_presel);
         c->load(filename, "Preselection");
@@ -99,10 +99,10 @@ void test_hadhad_NonRes(const std::string& filename)
     for (VariableInfo* v : *(vs_bdt->content()))
     {
         Processes* ps = new Processes();
-        // ps->add("hhttbbKL1p0",      "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kBlue+1);
-        // ps->add("hhttbbPy8KL1p0",   "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kRed+1);
-        ps->add("hhttbbKL10p0",      "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kBlue+1);
-        ps->add("hhttbbPy8KL10p0",   "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kRed+1);
+        ps->add("hhttbbKL1p0",      "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kBlue+1);
+        ps->add("hhttbbPy8KL1p0",   "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kRed+1);
+        // ps->add("hhttbbKL10p0",      "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kBlue+1);
+        // ps->add("hhttbbPy8KL10p0",   "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kRed+1);
 
         Config* c = new Config(b, ps, rs, vs_bdt);
         c->load(filename, "BDTScorePreselection");
