@@ -216,14 +216,14 @@ void CompTool::run(const Config* c) const
     err->Draw("E2");
     for_each(ps->begin()+1, ps->end(), [&base](const ProcessInfo* p) {
         TH1* rat = (TH1*)p->histogram->Clone();
-        rat->Divide(base);
+        rat->Divide(base_scale);
         // rat->Fit("pol1", "", "", 0, 250);
         rat->Draw("E0 SAME"); });
     
     for (auto& pp : ps->front()->systematic_histograms)
     {
         TH1* rat_pp = (TH1*)pp.second->Clone();
-        rat_pp->Divide(base);
+        rat_pp->Divide(base_scale);
         rat_pp->Draw("HIST SAME");
     }
 
