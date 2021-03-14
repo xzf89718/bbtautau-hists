@@ -214,7 +214,7 @@ void CompTool::run(const Config* c) const
     err->SetMinimum(m_info->ratio_low);
     err->SetMaximum(m_info->ratio_high);
     err->Draw("E2");
-    for_each(ps->begin()+1, ps->end(), [&base](const ProcessInfo* p) {
+    for_each(ps->begin()+1, ps->end(), [&base_scale](const ProcessInfo* p) {
         TH1* rat = (TH1*)p->histogram->Clone();
         rat->Divide(base_scale);
         // rat->Fit("pol1", "", "", 0, 250);
