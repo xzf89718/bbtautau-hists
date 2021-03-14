@@ -23,7 +23,7 @@ int main(/*int argc, char *argv[]*/)
 
     // test_hadhad_WtGen("/scratchfs/atlas/zhangbw/CxAODReaderForSystStudy/run/hist-top-v1.root");
 
-    test_hadhad_WtOTF("/scratchfs/atlas/zhangbw/CxAODReaderForSystStudy/run/hist-top-v1.root");
+    // test_hadhad_WtOTF("/scratchfs/atlas/zhangbw/CxAODReaderForSystStudy/run/hist-top-v1.root");
     
     // test_hadhad_NonRes("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-NonRes-v0.root");
 
