@@ -18,20 +18,20 @@ find_package(ROOT REQUIRED COMPONENTS Core Hist Tree RIO Net)
 include_directories(SYSTEM ${ROOT_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/examples)
 
 add_library(UtilsLib SHARED
-    src/Utils.cpp src/Utils.h)
+    src/Utils.cpp)
 
 add_library(ConfigLib SHARED
-    src/Config.cpp src/Config.h
-    src/Processes.cpp src/Processes.h
-    src/Regions.cpp src/Regions.h
-    src/Variables.cpp src/Variables.h
-    src/Systematics.cpp src/Systematics.h)
+    src/Config.cpp
+    src/Processes.cpp
+    src/Regions.cpp
+    src/Variables.cpp
+    src/Systematics.cpp)
 
 add_library(HistToolLib SHARED 
-    src/CommonInclude.h
-    src/HistTool.cpp src/HistTool.h
-    src/DrawStackTool.cpp src/DrawStackTool.h
-    src/CompTool.cpp src/CompTool.h)
+    src/HistTool.cpp
+    src/DrawStackTool.cpp
+    src/CompTool.cpp
+    src/SystCompTool.cpp)
 
 target_link_libraries(UtilsLib PUBLIC ${ROOT_LIBRARIES})
 target_link_libraries(ConfigLib PUBLIC stdc++fs ${ROOT_LIBRARIES})
