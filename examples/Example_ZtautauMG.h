@@ -21,6 +21,7 @@ void test_hadhad_ZtautauMG(const std::string& filename)
     Variables* vs_presel = new Variables();
     double binning[7] = {0, 50, 100, 150, 200, 300, 500};
     vs_presel->add("mBB",                  "m_{BB} [GeV]",                                      20, binning, 6);
+    // vs_presel->add("mBB",                  "m_{BB} [GeV]",                                      10);
     vs_presel->add("mMMC",                 "m_{#tau#tau} (MMC) [GeV]",                          24);
     vs_presel->add("mHH",                  "m_{HH} [GeV]",                                      24);
     vs_presel->add("mHHScaled",            "m_{HH} (Scaled) [GeV]",                             24);
@@ -71,6 +72,12 @@ void test_hadhad_ZtautauMG(const std::string& filename)
     vs_pnn->add("PNN1400",                 "PNN1400",                                           100);
     vs_pnn->add("PNN1600",                 "PNN1600",                                           100);
 
+    Variables* vs_bdt = new Variables();
+    vs_bdt->add("SMBDT",                   "SM BDT",                                            100);
+
+    Systematics* ss = new Systematics();
+    ss->add("ZJETS_GENERATOR", "ZJETS_GENERATOR", eSystematicType::TwoSide);
+
     CompInfo* info = new CompInfo();
     info->ratio_high = 1.48;
     info->ratio_low = 0.52;
@@ -83,11 +90,11 @@ void test_hadhad_ZtautauMG(const std::string& filename)
         ps->add("Zttbc",    "Zhf Nominal",  eProcessType::BKG,  eProcess::ZllHF,    "Zhf Nominal",  kBlue+1);
         ps->add("Zttcc",    "Zhf Nominal",  eProcessType::BKG,  eProcess::ZllHF,    "Zhf Nominal",  kBlue+1);
 
-        ps->add("MadZbb",   "Zhf MG5+Py8",  eProcessType::BKG,  eProcess::ZllHFMG,  "Zhf MG5+Py8",  kRed+1);
-        ps->add("MadZbc",   "Zhf MG5+Py8",  eProcessType::BKG,  eProcess::ZllHFMG,  "Zhf MG5+Py8",  kRed+1);
-        ps->add("MadZcc",   "Zhf MG5+Py8",  eProcessType::BKG,  eProcess::ZllHFMG,  "Zhf MG5+Py8",  kRed+1);
+        ps->add("MadZttbb",   "Zhf MG5+Py8",  eProcessType::BKG,  eProcess::ZllHFMG,  "Zhf MG5+Py8",  kRed+1);
+        ps->add("MadZttbc",   "Zhf MG5+Py8",  eProcessType::BKG,  eProcess::ZllHFMG,  "Zhf MG5+Py8",  kRed+1);
+        ps->add("MadZttcc",   "Zhf MG5+Py8",  eProcessType::BKG,  eProcess::ZllHFMG,  "Zhf MG5+Py8",  kRed+1);
 
-        Config* c = new Config(b, ps, rs, vs_presel);
+        Config* c = new Config(b, ps, rs, vs_presel, ss);
         c->load(filename, "Preselection");
         info->parameter = "Presel";
         c->updateHistogramPtr(rs->content()->front(), v);
@@ -119,13 +126,47 @@ void test_hadhad_ZtautauMG(const std::string& filename)
         ps->add("Zttbc",    "Zhf Nominal",  eProcessType::BKG,  eProcess::ZllHF,    "Zhf Nominal",  kBlue+1);
         ps->add("Zttcc",    "Zhf Nominal",  eProcessType::BKG,  eProcess::ZllHF,    "Zhf Nominal",  kBlue+1);
 
-        ps->add("MadZbb",   "Zhf MG5+Py8",  eProcessType::BKG,  eProcess::ZllHFMG,  "Zhf MG5+Py8",  kRed+1);
-        ps->add("MadZbc",   "Zhf MG5+Py8",  eProcessType::BKG,  eProcess::ZllHFMG,  "Zhf MG5+Py8",  kRed+1);
-        ps->add("MadZcc",   "Zhf MG5+Py8",  eProcessType::BKG,  eProcess::ZllHFMG,  "Zhf MG5+Py8",  kRed+1);
+        ps->add("MadZttbb",   "Zhf MG5+Py8",  eProcessType::BKG,  eProcess::ZllHFMG,  "Zhf MG5+Py8",  kRed+1);
+        ps->add("MadZttbc",   "Zhf MG5+Py8",  eProcessType::BKG,  eProcess::ZllHFMG,  "Zhf MG5+Py8",  kRed+1);
+        ps->add("MadZttcc",   "Zhf MG5+Py8",  eProcessType::BKG,  eProcess::ZllHFMG,  "Zhf MG5+Py8",  kRed+1);
 
-        Config* c = new Config(b, ps, rs, vs_pnn);
+        Config* c = new Config(b, ps, rs, vs_pnn, ss);
         c->load(filename, "PNNScorePreselection");
         info->parameter = "PNN";
+        c->updateHistogramPtr(rs->content()->front(), v);
+        CompTool* ct = new CompTool(info);
+        ct->output_path = "/tmp/zhangbw/ZtautauMG";
+        if (ct->check(c))
+        {
+            ct->manipulate(c);
+            ct->makeYield(c);
+            ct->paint(c);
+            ct->run(c);
+        }
+        else 
+        {
+            clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
+        }
+
+        delete ps;
+        delete ct;
+        delete c;
+    }
+
+        for (VariableInfo* v : *(vs_bdt->content()))
+    {
+        Processes* ps = new Processes();
+        ps->add("Zttbb",    "Zhf Nominal",  eProcessType::BKG,  eProcess::ZllHF,    "Zhf Nominal",  kBlue+1);
+        ps->add("Zttbc",    "Zhf Nominal",  eProcessType::BKG,  eProcess::ZllHF,    "Zhf Nominal",  kBlue+1);
+        ps->add("Zttcc",    "Zhf Nominal",  eProcessType::BKG,  eProcess::ZllHF,    "Zhf Nominal",  kBlue+1);
+
+        ps->add("MadZttbb",   "Zhf MG5+Py8",  eProcessType::BKG,  eProcess::ZllHFMG,  "Zhf MG5+Py8",  kRed+1);
+        ps->add("MadZttbc",   "Zhf MG5+Py8",  eProcessType::BKG,  eProcess::ZllHFMG,  "Zhf MG5+Py8",  kRed+1);
+        ps->add("MadZttcc",   "Zhf MG5+Py8",  eProcessType::BKG,  eProcess::ZllHFMG,  "Zhf MG5+Py8",  kRed+1);
+
+        Config* c = new Config(b, ps, rs, vs_bdt, ss);
+        c->load(filename, "BDTScorePreselection");
+        info->parameter = "BDT";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
         ct->output_path = "/tmp/zhangbw/ZtautauMG";
@@ -150,6 +191,7 @@ void test_hadhad_ZtautauMG(const std::string& filename)
     delete rs;
     delete vs_presel;
     delete vs_pnn;
+    delete vs_bdt;
     delete info;
 
 }

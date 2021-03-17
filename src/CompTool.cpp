@@ -36,14 +36,39 @@ void CompTool::paint(const Config* c) const
         if (c->current_variable->binning) {
             TH1* rebinned = p->histogram->Rebin(c->current_variable->n_bins, p->histogram->GetName(), c->current_variable->binning);
             p->histogram = (TH1*)rebinned->Clone();
+            for (auto& pp : p->systematic_histograms)
+            {
+                TH1* rebinned_pp = pp.second->Rebin(c->current_variable->n_bins, pp.second->GetName(), c->current_variable->binning);
+                pp.second = (TH1*)rebinned_pp->Clone();
+            }
         } else {
             p->histogram->Rebin(c->current_variable->n_rebin);
+            for (auto& pp : p->systematic_histograms)
+            {
+                pp.second->Rebin(c->current_variable->n_rebin);
+            }
         }
         p->histogram->SetLineWidth(2);
         p->histogram->SetLineStyle(1);
-        p->histogram->SetMarkerColor(p->color);
         p->histogram->SetMarkerSize(0);
+        p->histogram->SetMarkerColor(p->color);
         p->histogram->SetLineColor(p->color);
+        for (auto& pp : p->systematic_histograms)
+        {
+            pp.second->SetLineWidth(2);
+            pp.second->SetLineStyle(2);
+            pp.second->SetMarkerSize(0);
+            if (pp.first.find("1up") != std::string::npos)
+            {
+                pp.second->SetMarkerColor(kViolet);
+                pp.second->SetLineColor(kViolet);
+            }
+            else if (pp.first.find("1down") != std::string::npos)
+            {
+                pp.second->SetMarkerColor(kAzure);
+                pp.second->SetLineColor(kAzure);
+            }
+        } 
     });
 }
 
@@ -83,8 +108,16 @@ void CompTool::run(const Config* c) const
 
     if (m_info->shape_only) {
         ps->front()->histogram->Scale(1.0 / ps->front()->histogram->Integral());
+        for (auto &pp : ps->front()->systematic_histograms)
+        {
+            pp.second->Scale(1.0 / pp.second->Integral());
+        }
     } else {
         ps->front()->histogram->Scale(ps->front()->norm_factor);
+        for (auto &pp : ps->front()->systematic_histograms)
+        {
+            pp.second->Scale(ps->front()->norm_factor);
+        }
     }
     TH1* base = ps->front()->histogram;
     base->Draw("HIST E1");
@@ -97,6 +130,11 @@ void CompTool::run(const Config* c) const
     base->SetMaximum(base->GetMaximum() * 1.4);
     base->GetYaxis()->ChangeLabel(1, -1, 0);
 
+    for (auto& pp : ps->front()->systematic_histograms)
+    {
+        pp.second->Draw("HIST E1 SAME");
+    }
+
     for_each(ps->begin()+1, ps->end(), [this](const ProcessInfo* p) {
         if (m_info->shape_only) {
             p->histogram->Scale(1.0 / p->histogram->Integral());
@@ -105,7 +143,7 @@ void CompTool::run(const Config* c) const
         }
         p->histogram->Draw("HIST E1 SAME"); });
 
-    double y = 0.92 - 0.05 * (ps->size() + 1);
+    double y = 0.92 - 0.05 * (ps->size() + ps->front()->systematic_histograms.size() + 1);
     TLegend* legend = new TLegend(0.60, y, 0.90, 0.92);
     legend->SetTextFont(42);
     legend->SetFillStyle(0);
@@ -113,8 +151,20 @@ void CompTool::run(const Config* c) const
     legend->SetTextSize(0.035);
     legend->SetTextAlign(12);
 
-    for_each(ps->begin(), ps->end(), [&legend](const ProcessInfo* p) {
-        legend->AddEntry(p->histogram, p->name_tex.c_str(), "lep"); });
+    for_each(ps->begin(), ps->end(), [&legend, &ps](const ProcessInfo* p) {
+        legend->AddEntry(p->histogram, p->name_tex.c_str(), "lep");
+        if (p == ps->front()) { 
+            for (auto& pp : p->systematic_histograms)
+            {
+                std::string updown;
+                if (pp.first.find("1up") != std::string::npos)
+                { updown = "(1 up)"; }
+                else if (pp.first.find("1down") != std::string::npos)
+                { updown = "(1 down)"; }
+                legend->AddEntry(pp.second, (p->name_tex + " " + updown).c_str(), "lep");
+            }
+        }
+    });
 
     legend->Draw("SAME");
 
@@ -127,6 +177,11 @@ void CompTool::run(const Config* c) const
         text->SetTextFont(42);
         text->DrawLatex(0.20 + 0.12, 0.86, m_info->atlas_label);
         text->SetTextSize(0.045);
+        if (c->systematics)
+        {
+            vector<SystematicInfo*>* ss = c->systematics->content();
+            text->DrawLatex(0.60, 0.60, ss->front()->name.c_str());
+        }
     }
     ostringstream oss{c->basic->ecm};
     text->DrawLatex(0.20, 0.80, oss.str().c_str());
@@ -143,6 +198,7 @@ void CompTool::run(const Config* c) const
         base_scale->SetBinError(i, 0.0);
     }
     err->Divide(base_scale);
+    err->SetLineWidth(0);
     err->SetFillStyle(3254);
     err->SetFillColor(kGray + 3);
     err->SetMarkerSize(0);
@@ -159,10 +215,31 @@ void CompTool::run(const Config* c) const
     err->SetMinimum(m_info->ratio_low);
     err->SetMaximum(m_info->ratio_high);
     err->Draw("E2");
-    for_each(ps->begin()+1, ps->end(), [&base](const ProcessInfo* p) {
+
+    /// @todo: other tool might also need this!
+    {
+        TLegend* legend = new TLegend(0.60, 0.88, 0.90, 0.98);
+        legend->SetTextFont(42);
+        legend->SetFillStyle(0);
+        legend->SetBorderSize(0);
+        legend->SetTextSize(0.035);
+        legend->SetTextAlign(12);
+        legend->AddEntry(err, "Stat. Unc.", "f");
+        legend->Draw("SAME");
+    }
+
+    for_each(ps->begin()+1, ps->end(), [&base_scale](const ProcessInfo* p) {
         TH1* rat = (TH1*)p->histogram->Clone();
-        rat->Divide(base);
+        rat->Divide(base_scale);
+        // rat->Fit("pol1", "", "", 0, 250);
         rat->Draw("E0 SAME"); });
+    
+    for (auto& pp : ps->front()->systematic_histograms)
+    {
+        TH1* rat_pp = (TH1*)pp.second->Clone();
+        rat_pp->Divide(base_scale);
+        rat_pp->Draw("HIST SAME");
+    }
 
     ostringstream oss_out;
     oss_out << output_path << "/" 

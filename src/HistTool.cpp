@@ -12,8 +12,14 @@
 
 using namespace std;
 
+# define FOUR_COLUMN_TABLE(A, B, C, D) \
+       std::left << setw(36) << A \
+    << std::left << setw(15) << B \
+    << std::left << setw(30) << C \
+    << std::left << setw(15) << D << endl
+
 # define FIVE_COLUMN_TABLE(A, B, C, D, E) \
-       std::left << setw(30) << A \
+       std::left << setw(40) << A \
     << std::left << setw(15) << B \
     << std::left << setw(15) << C \
     << std::left << setw(15) << D \
@@ -22,7 +28,7 @@ using namespace std;
 bool HistTool::check(const Config* c) const 
 {
     vector<ProcessInfo*>* ps = c->processes->content();
-    clog << "removing nullptrs\n";
+    clog << "INFO: removing nullptrs\n";
     ps->erase(remove_if(ps->begin(), ps->end(), [](const ProcessInfo* p) {
         return !p->histogram; }), ps->end());
 
@@ -39,7 +45,7 @@ void HistTool::manipulate(Config* c)
 {
     c->setManipulated(true);
     vector<ProcessInfo*>* ps_in_c = c->processes->content();
-    clog << "merging\n";
+    clog << "INFO: merging\n";
     map<eProcess, vector<ProcessInfo*>> procs;
     for_each(ps_in_c->begin(), ps_in_c->end(), [&procs](ProcessInfo* p) {
         procs[p->process].push_back(p); });
@@ -119,6 +125,12 @@ void HistTool::makeYield(const Config* c) const
         double eOverI = *(long*)(&integral) ? error / integral : 0.;
         fout << FIVE_COLUMN_TABLE(p->name, nentries, integral * p->norm_factor, error * p->norm_factor, eOverI);
 
+        for (auto& pp : p->systematic_histograms) {
+            auto systEntries = pp.second->GetEntries();
+            auto systInt = pp.second->Integral();
+            fout << " |- " << FOUR_COLUMN_TABLE(pp.first, systEntries, systInt, systInt / integral - 1.f);
+        }
+
         if (p->type == eProcessType::BKG)
         {
             hasBkg = true;
@@ -132,5 +144,5 @@ void HistTool::makeYield(const Config* c) const
         fout << FIVE_COLUMN_TABLE("Total Bkg", entriesBkg, sumBkg, errBkg, errBkg / sumBkg); 
     }
 
-    clog << "Yields saved in " << oss.str() << '\n';
+    clog << "INFO: Yields saved in " << oss.str() << '\n';
 }

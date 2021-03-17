@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.2)
 project(bbtautau-hists LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -18,35 +20,43 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 SET(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
 SET(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
 
-find_package(ROOT REQUIRED COMPONENTS Core Hist Tree RIO Net)
-include_directories(SYSTEM ${ROOT_INCLUDE_DIR})
+find_package(ROOT REQUIRED COMPONENTS Core Hist Tree RIO Net 
+    Matrix Physics MathCore HistFactory RooFit RooFitCore RooFitMore RooStats)
+
+find_package(Threads REQUIRED)
+
+include_directories(SYSTEM ${ROOT_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/examples)
 
 
 add_library(UtilsLib SHARED
-    Utils.cpp Utils.h)
+    src/Utils.cpp 
+    src/Utils_WS.cpp)
 
 add_library(ConfigLib SHARED
-    Config.cpp Config.h
-    Processes.cpp Processes.h
-    Regions.cpp Regions.h
-    Variables.cpp Variables.h
-    Systematics.cpp Systematics.h)
+    src/Config.cpp
+    src/Processes.cpp
+    src/Regions.cpp
+    src/Variables.cpp
+    src/Systematics.cpp)
 
 add_library(HistToolLib SHARED 
-    CommonInclude.h
-    HistTool.cpp HistTool.h
-    DrawStackTool.cpp DrawStackTool.h
-    CompTool.cpp CompTool.h)
+    src/HistTool.cpp
+    src/DrawStackTool.cpp
+    src/CompTool.cpp
+    src/SystCompTool.cpp)
+
+add_library(WorkspaceToolLib SHARED
+    src/WorkspaceTool.cpp
+    src/Pulls.cpp
+    src/RankingTool.cpp)
 
 target_link_libraries(UtilsLib PUBLIC ${ROOT_LIBRARIES})
 target_link_libraries(ConfigLib PUBLIC stdc++fs ${ROOT_LIBRARIES})
 target_link_libraries(HistToolLib PUBLIC stdc++fs ${ROOT_LIBRARIES})
+target_link_libraries(WorkspaceToolLib PUBLIC stdc++fs Threads::Threads ${ROOT_LIBRARIES})
 
-add_executable(bbtautau-hists main.cpp 
-    Example.h 
-    Example_yield.h 
-    Example_klambda.h 
-    Example_ZtautauMG.h
-    Example_NonRes.h)
+add_executable(bbtautau-hists exec/main.cpp 
+    examples/ExamplesInclude.h)
 
-target_link_libraries(bbtautau-hists ConfigLib HistToolLib UtilsLib)
+target_link_libraries(bbtautau-hists 
+    ConfigLib HistToolLib UtilsLib WorkspaceToolLib)

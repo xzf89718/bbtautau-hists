@@ -1,6 +1,8 @@
 # bbtautau-hists
 
-a plotting tool for bbtautau boys
+[![Build Status](https://travis-ci.com/peppapiggyme/bbtautau-hists.svg?branch=master)](https://travis-ci.com/peppapiggyme/bbtautau-hists)
+
+a plotting tool for bbtautau-ers
 
 ## dependency
 c++17, ROOT, CMake

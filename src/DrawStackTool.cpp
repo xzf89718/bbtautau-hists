@@ -48,8 +48,22 @@ bool DrawStackTool::check(const Config* c) const
 void DrawStackTool::paint(const Config* c) const
 {
     vector<ProcessInfo*>* ps = c->processes->content();
-    for_each(ps->begin(), ps->end(), [&c](const ProcessInfo* p) {
-        p->histogram->Rebin(c->current_variable->n_rebin);
+    for_each(ps->begin(), ps->end(), [&c](ProcessInfo* p) {
+        if (c->current_variable->binning) {
+            TH1* rebinned = p->histogram->Rebin(c->current_variable->n_bins, p->histogram->GetName(), c->current_variable->binning);
+            p->histogram = (TH1*)rebinned->Clone();
+            for (auto& pp : p->systematic_histograms)
+            {
+                TH1* rebinned_pp = pp.second->Rebin(c->current_variable->n_bins, pp.second->GetName(), c->current_variable->binning);
+                pp.second = (TH1*)rebinned_pp->Clone();
+            }
+        } else {
+            p->histogram->Rebin(c->current_variable->n_rebin);
+            for (auto& pp : p->systematic_histograms)
+            {
+                pp.second->Rebin(c->current_variable->n_rebin);
+            }
+        }
         switch (p->type)
         {
         case eProcessType::DATA:
@@ -205,6 +219,7 @@ void DrawStackTool::run(const Config* c) const
         bkg_scale->SetBinError(i, 0.0);
     }
     err->Divide(bkg_scale);
+    err->SetLineWidth(0);
     err->SetFillStyle(3254);
     err->SetFillColor(kGray + 3);
     err->SetMarkerSize(0);
@@ -221,6 +236,19 @@ void DrawStackTool::run(const Config* c) const
     err->SetMinimum(m_info->ratio_low);
     err->SetMaximum(m_info->ratio_high);
     err->Draw("E2");
+
+    /// @todo: other tool might also need this!
+    {
+        TLegend* legend = new TLegend(0.60, 0.88, 0.90, 0.98);
+        legend->SetTextFont(42);
+        legend->SetFillStyle(0);
+        legend->SetBorderSize(0);
+        legend->SetTextSize(0.035);
+        legend->SetTextAlign(12);
+        legend->AddEntry(err, "Stat. Unc.", "f");
+        legend->Draw("SAME");
+    }
+
     TH1* rat = (TH1*)data->Clone();
     rat->Divide(bkg_scale);
     rat->SetTitle("lower_pad");
