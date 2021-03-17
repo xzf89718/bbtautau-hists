@@ -3,6 +3,12 @@
 
 #include "CompTool.h"
 
+/**
+ * @note: the differece it that this tool focus on one process only
+ *        with many systemtics, while the CompTool can do more things,
+ *        e.g. compare systematics and other samples at the same time.
+ *        Maybe they can be merged into one.. I don't know.
+ */
 class SystCompTool : public CompTool
 {
 public:

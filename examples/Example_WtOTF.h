@@ -58,6 +58,7 @@ void test_hadhad_WtOTF(const std::string& filename)
     info->ratio_low = 0.22;
     info->shape_only = true;
 
+
     info->logy = false;
 
     for (VariableInfo* v : *(vs_presel->content()))
@@ -66,11 +67,11 @@ void test_hadhad_WtOTF(const std::string& filename)
         ps->add("stopWt",       "s-top Wt Nominal",  eProcessType::BKG,  eProcess::STOPWT,      "s-top Wt Nominal",  kBlue+1);
 
         Systematics* ss = new Systematics();
-        ss->add("SingleTop_MUF", "SingleTop_MUF", eSystematicType::TwoSide);
+        ss->add("SingleTop_ISR", "SingleTop_ISR", eSystematicType::TwoSide);
 
         Config* c = new Config(b, ps, rs, vs_presel, ss);
         c->load(filename, "Preselection");
-        info->parameter = "Wt_MUF_Presel";
+        info->parameter = "Wt_ISR_Presel";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new SystCompTool(info);
         ct->output_path = "/tmp/zhangbw/Stop";
@@ -99,11 +100,11 @@ void test_hadhad_WtOTF(const std::string& filename)
         ps->add("stopWt",       "s-top Wt Nominal",  eProcessType::BKG,  eProcess::STOPWT,      "s-top Wt Nominal",  kBlue+1);
 
         Systematics* ss = new Systematics();
-        ss->add("SingleTop_MUF", "SingleTop_MUF", eSystematicType::TwoSide);
+        ss->add("SingleTop_ISR", "SingleTop_ISR", eSystematicType::TwoSide);
 
         Config* c = new Config(b, ps, rs, vs_pnn, ss);
         c->load(filename, "PNNScorePreselection");
-        info->parameter = "Wt_MUF_PNN";
+        info->parameter = "Wt_ISR_PNN";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new SystCompTool(info);
         ct->output_path = "/tmp/zhangbw/Stop";
@@ -130,205 +131,11 @@ void test_hadhad_WtOTF(const std::string& filename)
         ps->add("stopWt",       "s-top Wt Nominal",  eProcessType::BKG,  eProcess::STOPWT,      "s-top Wt Nominal",  kBlue+1);
 
         Systematics* ss = new Systematics();
-        ss->add("SingleTop_MUF", "SingleTop_MUF", eSystematicType::TwoSide);
+        ss->add("SingleTop_ISR", "SingleTop_ISR", eSystematicType::TwoSide);
 
         Config* c = new Config(b, ps, rs, vs_bdt, ss);
         c->load(filename, "BDTScorePreselection");
-        info->parameter = "Wt_MUF_BDT";
-        c->updateHistogramPtr(rs->content()->front(), v);
-        CompTool* ct = new SystCompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
-        if (ct->check(c))
-        {
-            ct->manipulate(c);
-            ct->makeYield(c, info->parameter);
-            ct->paint(c);
-            ct->run(c);
-        }
-        else 
-        {
-            clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
-        }
-
-        delete ps;
-        delete ct;
-        delete c;
-    }
-
-    info->logy = false;
-
-    for (VariableInfo* v : *(vs_presel->content()))
-    {
-        Processes* ps = new Processes();
-        ps->add("stopWt",       "s-top Wt Nominal",  eProcessType::BKG,  eProcess::STOPWT,      "s-top Wt Nominal",  kBlue+1);
-
-        Systematics* ss = new Systematics();
-        ss->add("SingleTop_MUR", "SingleTop_MUR", eSystematicType::TwoSide);
-
-        Config* c = new Config(b, ps, rs, vs_presel, ss);
-        c->load(filename, "Preselection");
-        info->parameter = "Wt_MUR_Presel";
-        c->updateHistogramPtr(rs->content()->front(), v);
-        CompTool* ct = new SystCompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
-        if (ct->check(c))
-        {
-            ct->manipulate(c);
-            ct->makeYield(c, info->parameter);
-            ct->paint(c);
-            ct->run(c);
-        }
-        else 
-        {
-            clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
-        }
-
-        delete ps;
-        delete ct;
-        delete c;
-    }
-
-    info->logy = true;
-
-    for (VariableInfo* v : *(vs_pnn->content()))
-    {
-        Processes* ps = new Processes();
-        ps->add("stopWt",       "s-top Wt Nominal",  eProcessType::BKG,  eProcess::STOPWT,      "s-top Wt Nominal",  kBlue+1);
-
-        Systematics* ss = new Systematics();
-        ss->add("SingleTop_MUR", "SingleTop_MUR", eSystematicType::TwoSide);
-
-        Config* c = new Config(b, ps, rs, vs_pnn, ss);
-        c->load(filename, "PNNScorePreselection");
-        info->parameter = "Wt_MUR_PNN";
-        c->updateHistogramPtr(rs->content()->front(), v);
-        CompTool* ct = new SystCompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
-        if (ct->check(c))
-        {
-            ct->manipulate(c);
-            ct->makeYield(c, info->parameter);
-            ct->paint(c);
-            ct->run(c);
-        }
-        else 
-        {
-            clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
-        }
-
-        delete ps;
-        delete ct;
-        delete c;
-    }
-
-    for (VariableInfo* v : *(vs_bdt->content()))
-    {
-        Processes* ps = new Processes();
-        ps->add("stopWt",       "s-top Wt Nominal",  eProcessType::BKG,  eProcess::STOPWT,      "s-top Wt Nominal",  kBlue+1);
-
-        Systematics* ss = new Systematics();
-        ss->add("SingleTop_MUR", "SingleTop_MUR", eSystematicType::TwoSide);
-
-        Config* c = new Config(b, ps, rs, vs_bdt, ss);
-        c->load(filename, "BDTScorePreselection");
-        info->parameter = "Wt_MUR_BDT";
-        c->updateHistogramPtr(rs->content()->front(), v);
-        CompTool* ct = new SystCompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
-        if (ct->check(c))
-        {
-            ct->manipulate(c);
-            ct->makeYield(c, info->parameter);
-            ct->paint(c);
-            ct->run(c);
-        }
-        else 
-        {
-            clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
-        }
-
-        delete ps;
-        delete ct;
-        delete c;
-    }
-
-    info->logy = false;
-
-    for (VariableInfo* v : *(vs_presel->content()))
-    {
-        Processes* ps = new Processes();
-        ps->add("stopWt",       "s-top Wt Nominal",  eProcessType::BKG,  eProcess::STOPWT,      "s-top Wt Nominal",  kBlue+1);
-
-        Systematics* ss = new Systematics();
-        ss->add("SingleTop_Var3c", "SingleTop_Var3c", eSystematicType::TwoSide);
-
-        Config* c = new Config(b, ps, rs, vs_presel, ss);
-        c->load(filename, "Preselection");
-        info->parameter = "Wt_Var3c_Presel";
-        c->updateHistogramPtr(rs->content()->front(), v);
-        CompTool* ct = new SystCompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
-        if (ct->check(c))
-        {
-            ct->manipulate(c);
-            ct->makeYield(c, info->parameter);
-            ct->paint(c);
-            ct->run(c);
-        }
-        else 
-        {
-            clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
-        }
-
-        delete ps;
-        delete ct;
-        delete c;
-    }
-
-    info->logy = true;
-
-    for (VariableInfo* v : *(vs_pnn->content()))
-    {
-        Processes* ps = new Processes();
-        ps->add("stopWt",       "s-top Wt Nominal",  eProcessType::BKG,  eProcess::STOPWT,      "s-top Wt Nominal",  kBlue+1);
-
-        Systematics* ss = new Systematics();
-        ss->add("SingleTop_Var3c", "SingleTop_Var3c", eSystematicType::TwoSide);
-
-        Config* c = new Config(b, ps, rs, vs_pnn, ss);
-        c->load(filename, "PNNScorePreselection");
-        info->parameter = "Wt_Var3c_PNN";
-        c->updateHistogramPtr(rs->content()->front(), v);
-        CompTool* ct = new SystCompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
-        if (ct->check(c))
-        {
-            ct->manipulate(c);
-            ct->makeYield(c, info->parameter);
-            ct->paint(c);
-            ct->run(c);
-        }
-        else 
-        {
-            clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
-        }
-
-        delete ps;
-        delete ct;
-        delete c;
-    }
-
-    for (VariableInfo* v : *(vs_bdt->content()))
-    {
-        Processes* ps = new Processes();
-        ps->add("stopWt",       "s-top Wt Nominal",  eProcessType::BKG,  eProcess::STOPWT,      "s-top Wt Nominal",  kBlue+1);
-
-        Systematics* ss = new Systematics();
-        ss->add("SingleTop_Var3c", "SingleTop_Var3c", eSystematicType::TwoSide);
-
-        Config* c = new Config(b, ps, rs, vs_bdt, ss);
-        c->load(filename, "BDTScorePreselection");
-        info->parameter = "Wt_Var3c_BDT";
+        info->parameter = "Wt_ISR_BDT";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new SystCompTool(info);
         ct->output_path = "/tmp/zhangbw/Stop";
