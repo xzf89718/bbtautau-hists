@@ -6,14 +6,15 @@
 using namespace std;
 
 #define OUTPUT_TABLE_4(A, B, C, D) \
-    std::left << setw(60) << A \
+    std::left << setw(100) << A \
     << std::left << setw(15) << B \
     << std::left << setw(15) << C \
     << std::left << setw(15) << D << endl;
 
 int test_ranking()
 {
-    ofstream output("/tmp/zhangbw/Ranking.txt");
+    auto timeStart = steady_clock::now();
+    ofstream output("/tmp/zhangbw/Ranking_SM_oneAsim.txt");
 
     Engine* cEgn = new Engine();
     cEgn->RunRanking();
@@ -24,28 +25,43 @@ int test_ranking()
     output << OUTPUT_TABLE_4("FIXED NP", "POI_VALUE", "POI_ERROR_UP", "POI_ERROR_DOWN");
 
     Tools::println("% ->      VALUE %      ERROR_UP %      ERROR_DOWN %",
-            "No fixed NP",
-            val[FitResult::ePOI::VALUE],
-            val[FitResult::ePOI::ERRORUP],
-            val[FitResult::ePOI::ERRORDOWN]);
+        "No fixed NP",
+        val[FitResult::ePOI::VALUE],
+        val[FitResult::ePOI::ERRORUP],
+        val[FitResult::ePOI::ERRORDOWN]);
     output << OUTPUT_TABLE_4("None",
-            val[FitResult::ePOI::VALUE],
-            val[FitResult::ePOI::ERRORUP],
-            val[FitResult::ePOI::ERRORDOWN])
+        val[FitResult::ePOI::VALUE],
+        val[FitResult::ePOI::ERRORUP],
+        val[FitResult::ePOI::ERRORDOWN])
 
     for (auto& p : res) {
         Tools::println("% Fixed ->      VALUE %      ERROR_UP %      ERROR_DOWN %",
-                p.first,
-                p.second[FitResult::ePOI::VALUE],
-                p.second[FitResult::ePOI::ERRORUP],
-                p.second[FitResult::ePOI::ERRORDOWN]);
-        output << OUTPUT_TABLE_4(p.first,
-                p.second[FitResult::ePOI::VALUE],
-                p.second[FitResult::ePOI::ERRORUP],
-                p.second[FitResult::ePOI::ERRORDOWN]);
+            p.first,
+            p.second[FitResult::ePOI::VALUE],
+            p.second[FitResult::ePOI::ERRORUP],
+            p.second[FitResult::ePOI::ERRORDOWN]);
+        output << OUTPUT_TABLE_4(
+            p.first,
+            p.second[FitResult::ePOI::VALUE],
+            p.second[FitResult::ePOI::ERRORUP],
+            p.second[FitResult::ePOI::ERRORDOWN]);
     }
 
     delete cEgn;
-    
+
+    auto timeEnd = steady_clock::now();
+    Tools::println("Spent [%ms]", duration_cast<milliseconds>(timeEnd-timeStart).count());
+
+    return EXIT_SUCCESS;
+}
+
+int test_ranking_plot()
+{
+    Plotter* plt = new Plotter();
+    plt->LoadFromTxt("/tmp/zhangbw/Ranking_SM_oneAsim.txt");
+    plt->Draw("/tmp/zhangbw/Ranking_SM_oneAsim.png");
+
+    delete plt;
+
     return EXIT_SUCCESS;
 }

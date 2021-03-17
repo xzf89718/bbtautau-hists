@@ -14,6 +14,8 @@
 #include <mutex>
 #include <algorithm>
 #include <atomic>
+#include <fstream>
+#include <sstream>
 
 #include "CommonInclude_WS.h"
 #include "Utils.h"
@@ -31,6 +33,8 @@ using std::for_each;
 using std::thread;
 using std::mutex;
 using std::lock_guard;
+using std::ifstream;
+using std::istringstream;
 
 using std::chrono::steady_clock;
 using std::chrono::milliseconds;
@@ -161,11 +165,24 @@ private:
         m_cPOIs = m_cSBModel->GetParametersOfInterest();
         m_sPOIName = static_cast<RooRealVar*>(m_cPOIs->first())->GetName();
         m_cData = m_cWs->data("obsData");
+
+        bool bAsimov=true;
+        double fPOI=1.0;
+
+        if (bAsimov) {
+            Tools::println("Using Asimov data! with mu = %", fPOI);
+            static_cast<RooRealVar*>(m_cPOIs->first())->setVal(fPOI);
+            RooArgSet* allParams = m_cSBModel->GetPdf()->getParameters(*m_cData);
+            RooArgSet globObs("globObs");
+            RooAbsData* asimovData = AsymptoticCalculator::MakeAsimovData(*m_cSBModel, *allParams, globObs);
+            m_cData = asimovData;
+        }
+
         GetSetOfNPs(m_cNPs);
     }
 
     // em. layers of snapshot, not sure
-    void Fit(bool bAsimov=true, double fPOI=0.0, int8_t nLogLevel=-1) {
+    void Fit(/*bool bAsimov=true, double fPOI=0.0, */int8_t nLogLevel=-1) {
         RooRealVar* cPOI = static_cast<RooRealVar*>(m_cPOIs->first());
         auto sMinimizerType = ROOT::Math::MinimizerOptions::DefaultMinimizerType();
         Tools::println("POI [%] initial value is [%]", cPOI->GetName(), cPOI->getVal());
@@ -176,14 +193,14 @@ private:
         RooStats::RemoveConstantParameters(&cConstrainParas);
         auto timeStart = steady_clock::now();
         // Core function
-        if (bAsimov) {
-            Tools::println("Using Asimov data! with mu = %", fPOI);
-            static_cast<RooRealVar*>(m_cPOIs->first())->setVal(fPOI);
-            RooArgSet* allParams = m_cSBModel->GetPdf()->getParameters(*m_cData);
-            RooArgSet globObs("globObs");
-            RooAbsData* asimovData = AsymptoticCalculator::MakeAsimovData(*m_cSBModel, *allParams, globObs);
-            m_cData = asimovData;
-        }
+        // if (bAsimov) {
+        //     Tools::println("Using Asimov data! with mu = %", fPOI);
+        //     static_cast<RooRealVar*>(m_cPOIs->first())->setVal(fPOI);
+        //     RooArgSet* allParams = m_cSBModel->GetPdf()->getParameters(*m_cData);
+        //     RooArgSet globObs("globObs");
+        //     RooAbsData* asimovData = AsymptoticCalculator::MakeAsimovData(*m_cSBModel, *allParams, globObs);
+        //     m_cData = asimovData;
+        // }
         // >>> hack this <<<
         RooFitResult* cRes = m_cSBModel->GetPdf()->fitTo(
                     *m_cData, InitialHesse(false), Minos(false), Minimizer("Minuit", "Migrad"),
@@ -305,9 +322,9 @@ public:
 
         auto run = [this](const std::string& sNP, const float nMode) 
         {
+            lock_guard<mutex> lg(this->m);
             Tools::println("- % with %", sNP, nMode);
             string sPostFix = nMode > 0 ? "_Hi" : "_Lo";
-            lock_guard<mutex> lg(this->m);
             m_fits[sNP + sPostFix] = new FitResult(m_sFileName, m_sWorkspaceName);
             m_fits[sNP + sPostFix]->FitWithFixedPara(sNP, m_fits["base"]->GetFittedNPs(), nMode, -1);
             m_fits[sNP + sPostFix]->Check();
@@ -343,12 +360,176 @@ public:
 protected:
     map<string, FitResult*> m_fits;
     std::string m_sFileName = "/scratchfs/atlas/zhangbw/ResolvedStatAna/WSMaker_Group/output/Bowen_HadHadWSI_v2.ZgenTtbarNorm_HH_13TeV_ZgenTtbarNorm_Systs_hadhad_2HDM_MVA_300/workspaces/combined/300.root";
+    // std::string m_sFileName = "/scratchfs/atlas/zhangbw/ResolvedStatAna/WSMaker_Group/output/Bowen_HadHadWSI_v2.ZgenTtbarNorm_HH_13TeV_ZgenTtbarNorm_Systs_hadhad_SM_MVA_0/workspaces/combined/0.root";
     std::string m_sWorkspaceName = "combined";
     map<FitResult::ePOI, float> m_nPOI;
     map<string, map<FitResult::ePOI, float>> m_mapAltPOIs;
 
 private:
     mutex m;
+};
+
+struct RankingData
+{
+    RankingData(const string& np, float hi, float lo)
+        : fixedNP(np), deltaMuByHi(hi), deltaMuByLo(lo) {}
+    string fixedNP;
+    float deltaMuByHi;
+    float deltaMuByLo;
+};
+
+class Plotter 
+{
+public:
+    Plotter() = default;
+    
+    void LoadFromTxt(const std::string& sFileName)
+    {
+        ifstream input(sFileName, std::ios::in);
+        if (input.is_open())
+        {
+            string sLine;
+            unsigned nRow = 0;
+            while (getline(input, sLine))
+            {
+                istringstream iss(sLine);
+                string tmp;
+                if (nRow == 0) 
+                {
+                    Tools::println("Starting!");
+                }
+                else if (nRow == 1)
+                {
+                    iss >> tmp 
+                        >> m_nPOI[FitResult::ePOI::VALUE] 
+                        >> m_nPOI[FitResult::ePOI::ERRORUP] 
+                        >> m_nPOI[FitResult::ePOI::ERRORDOWN]; // symmetric of up due to Hesse
+                }
+                else
+                {
+                    iss >> tmp 
+                        >> m_mapAltPOIs[tmp][FitResult::ePOI::VALUE] 
+                        >> m_mapAltPOIs[tmp][FitResult::ePOI::ERRORUP] 
+                        >> m_mapAltPOIs[tmp][FitResult::ePOI::ERRORDOWN]; // symmetric of up due to Hesse
+                }
+                nRow++;
+            }
+        }
+
+        for (auto& p : m_mapAltPOIs)
+        {
+            string sNameOfNP = p.first.substr(0, p.first.length()-3);
+            string sDirection = p.first.substr(p.first.length()-2);
+            if (m_mapLookUp.find(sNameOfNP) == m_mapLookUp.end()) 
+            {
+                m_mapLookUp[sNameOfNP] = m_vData.size();
+                if (sDirection == "Hi")
+                {
+                    m_vData.emplace_back(sNameOfNP, p.second[FitResult::ePOI::VALUE]-m_nPOI[FitResult::ePOI::VALUE], -999);
+                }
+                else 
+                {
+                    m_vData.emplace_back(sNameOfNP, -999, p.second[FitResult::ePOI::VALUE]-m_nPOI[FitResult::ePOI::VALUE]);
+                }
+            }
+            else 
+            {
+                if (sDirection == "Hi")
+                {
+                    m_vData[m_mapLookUp[sNameOfNP]].deltaMuByHi = p.second[FitResult::ePOI::VALUE]-m_nPOI[FitResult::ePOI::VALUE];
+                }
+                else
+                {
+                    m_vData[m_mapLookUp[sNameOfNP]].deltaMuByLo = p.second[FitResult::ePOI::VALUE]-m_nPOI[FitResult::ePOI::VALUE];
+                }
+            }
+        }
+
+        std::sort(m_vData.begin(), m_vData.end(), [](RankingData& a, RankingData& b) {
+            return std::fabs(a.deltaMuByHi - a.deltaMuByLo) > std::fabs(b.deltaMuByHi - b.deltaMuByLo);
+        });
+
+        for (auto& info : m_vData)
+        {
+            Tools::println("% % %", info.fixedNP, info.deltaMuByHi, info.deltaMuByLo);
+        }
+    }
+
+    void Draw(const string output, uint8_t nNPs=15)
+    {
+        gROOT->SetStyle("ATLAS");
+        gStyle->SetErrorX(0.5);
+
+        TCanvas* c1 = new TCanvas("c", "", 900, 1500);
+        c1->SetLeftMargin(0.20);
+        c1->SetBottomMargin(0.60);
+        TH1* h_one = new TH1D("one", "", nNPs, 0, nNPs);
+        TH1* h_hi = new TH1D("hi", "", nNPs, 0, nNPs);
+        TH1* h_lo = new TH1D("lo", "", nNPs, 0, nNPs);
+        for (std::size_t i = 1; i <= nNPs; i++) {
+            h_hi->GetXaxis()->SetBinLabel(i, m_vData[i-1].fixedNP.c_str());
+            h_hi->SetBinContent(i, m_vData[i-1].deltaMuByHi);
+            h_lo->SetBinContent(i, m_vData[i-1].deltaMuByLo);
+            h_one->SetBinContent(i, 0);
+        }
+
+        h_hi->SetBarWidth(0.90);
+        h_lo->SetBarWidth(0.90);
+
+        h_hi->SetLineColor(kRed);
+        h_hi->SetLineWidth(1);
+        h_hi->SetFillColor(kRed);
+        h_hi->SetFillStyle(3245);
+        h_hi->GetXaxis()->LabelsOption("v");
+        // h_hi->GetYaxis()->SetRangeUser(-0.00025, 0.00025);
+        h_hi->GetYaxis()->SetRangeUser(-0.5, 0.5);
+        h_hi->GetYaxis()->SetTitleOffset(2);
+        h_hi->GetYaxis()->SetTitle("#Delta#mu");
+        h_lo->SetLineColor(kBlue);
+        h_lo->SetLineWidth(1);
+        h_lo->SetFillColor(kBlue);
+        h_lo->SetFillStyle(3254);
+
+        h_one->SetLineColor(kRed+1);
+        h_one->SetLineWidth(3);
+
+        h_hi->Draw("hist b");
+        h_lo->Draw("hist b same");
+        h_one->Draw("hist same");
+
+        TLegend* legend = new TLegend(0.50, 0.85, 0.80, 0.93);
+        legend->SetTextFont(42);
+        legend->SetFillStyle(0);
+        legend->SetBorderSize(0);
+        legend->SetTextSize(0.035);
+        legend->SetTextAlign(12);
+        legend->AddEntry(h_hi, "+1#sigma post-fit impact on #mu");
+        legend->AddEntry(h_lo, "-1#sigma post-fit impact on #mu");
+        legend->Draw("same");
+
+        TLatex *text = new TLatex();
+        text->SetNDC();
+        text->SetTextFont(72);
+        text->SetTextSize(0.050);
+        text->DrawLatex(0.21, 0.96, "ATLAS");
+        text->SetTextFont(42);
+        text->DrawLatex(0.21 + 0.18, 0.96, "Internal");
+        text->SetTextSize(0.045);
+        text->SetTextSize(0.040);
+        text->DrawLatex(0.60, 0.96, "Fit to Asimov (#mu=1)");
+
+        c1->SaveAs(output.c_str());
+
+        delete h_hi;
+        delete h_lo;
+        delete c1;
+    }
+
+private:
+    map<FitResult::ePOI, float> m_nPOI;
+    map<string, map<FitResult::ePOI, float>> m_mapAltPOIs;
+    vector<RankingData> m_vData;
+    map<string, std::size_t> m_mapLookUp;
 };
 
 #endif // RANKINGTOOL_H
