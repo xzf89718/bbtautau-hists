@@ -157,7 +157,7 @@ private:
     }
 
 private:
-    void Load() {
+    void Load(bool bAsimov=true, double fPOI=1.0) {
         m_cFile = TFile::Open(m_sRootFile.c_str(), "READ");
         m_cWs = static_cast<RooWorkspace*>(m_cFile->Get(m_sWorkspace.c_str()));
         m_cSBModel = static_cast<ModelConfig*>(m_cWs->obj("ModelConfig"));
@@ -165,9 +165,6 @@ private:
         m_cPOIs = m_cSBModel->GetParametersOfInterest();
         m_sPOIName = static_cast<RooRealVar*>(m_cPOIs->first())->GetName();
         m_cData = m_cWs->data("obsData");
-
-        bool bAsimov=true;
-        double fPOI=1.0;
 
         if (bAsimov) {
             Tools::println("Using Asimov data! with mu = %", fPOI);
@@ -182,7 +179,7 @@ private:
     }
 
     // em. layers of snapshot, not sure
-    void Fit(/*bool bAsimov=true, double fPOI=0.0, */int8_t nLogLevel=-1) {
+    void Fit(int8_t nLogLevel=-1) {
         RooRealVar* cPOI = static_cast<RooRealVar*>(m_cPOIs->first());
         auto sMinimizerType = ROOT::Math::MinimizerOptions::DefaultMinimizerType();
         Tools::println("POI [%] initial value is [%]", cPOI->GetName(), cPOI->getVal());
@@ -192,15 +189,6 @@ private:
         cConstrainParas.add(*m_cNPs);
         RooStats::RemoveConstantParameters(&cConstrainParas);
         auto timeStart = steady_clock::now();
-        // Core function
-        // if (bAsimov) {
-        //     Tools::println("Using Asimov data! with mu = %", fPOI);
-        //     static_cast<RooRealVar*>(m_cPOIs->first())->setVal(fPOI);
-        //     RooArgSet* allParams = m_cSBModel->GetPdf()->getParameters(*m_cData);
-        //     RooArgSet globObs("globObs");
-        //     RooAbsData* asimovData = AsymptoticCalculator::MakeAsimovData(*m_cSBModel, *allParams, globObs);
-        //     m_cData = asimovData;
-        // }
         // >>> hack this <<<
         RooFitResult* cRes = m_cSBModel->GetPdf()->fitTo(
                     *m_cData, InitialHesse(false), Minos(false), Minimizer("Minuit", "Migrad"),
@@ -229,13 +217,13 @@ public:
     }
 
     void FitWithFixedPara(const string& sPara,
-                          const map<string, tuple<float, float, float>>& mapNPsFromFitAll,
-                          float nMode, int8_t nLogLevel=-1)
+                          const map<string, tuple<double, double, double>>& mapNPsFromFitAll,
+                          double nMode, int8_t nLogLevel=-1)
     {
         const auto& tupleVal = mapNPsFromFitAll.at(sPara);
         Tools::println("Initial value: % | error_up % | error_down %",
                 std::get<0>(tupleVal), std::get<1>(tupleVal), std::get<2>(tupleVal));
-        float fFixedVal = std::get<0>(tupleVal);
+        double fFixedVal = std::get<0>(tupleVal);
         fFixedVal += nMode > 0 ? TMath::Abs(nMode) * std::get<1>(tupleVal) : TMath::Abs(nMode) * std::get<2>(tupleVal);
         RooRealVar* cNP = (RooRealVar*)m_cNPs->find(sPara.c_str());
         cNP->setVal(fFixedVal);
@@ -255,21 +243,21 @@ protected:
     const RooArgSet* m_cPOIs;
     string m_sPOIName;
     RooAbsData* m_cData;
-    map<string, tuple<float, float, float>> m_mapNPsInit; // Name, Val, Hi, Lo
-    map<string, tuple<float, float, float>> m_mapNPsFitted; // Name, Val, Hi, Lo
-    map<string, tuple<float, float, float>> m_mapPOIsFitted; // Name, Val, Hi, Lo
+    map<string, tuple<double, double, double>> m_mapNPsInit; // Name, Val, Hi, Lo
+    map<string, tuple<double, double, double>> m_mapNPsFitted; // Name, Val, Hi, Lo
+    map<string, tuple<double, double, double>> m_mapPOIsFitted; // Name, Val, Hi, Lo
     set<string> m_setStrNPs;
 
 public:
     bool bFitted = false;
 
 public:
-    map<string, tuple<float, float, float>> GetFittedNPs()
+    map<string, tuple<double, double, double>> GetFittedNPs()
     {
         return m_mapNPsFitted;
     }
 
-    map<string, tuple<float, float, float>> GetFittedPOIs()
+    map<string, tuple<double, double, double>> GetFittedPOIs()
     {
         return m_mapPOIsFitted;
     }
@@ -279,15 +267,15 @@ public:
         return m_setStrNPs;
     }
 
-    map<FitResult::ePOI, float> GetCache(const string& nm)
+    map<FitResult::ePOI, double> GetCache(const string& nm)
     {
-        tuple<float, float, float> tupleVals;
+        tuple<double, double, double> tupleVals;
         if (m_mapNPsFitted.find(nm) != m_mapNPsFitted.end())
             tupleVals = m_mapNPsFitted.at(nm);
         else if (m_mapPOIsFitted.find(nm) != m_mapPOIsFitted.end())
             tupleVals = m_mapPOIsFitted.at(nm);
 
-        map<FitResult::ePOI, float> res = {
+        map<FitResult::ePOI, double> res = {
             {FitResult::ePOI::VALUE,   std::get<0>(tupleVals)},
             {FitResult::ePOI::ERRORUP, std::get<1>(tupleVals)},
             {FitResult::ePOI::ERRORDOWN, std::get<2>(tupleVals)}
@@ -320,14 +308,13 @@ public:
     {
         vector<thread> vThr;
 
-        auto run = [this](const std::string& sNP, const float nMode) 
+        auto run = [this](const std::string& sNP, const double nMode) 
         {
             lock_guard<mutex> lg(this->m);
-            Tools::println("- % with %", sNP, nMode);
             string sPostFix = nMode > 0 ? "_Hi" : "_Lo";
             m_fits[sNP + sPostFix] = new FitResult(m_sFileName, m_sWorkspaceName);
             m_fits[sNP + sPostFix]->FitWithFixedPara(sNP, m_fits["base"]->GetFittedNPs(), nMode, -1);
-            m_fits[sNP + sPostFix]->Check();
+            // m_fits[sNP + sPostFix]->Check();
             m_mapAltPOIs[sNP + sPostFix] = m_fits[sNP + sPostFix]->GetCache(m_fits[sNP + sPostFix]->NameOfPOI());
         };
 
@@ -339,7 +326,7 @@ public:
         Tools::println(">> Fixed NP: ");
         for (const auto& sNP: m_fits["base"]->GetNPs())
         {
-            for (float nMode : {1.0f, -1.0f})
+            for (double nMode : {1.0f, -1.0f})
             {
                 vThr.emplace_back(run, sNP, nMode);
             }
@@ -347,23 +334,23 @@ public:
         for_each(vThr.begin(), vThr.end(), [](thread& t){ t.join(); });
     }
 
-    map<FitResult::ePOI, float> GetFittedPOI()
+    map<FitResult::ePOI, double> GetFittedPOI()
     {
         return m_nPOI;
     }
 
-    map<string, map<FitResult::ePOI, float>> GetFittedPOIWithFixedNPs()
+    map<string, map<FitResult::ePOI, double>> GetFittedPOIWithFixedNPs()
     {
         return m_mapAltPOIs;
     }
 
 protected:
     map<string, FitResult*> m_fits;
-    std::string m_sFileName = "/scratchfs/atlas/zhangbw/ResolvedStatAna/WSMaker_Group/output/Bowen_HadHadWSI_v2.ZgenTtbarNorm_HH_13TeV_ZgenTtbarNorm_Systs_hadhad_2HDM_MVA_300/workspaces/combined/300.root";
-    // std::string m_sFileName = "/scratchfs/atlas/zhangbw/ResolvedStatAna/WSMaker_Group/output/Bowen_HadHadWSI_v2.ZgenTtbarNorm_HH_13TeV_ZgenTtbarNorm_Systs_hadhad_SM_MVA_0/workspaces/combined/0.root";
+    // std::string m_sFileName = "/scratchfs/atlas/zhangbw/ResolvedStatAna/WSMaker_Group/output/Bowen_HadHadWSI_v2.ZgenTtbarNorm_HH_13TeV_ZgenTtbarNorm_Systs_hadhad_2HDM_MVA_300/workspaces/combined/300.root";
+    std::string m_sFileName = "/scratchfs/atlas/zhangbw/ResolvedStatAna/WSMaker_Group/output/Bowen_HadHadWSI_v2.ZgenTtbarNorm_HH_13TeV_ZgenTtbarNorm_Systs_hadhad_SM_MVA_0/workspaces/combined/0.root";
     std::string m_sWorkspaceName = "combined";
-    map<FitResult::ePOI, float> m_nPOI;
-    map<string, map<FitResult::ePOI, float>> m_mapAltPOIs;
+    map<FitResult::ePOI, double> m_nPOI;
+    map<string, map<FitResult::ePOI, double>> m_mapAltPOIs;
 
 private:
     mutex m;
@@ -371,11 +358,11 @@ private:
 
 struct RankingData
 {
-    RankingData(const string& np, float hi, float lo)
+    RankingData(const string& np, double hi, double lo)
         : fixedNP(np), deltaMuByHi(hi), deltaMuByLo(lo) {}
     string fixedNP;
-    float deltaMuByHi;
-    float deltaMuByLo;
+    double deltaMuByHi;
+    double deltaMuByLo;
 };
 
 class Plotter 
@@ -481,8 +468,8 @@ public:
         h_hi->SetFillColor(kRed);
         h_hi->SetFillStyle(3245);
         h_hi->GetXaxis()->LabelsOption("v");
-        // h_hi->GetYaxis()->SetRangeUser(-0.00025, 0.00025);
-        h_hi->GetYaxis()->SetRangeUser(-0.5, 0.5);
+        h_hi->GetYaxis()->SetRangeUser(-0.005, 0.005);
+        // h_hi->GetYaxis()->SetRangeUser(-0.5, 0.5);
         h_hi->GetYaxis()->SetTitleOffset(2);
         h_hi->GetYaxis()->SetTitle("#Delta#mu");
         h_lo->SetLineColor(kBlue);
@@ -516,7 +503,7 @@ public:
         text->DrawLatex(0.21 + 0.18, 0.96, "Internal");
         text->SetTextSize(0.045);
         text->SetTextSize(0.040);
-        text->DrawLatex(0.60, 0.96, "Fit to Asimov (#mu=1)");
+        text->DrawLatex(0.60, 0.96, "Fit to Asimov (#mu=0.1)");
 
         c1->SaveAs(output.c_str());
 
@@ -526,8 +513,8 @@ public:
     }
 
 private:
-    map<FitResult::ePOI, float> m_nPOI;
-    map<string, map<FitResult::ePOI, float>> m_mapAltPOIs;
+    map<FitResult::ePOI, double> m_nPOI;
+    map<string, map<FitResult::ePOI, double>> m_mapAltPOIs;
     vector<RankingData> m_vData;
     map<string, std::size_t> m_mapLookUp;
 };
