@@ -17,7 +17,7 @@ public:
 public:
     virtual bool check(const Config* c) const;
     virtual void manipulate(Config* c);
-    virtual void makeYield(const Config* c) const;
+    virtual void makeYield(const Config* c, const std::string& tag="TAG") const;
 
 public:
     virtual void paint(const Config* c) const = 0;

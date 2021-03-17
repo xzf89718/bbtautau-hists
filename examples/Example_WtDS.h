@@ -68,7 +68,7 @@ void test_hadhad_WtDS(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -99,7 +99,7 @@ void test_hadhad_WtDS(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -128,7 +128,7 @@ void test_hadhad_WtDS(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }

@@ -77,7 +77,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -110,7 +110,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -141,7 +141,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -174,7 +174,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -207,7 +207,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -238,7 +238,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -271,7 +271,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -304,7 +304,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -335,7 +335,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -368,7 +368,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -401,7 +401,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -432,7 +432,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -469,7 +469,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         {
             ct->manipulate(c);
             ct->uncHessianPDF4LHC(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -506,7 +506,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         {
             ct->manipulate(c);
             ct->uncHessianPDF4LHC(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -541,7 +541,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         {
             ct->manipulate(c);
             ct->uncHessianPDF4LHC(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
