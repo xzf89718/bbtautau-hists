@@ -13,7 +13,7 @@ using std::cout;
 using std::endl;
 using std::clog;
 using HistNameTool::transformFloat;
-void test_hadhad_klambda(const std::string& filename="default")
+void hadhad_klsignals_examples(const std::string& filename="default")
 {
     BasicInfo* b = new BasicInfo("#sqrt{s} = 13 TeV", "L = 139 fb^{-1}");
 
@@ -23,7 +23,7 @@ void test_hadhad_klambda(const std::string& filename="default")
     Variables* vs = new Variables();
     vs->add("mBB",                  "m_{BB} [GeV]",                                      10);
     vs->add("mMMC",                 "m_{#tau#tau} (MMC) [GeV]",                          12);
-    vs->add("mHH",                  "m_{HH} [GeV]",                                      1);
+    vs->add("mHH",                  "m_{HH} [GeV]",                                       1);
     vs->add("mHHScaled",            "m_{HH} (Scaled) [GeV]",                             12);
     vs->add("dRBB",                 "#Delta R(B,B)",                                     4 );
     vs->add("pTBB",                 "p_{T}^{b,b}",                                       10);
@@ -58,100 +58,31 @@ void test_hadhad_klambda(const std::string& filename="default")
     CompInfo* info = new CompInfo();
     info->ratio_high = 1.38;
     info->ratio_low = 0.62;
-
-    for (VariableInfo* v : *(vs->content()))
-    {
+    for(VariableInfo* v: *(vs->content()))
+    {   
         {
-            Processes* ps = new Processes();
-            ps->assign_norm_factors = false;
-            ps->add("hhttbbKL10p0",         "HH (#kappa_{#lambda}=10) generated",   eProcessType::SIG,  eProcess::HHKL10,       "HH (#kappa_{#lambda}=10) generated",  kBlue+1);
-            ps->add("hhttbbKL10p0from1p0",  "HH (#kappa_{#lambda}=10) reweighted",  eProcessType::SIG,  eProcess::HHKLXFROM1,   "HH (#kappa_{#lambda}=10) reweighted", kRed+1);
-
-            Config* c = new Config(b, ps, rs, vs);
-            if (filename == "default")
+            std::string base_name = "hhttbbKL";
+            std::string from_reco = "fromReco";
             {
-                c->load("/home/zifeng/HistCxAOD/KLReweight/output/KLReweight_py8.root", "Preselection");
-            }
-            else
-            {
-
-                c->load(filename, "Preselection");
-            }
-            info->parameter = "from1p0";
-            c->updateHistogramPtr(rs->content()->front(), v);
-            CompTool* ct = new CompTool(info);
-            //ct->output_path = "/tmp/zhangbw/hhttbbKL10p0from1p0";
-            ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/plots";
-            if (ct->check(c))
-            {
-                ct->paint(c);
-                ct->run(c);
-            }
-            else 
-            {
-                clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
-            }
-
-            delete ps;
-            delete ct;
-            delete c;
-        }
-
-        {
-            Processes* ps = new Processes();
-            ps->assign_norm_factors = false;
-            ps->add("hhttbbKL1p0",          "HH (#kappa_{#lambda}=1) generated",   eProcessType::SIG,  eProcess::HHKL10,        "HH (#kappa_{#lambda}=10) generated",  kBlue+1);
-            ps->add("hhttbbKL1p0from10p0",  "HH (#kappa_{#lambda}=1) reweighted",  eProcessType::SIG,  eProcess::HHKLXFROM10,   "HH (#kappa_{#lambda}=10) reweighted", kRed+1);
-
-            Config* c = new Config(b, ps, rs, vs);
-            //c->load("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
-            c->load("/home/zifeng/HistCxAOD/KLReweight/output/KLReweight_py8.root", "Preselection");
-            info->parameter = "from10p0";
-            c->updateHistogramPtr(rs->content()->front(), v);
-            CompTool* ct = new CompTool(info);
-            ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/plots";
-            if (ct->check(c))
-            {
-                ct->paint(c);
-                ct->run(c);
-            }
-            else 
-            {
-                clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
-            }
-
-            delete ps;
-            delete ct;
-            delete c;
-        }
-
-        {
-            for (const std::string& klambda : {"n20p0", "n10p0", "n5p0", "0p0", 
-                    "3p0", "5p0", "20p0"})
-            {
-                auto nice_kl = [&klambda]() {
-                    std::string ret = klambda;
-                    if (ret[0] == 'n') { ret[0] = '-'; }
-                    ret[ret.length()-2] = '.'; 
-                    return ret; };
                 Processes* ps = new Processes();
                 ps->assign_norm_factors = false;
-                ps->add("hhttbbKL"+klambda+"from1p0",   
-                        "HH (#kappa_{#lambda}="+nice_kl()+") from #kappa_{#lambda}=1",   
-                        eProcessType::SIG,  eProcess::HHKLXFROM1,  
-                        "HH (#kappa_{#lambda}="+nice_kl()+") from #kappa_{#lambda}=1",  kBlue+1);
-                ps->add("hhttbbKL"+klambda+"from10p0",  
-                        "HH (#kappa_{#lambda}="+nice_kl()+") from #kappa_{#lambda}=10",  
-                        eProcessType::SIG,  eProcess::HHKLXFROM10, 
-                        "HH (#kappa_{#lambda}="+nice_kl()+") from #kappa_{#lambda}=10", kRed+1);
-
+                int i_color = 0;
+                for (auto &i : {0.0, 2.0, 5.0})
+                {
+                    ps->add(base_name + transformFloat(i) +from_reco, 
+                            "HH Klambda = " + transformFloat(i) + " combine at reco level", 
+                            eProcessType::SIG, eProcess::HHKLXFROMRECO,
+                            "HH Klambda = " + transformFloat(i) + " combine at reco level", 
+                            kRed + i_color
+                           );
+                    i_color = i_color + 1;
+                }
                 Config* c = new Config(b, ps, rs, vs);
-                //c->load("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
-                c->load("/home/zifeng/HistCxAOD/KLReweight/output/KLReweight_py8.root", "Preselection");
-                info->parameter = "to"+klambda;
+                c->load(filename, "Preselection");
+                info->parameter = "0_2_5";
                 c->updateHistogramPtr(rs->content()->front(), v);
                 CompTool* ct = new CompTool(info);
-                ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/plots";
+                ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/test_signals";
                 if (ct->check(c))
                 {
                     ct->paint(c);
@@ -167,10 +98,49 @@ void test_hadhad_klambda(const std::string& filename="default")
                 delete c;
             }
         }
+
+        {
+            std::string base_name = "hhttbbKL";
+            std::string from_reco = "fromReco";
+            {
+                Processes* ps = new Processes();
+                ps->assign_norm_factors = false;
+                int i_color = 0;
+                for (auto &i : {-5.0, 1.0, 10.0})
+                {
+                    ps->add(base_name + transformFloat(i) +from_reco, 
+                            "HH Klambda = " + transformFloat(i) + " combine at reco level", 
+                            eProcessType::SIG, eProcess::HHKLXFROMRECO,
+                            "HH Klambda = " + transformFloat(i) + " combine at reco level", 
+                            kRed + i_color
+                           );
+                    i_color = i_color + 1;
+                }
+                Config* c = new Config(b, ps, rs, vs);
+                c->load(filename, "Preselection");
+                info->parameter = "n5_1_10";
+                c->updateHistogramPtr(rs->content()->front(), v);
+                CompTool* ct = new CompTool(info);
+                ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/test_signals";
+                if (ct->check(c))
+                {
+                    ct->paint(c);
+                    ct->run_noratio(c);
+                }
+                else 
+                {
+                    clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
+                }
+
+                delete ps;
+                delete ct;
+                delete c;
+            }
+        }
     }
+
+
     
-
-
     delete b;
     delete rs;
     delete vs;

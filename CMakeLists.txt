@@ -43,7 +43,8 @@ add_library(HistToolLib SHARED
     src/HistTool.cpp
     src/DrawStackTool.cpp
     src/CompTool.cpp
-    src/SystCompTool.cpp)
+    src/SystCompTool.cpp
+    src/HistNameTool.cpp)
 
 add_library(WorkspaceToolLib SHARED
     src/WorkspaceTool.cpp

@@ -1,0 +1,368 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BKG	src/Processes.h	/^    DATA, OTHERS, BKG, $/;"	m	class:eProcess
+BKG	src/Processes.h	/^enum class eProcessType { DATA, BKG, SIG };$/;"	m	class:eProcessType
+BasicInfo	src/Config.h	/^class BasicInfo$/;"	c
+COMPTOOL_H	src/CompTool.h	2;"	d
+CONFIG_H	src/Config.h	2;"	d
+Check	src/RankingTool.h	/^    void Check() {$/;"	f	class:FitResult
+CheckParaMaps	src/RankingTool.h	/^    void CheckParaMaps()$/;"	f	class:FitResult
+CompInfo	src/CompTool.h	/^class CompInfo$/;"	c
+CompTool	src/CompTool.cpp	/^CompTool::CompTool(const CompInfo* info)$/;"	f	class:CompTool
+CompTool	src/CompTool.h	/^class CompTool : public HistTool$/;"	c
+Config	src/Config.h	/^class Config$/;"	c
+DATA	src/Processes.h	/^    DATA, OTHERS, BKG, $/;"	m	class:eProcess
+DATA	src/Processes.h	/^enum class eProcessType { DATA, BKG, SIG };$/;"	m	class:eProcessType
+DEBUG	src/WorkspaceTool.h	/^enum class VerboseLevel { DEBUG, INFO };$/;"	m	class:VerboseLevel
+DIBOSON	src/Processes.h	/^    DIBOSON, WW, WZ, ZZ, FAKE, QCD, MULTIJET,$/;"	m	class:eProcess
+DRAWSTACKTOOL_H	src/DrawStackTool.h	2;"	d
+DrawStackInfo	src/DrawStackTool.h	/^class DrawStackInfo$/;"	c
+DrawStackTool	src/DrawStackTool.cpp	/^DrawStackTool::DrawStackTool(const DrawStackInfo* info)$/;"	f	class:DrawStackTool
+DrawStackTool	src/DrawStackTool.h	/^class DrawStackTool : public HistTool$/;"	c
+ERRORUP	src/RankingTool.h	/^    enum class ePOI : uint8_t { VALUE, ERRORUP, ERRORDOWN };$/;"	m	class:FitResult::ePOI
+Engine	src/RankingTool.h	/^    Engine()$/;"	f	class:Engine
+Engine	src/RankingTool.h	/^class Engine$/;"	c
+FAKE	src/Processes.h	/^    DIBOSON, WW, WZ, ZZ, FAKE, QCD, MULTIJET,$/;"	m	class:eProcess
+FIVE_COLUMN_TABLE	src/HistTool.cpp	21;"	d	file:
+FOUR_COLUMN_TABLE	src/HistTool.cpp	15;"	d	file:
+Fit	src/RankingTool.h	/^    void Fit(bool bAsimov=true, double fPOI=0.0, int8_t nLogLevel=-1) {$/;"	f	class:FitResult
+FitAll	src/RankingTool.h	/^    void FitAll(int8_t nLogLevel=-1) {$/;"	f	class:FitResult
+FitResult	src/RankingTool.h	/^    FitResult(const string& fn, const string& wsn)$/;"	f	class:FitResult
+FitResult	src/RankingTool.h	/^class FitResult$/;"	c
+FitWithFixedPara	src/RankingTool.h	/^    void FitWithFixedPara(const string& sPara,$/;"	f	class:FitResult
+GetCache	src/RankingTool.h	/^    map<FitResult::ePOI, float> GetCache(const string& nm)$/;"	f	class:FitResult
+GetFittedNPs	src/RankingTool.h	/^    map<string, tuple<float, float, float>> GetFittedNPs()$/;"	f	class:FitResult
+GetFittedPOI	src/RankingTool.h	/^    map<FitResult::ePOI, float> GetFittedPOI()$/;"	f	class:Engine
+GetFittedPOIWithFixedNPs	src/RankingTool.h	/^    map<string, map<FitResult::ePOI, float>> GetFittedPOIWithFixedNPs()$/;"	f	class:Engine
+GetFittedPOIs	src/RankingTool.h	/^    map<string, tuple<float, float, float>> GetFittedPOIs()$/;"	f	class:FitResult
+GetNPs	src/RankingTool.h	/^    set<string> GetNPs()$/;"	f	class:FitResult
+GetSetOfNPs	src/RankingTool.h	/^    void GetSetOfNPs(const RooArgSet* cParaSet)$/;"	f	class:FitResult
+H	src/Processes.h	/^    H, VH, WH, ZH, ttH, ggH, VBFH,$/;"	m	class:eProcess
+HH	src/Processes.h	/^    SIG, SMHH, HH, XtoHH, StoHH,$/;"	m	class:eProcess
+HHKL0FROM1	src/Processes.h	/^    HHKL1, HHKL3FROM1, HHKL0FROM1, HHKL10, HHKL10FROM1,$/;"	m	class:eProcess
+HHKL1	src/Processes.h	/^    HHKL1, HHKL3FROM1, HHKL0FROM1, HHKL10, HHKL10FROM1,$/;"	m	class:eProcess
+HHKL10	src/Processes.h	/^    HHKL1, HHKL3FROM1, HHKL0FROM1, HHKL10, HHKL10FROM1,$/;"	m	class:eProcess
+HHKL10FROM1	src/Processes.h	/^    HHKL1, HHKL3FROM1, HHKL0FROM1, HHKL10, HHKL10FROM1,$/;"	m	class:eProcess
+HHKL3FROM1	src/Processes.h	/^    HHKL1, HHKL3FROM1, HHKL0FROM1, HHKL10, HHKL10FROM1,$/;"	m	class:eProcess
+HHKLXFROM1	src/Processes.h	/^    HHKLXFROM1, HHKLXFROM10, HHKLXFROMRECO,$/;"	m	class:eProcess
+HHKLXFROM10	src/Processes.h	/^    HHKLXFROM1, HHKLXFROM10, HHKLXFROMRECO,$/;"	m	class:eProcess
+HHKLXFROMRECO	src/Processes.h	/^    HHKLXFROM1, HHKLXFROM10, HHKLXFROMRECO,$/;"	m	class:eProcess
+HISTTOOL_H	src/HistTool.h	2;"	d
+HistNameTool	src/HistNameTool.cpp	/^namespace HistNameTool$/;"	n	file:
+HistNameTool	src/HistNameTool.h	/^namespace HistNameTool$/;"	n
+HistTool	src/HistTool.h	/^class HistTool$/;"	c
+ITX	src/RankingTool.h	53;"	d
+Load	src/RankingTool.h	/^    void Load() {$/;"	f	class:FitResult
+LumiRelError	src/WorkspaceTool.h	/^  static constexpr double LumiRelError = 0.017;$/;"	m	class:WorkspaceTool
+MAP_UPDATE_PARA	src/RankingTool.h	39;"	d
+MULTIJET	src/Processes.h	/^    DIBOSON, WW, WZ, ZZ, FAKE, QCD, MULTIJET,$/;"	m	class:eProcess
+NPInfo	src/WorkspaceTool.h	/^struct NPInfo$/;"	s
+NameOfPOI	src/RankingTool.h	/^    string NameOfPOI()$/;"	f	class:FitResult
+OTHERS	src/Processes.h	/^    DATA, OTHERS, BKG, $/;"	m	class:eProcess
+OUTPUT_TABLE_4	examples/Example_Ranking.h	8;"	d
+PRINT_PARA_MAP	src/RankingTool.h	45;"	d
+PROCESSES_H	src/Processes.h	2;"	d
+PULLS_H	src/Pulls.h	2;"	d
+Plots_KLReweigt	examples/Example_KLReweight.h	/^void Plots_KLReweigt()$/;"	f
+PrintNuisanceParameters	src/RankingTool.h	/^    void PrintNuisanceParameters()$/;"	f	class:FitResult
+PrintParametersOfInterest	src/RankingTool.h	/^    void PrintParametersOfInterest()$/;"	f	class:FitResult
+ProcessInfo	src/Processes.h	/^class ProcessInfo$/;"	c
+Processes	src/Processes.h	/^class Processes$/;"	c
+QCD	src/Processes.h	/^    DIBOSON, WW, WZ, ZZ, FAKE, QCD, MULTIJET,$/;"	m	class:eProcess
+RANKINGTOOL_H	src/RankingTool.h	6;"	d
+REGIONS_H	src/Regions.h	2;"	d
+RegionInfo	src/Regions.h	/^class RegionInfo$/;"	c
+Regions	src/Regions.cpp	/^Regions::Regions()$/;"	f	class:Regions
+Regions	src/Regions.h	/^class Regions$/;"	c
+RunRanking	src/RankingTool.h	/^    virtual void RunRanking()$/;"	f	class:Engine
+SIG	src/Processes.h	/^    SIG, SMHH, HH, XtoHH, StoHH,$/;"	m	class:eProcess
+SMHH	src/Processes.h	/^    SIG, SMHH, HH, XtoHH, StoHH,$/;"	m	class:eProcess
+SR	src/Regions.h	/^enum class eRegionType { SR, CR };$/;"	m	class:eRegionType
+STOP	src/Processes.h	/^    STOP, STOPT, STOPS, STOPWT,$/;"	m	class:eProcess
+STOPS	src/Processes.h	/^    STOP, STOPT, STOPS, STOPWT,$/;"	m	class:eProcess
+STOPT	src/Processes.h	/^    STOP, STOPT, STOPS, STOPWT,$/;"	m	class:eProcess
+STOPT_AMC	src/Processes.h	/^    STOPT_AMC, STOPT_HW7, $/;"	m	class:eProcess
+STOPT_HW7	src/Processes.h	/^    STOPT_AMC, STOPT_HW7, $/;"	m	class:eProcess
+STOPWT	src/Processes.h	/^    STOP, STOPT, STOPS, STOPWT,$/;"	m	class:eProcess
+STOPWT_AMC	src/Processes.h	/^    STOPWT_AMC, STOPWT_HW7, STOPWT_DS, $/;"	m	class:eProcess
+STOPWT_DS	src/Processes.h	/^    STOPWT_AMC, STOPWT_HW7, STOPWT_DS, $/;"	m	class:eProcess
+STOPWT_HW7	src/Processes.h	/^    STOPWT_AMC, STOPWT_HW7, STOPWT_DS, $/;"	m	class:eProcess
+SYSTCOMPTOOL_H	src/SystCompTool.h	2;"	d
+SYSTEMATICS_H	src/Systematics.h	2;"	d
+StoHH	src/Processes.h	/^    SIG, SMHH, HH, XtoHH, StoHH,$/;"	m	class:eProcess
+SystCompTool	src/SystCompTool.h	/^  explicit SystCompTool(const CompInfo* info) : CompTool(info), m_info(info) {}$/;"	f	class:SystCompTool
+SystCompTool	src/SystCompTool.h	/^class SystCompTool : public CompTool$/;"	c
+SystematicInfo	src/Systematics.h	/^class SystematicInfo$/;"	c
+Systematics	src/Systematics.cpp	/^Systematics::Systematics()$/;"	f	class:Systematics
+Systematics	src/Systematics.h	/^class Systematics$/;"	c
+TTBAR	src/Processes.h	/^    TTBAR, TTBARTRUE, TTBARFAKE, TTBARTT, TTBARTF, TTBARFT, TTBARFF,$/;"	m	class:eProcess
+TTBARFAKE	src/Processes.h	/^    TTBAR, TTBARTRUE, TTBARFAKE, TTBARTT, TTBARTF, TTBARFT, TTBARFF,$/;"	m	class:eProcess
+TTBARFF	src/Processes.h	/^    TTBAR, TTBARTRUE, TTBARFAKE, TTBARTT, TTBARTF, TTBARFT, TTBARFF,$/;"	m	class:eProcess
+TTBARFT	src/Processes.h	/^    TTBAR, TTBARTRUE, TTBARFAKE, TTBARTT, TTBARTF, TTBARFT, TTBARFF,$/;"	m	class:eProcess
+TTBARTF	src/Processes.h	/^    TTBAR, TTBARTRUE, TTBARFAKE, TTBARTT, TTBARTF, TTBARFT, TTBARFF,$/;"	m	class:eProcess
+TTBARTRUE	src/Processes.h	/^    TTBAR, TTBARTRUE, TTBARFAKE, TTBARTT, TTBARTF, TTBARFT, TTBARFF,$/;"	m	class:eProcess
+TTBARTT	src/Processes.h	/^    TTBAR, TTBARTRUE, TTBARFAKE, TTBARTT, TTBARTF, TTBARFT, TTBARFF,$/;"	m	class:eProcess
+Tools	src/Utils.h	/^class Tools$/;"	c
+TwoSide	src/Systematics.h	/^enum class eSystematicType { TwoSide, OneSide };$/;"	m	class:eSystematicType
+UTILS_H	src/Utils.h	2;"	d
+UTILS_WS_H	src/Utils_WS.h	2;"	d
+UpdateMapNPsFinal	src/RankingTool.h	/^    void UpdateMapNPsFinal(const RooArgSet* cParaSet)$/;"	f	class:FitResult
+UpdateMapNPsInit	src/RankingTool.h	/^    void UpdateMapNPsInit(const RooArgSet* cParaSet)$/;"	f	class:FitResult
+UpdateMapPOIsFitted	src/RankingTool.h	/^    void UpdateMapPOIsFitted(const RooArgSet* cParaSet)$/;"	f	class:FitResult
+Utils	src/Utils.cpp	/^namespace Utils$/;"	n	file:
+Utils	src/Utils.h	/^namespace Utils {$/;"	n
+Utils_WS	src/Utils_WS.h	/^namespace Utils_WS$/;"	n
+VALUE	src/RankingTool.h	/^    enum class ePOI : uint8_t { VALUE, ERRORUP, ERRORDOWN };$/;"	m	class:FitResult::ePOI
+VARIABLES_H	src/Variables.h	2;"	d
+VBFH	src/Processes.h	/^    H, VH, WH, ZH, ttH, ggH, VBFH,$/;"	m	class:eProcess
+VH	src/Processes.h	/^    H, VH, WH, ZH, ttH, ggH, VBFH,$/;"	m	class:eProcess
+VariableInfo	src/Variables.h	/^class VariableInfo$/;"	c
+Variables	src/Variables.cpp	/^Variables::Variables()$/;"	f	class:Variables
+Variables	src/Variables.h	/^class Variables$/;"	c
+VerboseLevel	src/WorkspaceTool.h	/^enum class VerboseLevel { DEBUG, INFO };$/;"	c
+WH	src/Processes.h	/^    H, VH, WH, ZH, ttH, ggH, VBFH,$/;"	m	class:eProcess
+WJETS	src/Processes.h	/^    WJETS, WtauvJETS, WtauvHF, WtauvLF, WlvJETS, WlvLF, WlvHF, ttV,$/;"	m	class:eProcess
+WORKSPACETOOL_H	src/WorkspaceTool.h	6;"	d
+WW	src/Processes.h	/^    DIBOSON, WW, WZ, ZZ, FAKE, QCD, MULTIJET,$/;"	m	class:eProcess
+WZ	src/Processes.h	/^    DIBOSON, WW, WZ, ZZ, FAKE, QCD, MULTIJET,$/;"	m	class:eProcess
+WlvHF	src/Processes.h	/^    WJETS, WtauvJETS, WtauvHF, WtauvLF, WlvJETS, WlvLF, WlvHF, ttV,$/;"	m	class:eProcess
+WlvJETS	src/Processes.h	/^    WJETS, WtauvJETS, WtauvHF, WtauvLF, WlvJETS, WlvLF, WlvHF, ttV,$/;"	m	class:eProcess
+WlvLF	src/Processes.h	/^    WJETS, WtauvJETS, WtauvHF, WtauvLF, WlvJETS, WlvLF, WlvHF, ttV,$/;"	m	class:eProcess
+WorkspaceTool	src/WorkspaceTool.h	/^class WorkspaceTool$/;"	c
+WtauvHF	src/Processes.h	/^    WJETS, WtauvJETS, WtauvHF, WtauvLF, WlvJETS, WlvLF, WlvHF, ttV,$/;"	m	class:eProcess
+WtauvJETS	src/Processes.h	/^    WJETS, WtauvJETS, WtauvHF, WtauvLF, WlvJETS, WlvLF, WlvHF, ttV,$/;"	m	class:eProcess
+WtauvLF	src/Processes.h	/^    WJETS, WtauvJETS, WtauvHF, WtauvLF, WlvJETS, WlvLF, WlvHF, ttV,$/;"	m	class:eProcess
+XtoHH	src/Processes.h	/^    SIG, SMHH, HH, XtoHH, StoHH,$/;"	m	class:eProcess
+ZH	src/Processes.h	/^    H, VH, WH, ZH, ttH, ggH, VBFH,$/;"	m	class:eProcess
+ZJETS	src/Processes.h	/^    ZJETS, ZtautauJETS, ZtautauHF, ZtautauLF, ZllJETS, ZllLF, ZllHF,$/;"	m	class:eProcess
+ZJETSMG	src/Processes.h	/^    ZJETSMG, ZllLFMG, ZllHFMG,$/;"	m	class:eProcess
+ZZ	src/Processes.h	/^    DIBOSON, WW, WZ, ZZ, FAKE, QCD, MULTIJET,$/;"	m	class:eProcess
+ZllHF	src/Processes.h	/^    ZJETS, ZtautauJETS, ZtautauHF, ZtautauLF, ZllJETS, ZllLF, ZllHF,$/;"	m	class:eProcess
+ZllHFMG	src/Processes.h	/^    ZJETSMG, ZllLFMG, ZllHFMG,$/;"	m	class:eProcess
+ZllJETS	src/Processes.h	/^    ZJETS, ZtautauJETS, ZtautauHF, ZtautauLF, ZllJETS, ZllLF, ZllHF,$/;"	m	class:eProcess
+ZllLF	src/Processes.h	/^    ZJETS, ZtautauJETS, ZtautauHF, ZtautauLF, ZllJETS, ZllLF, ZllHF,$/;"	m	class:eProcess
+ZllLFMG	src/Processes.h	/^    ZJETSMG, ZllLFMG, ZllHFMG,$/;"	m	class:eProcess
+ZtautauHF	src/Processes.h	/^    ZJETS, ZtautauJETS, ZtautauHF, ZtautauLF, ZllJETS, ZllLF, ZllHF,$/;"	m	class:eProcess
+ZtautauJETS	src/Processes.h	/^    ZJETS, ZtautauJETS, ZtautauHF, ZtautauLF, ZllJETS, ZllLF, ZllHF,$/;"	m	class:eProcess
+ZtautauLF	src/Processes.h	/^    ZJETS, ZtautauJETS, ZtautauHF, ZtautauLF, ZllJETS, ZllLF, ZllHF,$/;"	m	class:eProcess
+_IterateAndDo	src/RankingTool.h	/^    void _IterateAndDo(const RooArgSet*& cParaSet, Func pFunc)$/;"	f	class:FitResult
+_IterateAndDo	src/RankingTool.h	/^    void _IterateAndDo(const RooArgSet*& cParaSet, Func pFunc, Targs ... args)$/;"	f	class:FitResult
+_PrintParameters	src/RankingTool.h	/^    void _PrintParameters(const RooArgSet* cParaSet)$/;"	f	class:FitResult
+add	src/Processes.cpp	/^void Processes::add(const string& nm, const string& nmtex, eProcessType tp, $/;"	f	class:Processes
+add	src/Regions.cpp	/^void Regions::add(const string &nm, const string &nmtex, eRegionType tp) const$/;"	f	class:Regions
+add	src/Systematics.cpp	/^void Systematics::add(const string &nm, const string &nmtex, eSystematicType tp) const$/;"	f	class:Systematics
+add	src/Variables.cpp	/^void Variables::add(const string &nm, const string &nmtex, unsigned rb, double *bing, size_t n) const$/;"	f	class:Variables
+assign_norm_factors	src/Processes.h	/^    bool assign_norm_factors = true;$/;"	m	class:Processes
+atlas	src/CompTool.h	/^    bool atlas = true;$/;"	m	class:CompInfo
+atlas	src/DrawStackTool.h	/^    bool atlas = true;$/;"	m	class:DrawStackInfo
+atlas_label	src/CompTool.h	/^    const char* atlas_label = "Simulation Internal";$/;"	m	class:CompInfo
+atlas_label	src/DrawStackTool.h	/^    const char* atlas_label = "Internal";$/;"	m	class:DrawStackInfo
+bFitted	src/RankingTool.h	/^    bool bFitted = false;$/;"	m	class:FitResult
+basic	src/Config.h	/^    const BasicInfo* basic;$/;"	m	class:Config
+binning	src/Variables.h	/^    double* binning;$/;"	m	class:VariableInfo
+blind	src/DrawStackTool.h	/^    bool blind = true;$/;"	m	class:DrawStackInfo
+check	src/CompTool.cpp	/^bool CompTool::check(const Config* c) const$/;"	f	class:CompTool
+check	src/DrawStackTool.cpp	/^bool DrawStackTool::check(const Config* c) const$/;"	f	class:DrawStackTool
+check	src/HistTool.cpp	/^bool HistTool::check(const Config* c) const $/;"	f	class:HistTool
+check	src/SystCompTool.cpp	/^bool SystCompTool::check(const Config* c) const$/;"	f	class:SystCompTool
+color	src/Processes.h	/^        , process(proc), process_name(nmproc), color(col) {}$/;"	f	class:ProcessInfo
+color	src/Processes.h	/^    int color; \/\/ EColor$/;"	m	class:ProcessInfo
+content	src/Processes.h	/^    inline vector<ProcessInfo*>* content() const { return m_procs.get(); }$/;"	f	class:Processes
+content	src/Regions.h	/^    inline vector<RegionInfo*>* content() const { return m_regions.get(); }$/;"	f	class:Regions
+content	src/Systematics.h	/^    inline vector<SystematicInfo*>* content() const { return m_systs.get(); }$/;"	f	class:Systematics
+content	src/Variables.h	/^    inline vector<VariableInfo*>* content() const { return m_vars.get(); }$/;"	f	class:Variables
+current_region	src/Config.h	/^    RegionInfo* current_region;$/;"	m	class:Config
+current_region	src/Processes.h	/^    RegionInfo* current_region = nullptr;$/;"	m	class:ProcessInfo
+current_variable	src/Config.h	/^    VariableInfo* current_variable;$/;"	m	class:Config
+current_variable	src/Processes.h	/^    VariableInfo* current_variable = nullptr;$/;"	m	class:ProcessInfo
+ePOI	src/RankingTool.h	/^    enum class ePOI : uint8_t { VALUE, ERRORUP, ERRORDOWN };$/;"	c	class:FitResult
+eProcess	src/Processes.h	/^enum class eProcess {$/;"	c
+eProcessType	src/Processes.h	/^enum class eProcessType { DATA, BKG, SIG };$/;"	c
+eRegionType	src/Regions.h	/^enum class eRegionType { SR, CR };$/;"	c
+eSystematicType	src/Systematics.h	/^enum class eSystematicType { TwoSide, OneSide };$/;"	c
+ecm	src/Config.h	/^    string ecm;$/;"	m	class:BasicInfo
+error_high	src/WorkspaceTool.h	/^  double error_high;$/;"	m	struct:NPInfo
+error_low	src/WorkspaceTool.h	/^  double error_low;$/;"	m	struct:NPInfo
+fromFit	src/WorkspaceTool.h	/^  std::string fromFit;$/;"	m	struct:NPInfo
+getNominalValueOfNP	src/WorkspaceTool.cpp	/^void WorkspaceTool::getNominalValueOfNP()$/;"	f	class:WorkspaceTool
+ggH	src/Processes.h	/^    H, VH, WH, ZH, ttH, ggH, VBFH,$/;"	m	class:eProcess
+hadhad_klsignals_examples	examples/Example_klsignals.h	/^void hadhad_klsignals_examples(const std::string& filename="default")$/;"	f
+hadhadsr_v15	examples/HadHadSR_v15.h	/^void hadhadsr_v15(const std::string& filename)$/;"	f
+hadhadsr_v15_yield	examples/HadHadSR_v15_yield.h	/^void hadhadsr_v15_yield(const std::string& filename)$/;"	f
+histAssign	src/Utils.cpp	/^void histAssign(TH1* h, ProcessInfo *p, RegionInfo* r, VariableInfo* v)$/;"	f	namespace:Utils
+histAssignSyst	src/Utils.cpp	/^void histAssignSyst(TH1* h, ProcessInfo *p, const std::string& systname)$/;"	f	namespace:Utils
+histString	src/Utils.cpp	/^string histString(const ProcessInfo* p, const RegionInfo* r, const VariableInfo* v)$/;"	f	namespace:Utils
+histStringSyst	src/Utils.cpp	/^string histStringSyst(const ProcessInfo* p, const RegionInfo* r, const VariableInfo* v, const SystematicInfo* s)$/;"	f	namespace:Utils
+histogram	src/Processes.h	/^    TH1* histogram = nullptr; \/\/ depends on region and variable (will be set in Config)$/;"	m	class:ProcessInfo
+ht	src/Config.h	/^    Config& operator=(Config& ht) = delete;$/;"	m	class:Config
+ht	src/Config.h	/^    Config(Config& ht) = delete;$/;"	m	class:Config
+isChannelNameOK	src/WorkspaceTool.cpp	/^bool WorkspaceTool::isChannelNameOK()$/;"	f	class:WorkspaceTool
+isMerged	src/Processes.h	/^    bool isMerged = false;$/;"	m	class:ProcessInfo
+isSimultaneousPdfOK	src/WorkspaceTool.cpp	/^bool WorkspaceTool::isSimultaneousPdfOK()$/;"	f	class:WorkspaceTool
+load	src/Config.cpp	/^void Config::load(const string& fn, const string& dir)$/;"	f	class:Config
+load	src/WorkspaceTool.cpp	/^void WorkspaceTool::load(const std::string &fn, const std::string &ws_name, $/;"	f	class:WorkspaceTool
+logx	src/CompTool.h	/^    bool logx = false;$/;"	m	class:CompInfo
+logx	src/DrawStackTool.h	/^    bool logx = false;$/;"	m	class:DrawStackInfo
+logy	src/CompTool.h	/^    bool logy = false;$/;"	m	class:CompInfo
+logy	src/DrawStackTool.h	/^    bool logy = false;$/;"	m	class:DrawStackInfo
+lumiRelError	src/Utils_WS.h	/^    constexpr float lumiRelError = 0.037;$/;"	m	namespace:Utils_WS
+luminosity	src/Config.cpp	/^    : ecm(ecm), luminosity(lumi)$/;"	f
+luminosity	src/Config.h	/^    string luminosity;$/;"	m	class:BasicInfo
+m	src/RankingTool.h	/^    mutex m;$/;"	m	class:Engine
+m_allNPs_afterFit	src/WorkspaceTool.h	/^  std::vector<NPInfo> m_allNPs_afterFit;$/;"	m	class:WorkspaceTool
+m_cData	src/RankingTool.h	/^    RooAbsData* m_cData;$/;"	m	class:FitResult
+m_cFile	src/RankingTool.h	/^    TFile* m_cFile;$/;"	m	class:FitResult
+m_cNPs	src/RankingTool.h	/^    const RooArgSet* m_cNPs;$/;"	m	class:FitResult
+m_cPOIs	src/RankingTool.h	/^    const RooArgSet* m_cPOIs;$/;"	m	class:FitResult
+m_cSBModel	src/RankingTool.h	/^    ModelConfig* m_cSBModel;$/;"	m	class:FitResult
+m_cWs	src/RankingTool.h	/^    RooWorkspace* m_cWs;$/;"	m	class:FitResult
+m_data	src/WorkspaceTool.h	/^  RooAbsData *m_data;$/;"	m	class:WorkspaceTool
+m_dir	src/Config.h	/^    std::string m_dir;$/;"	m	class:Config
+m_fin	src/Config.h	/^    unique_ptr<TFile> m_fin;$/;"	m	class:Config
+m_fin	src/WorkspaceTool.h	/^  std::shared_ptr<TFile> m_fin;$/;"	m	class:WorkspaceTool
+m_fits	src/RankingTool.h	/^    map<string, FitResult*> m_fits;$/;"	m	class:Engine
+m_info	src/CompTool.h	/^    const CompInfo* m_info;$/;"	m	class:CompTool
+m_info	src/DrawStackTool.h	/^    const DrawStackInfo* m_info;$/;"	m	class:DrawStackTool
+m_info	src/SystCompTool.h	/^  const CompInfo* m_info;$/;"	m	class:SystCompTool
+m_it_bkg	src/DrawStackTool.h	/^    vector<ProcessInfo*>::iterator m_it_bkg;$/;"	m	class:DrawStackTool
+m_it_data	src/DrawStackTool.h	/^    vector<ProcessInfo*>::iterator m_it_data;$/;"	m	class:DrawStackTool
+m_it_end	src/DrawStackTool.h	/^    vector<ProcessInfo*>::iterator m_it_end;$/;"	m	class:DrawStackTool
+m_it_sig	src/DrawStackTool.h	/^    vector<ProcessInfo*>::iterator m_it_sig;$/;"	m	class:DrawStackTool
+m_loaded	src/Config.h	/^    bool m_loaded;$/;"	m	class:Config
+m_lvl	src/WorkspaceTool.h	/^  VerboseLevel m_lvl = VerboseLevel::INFO;$/;"	m	class:WorkspaceTool
+m_manipulated	src/Config.h	/^    bool m_manipulated;$/;"	m	class:Config
+m_mapAltPOIs	src/RankingTool.h	/^    map<string, map<FitResult::ePOI, float>> m_mapAltPOIs;$/;"	m	class:Engine
+m_mapNPsFitted	src/RankingTool.h	/^    map<string, tuple<float, float, float>> m_mapNPsFitted; \/\/ Name, Val, Hi, Lo$/;"	m	class:FitResult
+m_mapNPsInit	src/RankingTool.h	/^    map<string, tuple<float, float, float>> m_mapNPsInit; \/\/ Name, Val, Hi, Lo$/;"	m	class:FitResult
+m_mapPOIsFitted	src/RankingTool.h	/^    map<string, tuple<float, float, float>> m_mapPOIsFitted; \/\/ Name, Val, Hi, Lo$/;"	m	class:FitResult
+m_mc	src/WorkspaceTool.h	/^  ModelConfig *m_mc;$/;"	m	class:WorkspaceTool
+m_nPOI	src/RankingTool.h	/^    map<FitResult::ePOI, float> m_nPOI;$/;"	m	class:Engine
+m_nomNPs	src/WorkspaceTool.h	/^  std::unordered_map<std::string, double> m_nomNPs;$/;"	m	class:WorkspaceTool
+m_procs	src/Processes.h	/^    unique_ptr<vector<ProcessInfo*>> m_procs;$/;"	m	class:Processes
+m_regions	src/Regions.h	/^    unique_ptr<vector<RegionInfo*>> m_regions;$/;"	m	class:Regions
+m_sFileName	src/RankingTool.h	/^    std::string m_sFileName = "\/scratchfs\/atlas\/zhangbw\/ResolvedStatAna\/WSMaker_Group\/output\/Bowen_HadHadWSI_v2.ZgenTtbarNorm_HH_13TeV_ZgenTtbarNorm_Systs_hadhad_2HDM_MVA_300\/workspaces\/combined\/300.root";$/;"	m	class:Engine
+m_sPOIName	src/RankingTool.h	/^    string m_sPOIName;$/;"	m	class:FitResult
+m_sRootFile	src/RankingTool.h	/^    string m_sRootFile;$/;"	m	class:FitResult
+m_sWorkspace	src/RankingTool.h	/^    string m_sWorkspace;$/;"	m	class:FitResult
+m_sWorkspaceName	src/RankingTool.h	/^    std::string m_sWorkspaceName = "combined";$/;"	m	class:Engine
+m_setStrNPs	src/RankingTool.h	/^    set<string> m_setStrNPs;$/;"	m	class:FitResult
+m_systs	src/Systematics.h	/^    unique_ptr<vector<SystematicInfo*>> m_systs;$/;"	m	class:Systematics
+m_vars	src/Variables.h	/^    unique_ptr<vector<VariableInfo*>> m_vars;$/;"	m	class:Variables
+m_ws	src/WorkspaceTool.h	/^  RooWorkspace *m_ws;$/;"	m	class:WorkspaceTool
+main	exec/main.cpp	/^int main(\/*int argc, char *argv[]*\/)$/;"	f
+makeYield	src/HistTool.cpp	/^void HistTool::makeYield(const Config* c) const$/;"	f	class:HistTool
+manipulate	src/DrawStackTool.cpp	/^void DrawStackTool::manipulate(Config* c)$/;"	f	class:DrawStackTool
+manipulate	src/HistTool.cpp	/^void HistTool::manipulate(Config* c) $/;"	f	class:HistTool
+n_bins	src/Variables.h	/^        : name(nm), name_tex(nmtex), n_rebin(rb), binning(bing), n_bins(n) {}$/;"	f	class:VariableInfo
+n_bins	src/Variables.h	/^    std::size_t n_bins;$/;"	m	class:VariableInfo
+n_rebin	src/Variables.h	/^    unsigned n_rebin;$/;"	m	class:VariableInfo
+name	src/Processes.h	/^    string name; \/\/ same as histogram perfix$/;"	m	class:ProcessInfo
+name	src/Regions.h	/^    string name;$/;"	m	class:RegionInfo
+name	src/Systematics.h	/^    string name;$/;"	m	class:SystematicInfo
+name	src/Variables.h	/^    string name;$/;"	m	class:VariableInfo
+name	src/WorkspaceTool.h	/^  std::string name;$/;"	m	struct:NPInfo
+name_tex	src/Processes.h	/^    string name_tex;$/;"	m	class:ProcessInfo
+name_tex	src/Regions.h	/^    string name_tex;$/;"	m	class:RegionInfo
+name_tex	src/Systematics.h	/^    string name_tex;$/;"	m	class:SystematicInfo
+name_tex	src/Variables.h	/^    string name_tex;$/;"	m	class:VariableInfo
+noexcept	src/Config.h	/^           const Regions* rs, const Variables* vs, const Systematics* ss=nullptr) noexcept;$/;"	m	class:Config
+noexcept	src/Config.h	/^    BasicInfo(const string& ecm, const string& lumi) noexcept;$/;"	m	class:BasicInfo
+noexcept	src/Config.h	/^    ~Config() noexcept;$/;"	m	class:Config
+noexcept	src/Processes.h	/^    Processes() noexcept;$/;"	m	class:Processes
+normFactors	src/Processes.cpp	/^double Processes::normFactors(ProcessInfo* p) const$/;"	f	class:Processes
+norm_factor	src/Processes.h	/^    double norm_factor = 1.0; \/\/ fitted norm$/;"	m	class:ProcessInfo
+old	src/RankingTool.h	/^    Engine& operator=(Engine& old) = delete;$/;"	m	class:Engine
+old	src/RankingTool.h	/^    Engine(Engine& old) = delete;$/;"	m	class:Engine
+old	src/RankingTool.h	/^    FitResult& operator=(FitResult& old) = delete;$/;"	m	class:FitResult
+old	src/RankingTool.h	/^    FitResult(FitResult& old) = delete;$/;"	m	class:FitResult
+operator <	src/Processes.h	/^    bool operator< (const ProcessInfo& p) const $/;"	f	class:ProcessInfo
+operator >	src/Processes.h	/^    bool operator> (const ProcessInfo& p) const $/;"	f	class:ProcessInfo
+output_path	src/HistTool.h	/^    string output_path;$/;"	m	class:HistTool
+override	src/CompTool.h	/^    virtual bool check(const Config* c) const override;$/;"	m	class:CompTool
+override	src/CompTool.h	/^    virtual void run(const Config* c) const override;$/;"	m	class:CompTool
+override	src/CompTool.h	/^    virtual ~CompTool() override;$/;"	m	class:CompTool
+override	src/DrawStackTool.h	/^    virtual bool check(const Config* c) const override;$/;"	m	class:DrawStackTool
+override	src/DrawStackTool.h	/^    virtual void manipulate(Config* c) override;$/;"	m	class:DrawStackTool
+override	src/DrawStackTool.h	/^    virtual void run(const Config* c) const override;$/;"	m	class:DrawStackTool
+override	src/DrawStackTool.h	/^    virtual ~DrawStackTool() override;$/;"	m	class:DrawStackTool
+override	src/SystCompTool.h	/^  virtual bool check(const Config* c) const override;$/;"	m	class:SystCompTool
+override	src/SystCompTool.h	/^  virtual void paint(const Config* c) const override;$/;"	m	class:SystCompTool
+override	src/SystCompTool.h	/^  virtual void run(const Config* c) const override;$/;"	m	class:SystCompTool
+paint	src/CompTool.cpp	/^void CompTool::paint(const Config* c) const$/;"	f	class:CompTool
+paint	src/DrawStackTool.cpp	/^void DrawStackTool::paint(const Config* c) const$/;"	f	class:DrawStackTool
+paint	src/SystCompTool.cpp	/^void SystCompTool::paint(const Config* c) const$/;"	f	class:SystCompTool
+paletteSysts	src/Utils.h	/^    static vector<pair<unsigned, unsigned>> paletteSysts = {         $/;"	m	namespace:Utils
+parameter	src/CompTool.h	/^    std::string parameter;$/;"	m	class:CompInfo
+print	src/Utils.h	/^    static void print(const char* fmt)$/;"	f	class:Tools
+print	src/Utils.h	/^    static void print(const char* fmt, T value, Targs ... args)$/;"	f	class:Tools
+printModelObservables	src/WorkspaceTool.cpp	/^void WorkspaceTool::printModelObservables()$/;"	f	class:WorkspaceTool
+printNPs	src/WorkspaceTool.cpp	/^void WorkspaceTool::printNPs()$/;"	f	class:WorkspaceTool
+printNumberOfEvents	src/WorkspaceTool.cpp	/^void WorkspaceTool::printNumberOfEvents(RooAbsPdf *pdf) $/;"	f	class:WorkspaceTool
+printSubChannels	src/WorkspaceTool.cpp	/^void WorkspaceTool::printSubChannels()$/;"	f	class:WorkspaceTool
+println	src/Utils.h	/^    static void println(const char* fmt)$/;"	f	class:Tools
+println	src/Utils.h	/^    static void println(const char* fmt, T value, Targs ... args)$/;"	f	class:Tools
+process	src/Processes.h	/^    eProcess process;$/;"	m	class:ProcessInfo
+process_name	src/Processes.h	/^    string process_name;$/;"	m	class:ProcessInfo
+processes	src/Config.h	/^    const Processes* processes;$/;"	m	class:Config
+ps	src/Processes.h	/^    Processes& operator=(Processes& ps) = delete;$/;"	m	class:Processes
+ps	src/Processes.h	/^    Processes(Processes& ps) = delete;$/;"	m	class:Processes
+ratio_high	src/CompTool.h	/^    double ratio_high = 1.24;$/;"	m	class:CompInfo
+ratio_high	src/DrawStackTool.h	/^    double ratio_high = 1.24;$/;"	m	class:DrawStackInfo
+ratio_low	src/CompTool.h	/^    double ratio_low = 0.76;$/;"	m	class:CompInfo
+ratio_low	src/DrawStackTool.h	/^    double ratio_low = 0.76;$/;"	m	class:DrawStackInfo
+ratio_tex	src/CompTool.h	/^    std::string ratio_tex = "Ratio";$/;"	m	class:CompInfo
+rbg	src/Processes.h	/^    int rbg = 0xFFFFFF; \/\/ TODO: master of color platte$/;"	m	class:ProcessInfo
+regions	src/Config.h	/^    const Regions* regions;$/;"	m	class:Config
+rs	src/Regions.h	/^    Regions& operator=(Regions& rs) = delete;$/;"	m	class:Regions
+rs	src/Regions.h	/^    Regions(Regions& rs) = delete;$/;"	m	class:Regions
+rs	src/Systematics.h	/^    Systematics& operator=(Systematics& rs) = delete;$/;"	m	class:Systematics
+rs	src/Systematics.h	/^    Systematics(Systematics& rs) = delete;$/;"	m	class:Systematics
+run	src/CompTool.cpp	/^void CompTool::run(const Config* c) const$/;"	f	class:CompTool
+run	src/DrawStackTool.cpp	/^void DrawStackTool::run(const Config* c) const$/;"	f	class:DrawStackTool
+run	src/SystCompTool.cpp	/^void SystCompTool::run(const Config* c) const$/;"	f	class:SystCompTool
+run_noratio	src/CompTool.cpp	/^void CompTool::run_noratio(const Config* c) const$/;"	f	class:CompTool
+setManipulated	src/Config.h	/^    void setManipulated(bool m) { m_manipulated = m; }$/;"	f	class:Config
+setVerboseLevel	src/WorkspaceTool.h	/^  inline void setVerboseLevel(VerboseLevel lvl) { m_lvl = lvl; } $/;"	f	class:WorkspaceTool
+shape_only	src/CompTool.h	/^    bool shape_only = false;$/;"	m	class:CompInfo
+signal_scale	src/DrawStackTool.h	/^    double signal_scale = 100.;$/;"	m	class:DrawStackInfo
+systString	src/Utils.cpp	/^string systString(const SystematicInfo* s)$/;"	f	namespace:Utils
+systematic_histograms	src/Processes.h	/^    std::unordered_map<std::string, TH1*> systematic_histograms;$/;"	m	class:ProcessInfo
+systematics	src/Config.cpp	/^    : basic(b), processes(ps), regions(rs), variables(vs), systematics(ss)$/;"	f
+systematics	src/Config.h	/^    const Systematics* systematics;$/;"	m	class:Config
+test_hadhad	examples/Example.h	/^void test_hadhad(const std::string& filename)$/;"	f
+test_hadhad_NonRes	examples/Example_NonRes.h	/^void test_hadhad_NonRes(const std::string& filename)$/;"	f
+test_hadhad_WtDS	examples/Example_WtDS.h	/^void test_hadhad_WtDS(const std::string& filename)$/;"	f
+test_hadhad_WtGen	examples/Example_WtGen.h	/^void test_hadhad_WtGen(const std::string& filename)$/;"	f
+test_hadhad_WtOTF	examples/Example_WtOTF.h	/^void test_hadhad_WtOTF(const std::string& filename)$/;"	f
+test_hadhad_ZtautauMG	examples/Example_ZtautauMG.h	/^void test_hadhad_ZtautauMG(const std::string& filename)$/;"	f
+test_hadhad_klambda	examples/Example_klambda.h	/^void test_hadhad_klambda(const std::string& filename="default")$/;"	f
+test_hadhad_yield	examples/Example_yield.h	/^void test_hadhad_yield(const std::string& filename)$/;"	f
+test_ranking	examples/Example_Ranking.h	/^int test_ranking()$/;"	f
+test_ws_info	examples/Example_ws.h	/^void test_ws_info(const std::string& filename) {$/;"	f
+test_zifeng_hadhad	examples/Example_zifeng.h	/^void test_zifeng_hadhad()$/;"	f
+transformFloat	src/HistNameTool.cpp	/^    std::string transformFloat(float KLambda){$/;"	f	namespace:HistNameTool
+ttH	src/Processes.h	/^    H, VH, WH, ZH, ttH, ggH, VBFH,$/;"	m	class:eProcess
+ttV	src/Processes.h	/^    WJETS, WtauvJETS, WtauvHF, WtauvLF, WlvJETS, WlvLF, WlvHF, ttV,$/;"	m	class:eProcess
+type	src/Processes.h	/^    eProcessType type;$/;"	m	class:ProcessInfo
+type	src/Regions.h	/^        : name(nm), name_tex(nmtex), type(tp) {}$/;"	f	class:RegionInfo
+type	src/Regions.h	/^    eRegionType type;$/;"	m	class:RegionInfo
+type	src/Systematics.h	/^        : name(nm), name_tex(nmtex), type(tp) {}$/;"	f	class:SystematicInfo
+type	src/Systematics.h	/^    eSystematicType type;$/;"	m	class:SystematicInfo
+uncHessianPDF4LHC	src/SystCompTool.cpp	/^void SystCompTool::uncHessianPDF4LHC(const Config* c) const$/;"	f	class:SystCompTool
+updateHistogramPtr	src/Config.cpp	/^void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)$/;"	f	class:Config
+value	src/WorkspaceTool.h	/^  double value;$/;"	m	struct:NPInfo
+variables	src/Config.h	/^    const Variables* variables;$/;"	m	class:Config
+vs	src/Variables.h	/^    Variables& operator=(Variables& vs) = delete;$/;"	m	class:Variables
+vs	src/Variables.h	/^    Variables(Variables& vs) = delete;$/;"	m	class:Variables
+~CompTool	src/CompTool.cpp	/^CompTool::~CompTool()$/;"	f	class:CompTool
+~DrawStackTool	src/DrawStackTool.cpp	/^DrawStackTool::~DrawStackTool()$/;"	f	class:DrawStackTool
+~Engine	src/RankingTool.h	/^    virtual ~Engine()$/;"	f	class:Engine
+~FitResult	src/RankingTool.h	/^    ~FitResult()$/;"	f	class:FitResult
+~Processes	src/Processes.cpp	/^Processes::~Processes()$/;"	f	class:Processes
+~Regions	src/Regions.cpp	/^Regions::~Regions()$/;"	f	class:Regions
+~Systematics	src/Systematics.cpp	/^Systematics::~Systematics()$/;"	f	class:Systematics
+~Variables	src/Variables.cpp	/^Variables::~Variables()$/;"	f	class:Variables

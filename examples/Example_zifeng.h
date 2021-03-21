@@ -109,7 +109,7 @@ void test_zifeng_hadhad()
                 c->load("/home/zifeng/HistCxAOD/hist-OUTPUT_all.root", "Preselection");
                 c->updateHistogramPtr(rs->content()->front(), v);
                 DrawStackTool* ds = new DrawStackTool(info);
-                ds->output_path = "/home/zifeng/HistCxAOD/plots";
+                ds->output_path = "/home/zifeng/HistCxAOD/bbtthists_plots";
                 if (ds->check(c))
                 {
                         ds->manipulate(c);

@@ -9,14 +9,14 @@ using namespace std;
 namespace fs = std::filesystem;
 
 BasicInfo::BasicInfo(const string& ecm, const string& lumi) noexcept
-    : ecm(ecm), luminosity(lumi)
+: ecm(ecm), luminosity(lumi)
 {
 
 }
 
 Config::Config(const BasicInfo* b, const Processes* ps, 
-               const Regions* rs, const Variables* vs, const Systematics* ss) noexcept
-    : basic(b), processes(ps), regions(rs), variables(vs), systematics(ss)
+        const Regions* rs, const Variables* vs, const Systematics* ss) noexcept
+: basic(b), processes(ps), regions(rs), variables(vs), systematics(ss)
 {
     m_fin = nullptr;
     m_dir = "";
@@ -66,11 +66,16 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
     current_variable = v;
 
     TDirectory* d = nullptr;
-    if (m_dir != "")
-        d = (TDirectory*)m_fin->Get(m_dir.c_str());
-    else
-        d = (TDirectory*)m_fin->GetMotherDir();
-
+    d = (TDirectory*)m_fin->Get(m_dir.c_str());
+    //    if (m_dir != "")
+    //        d = (TDirectory*)m_fin->Get(m_dir.c_str());
+    //    else
+    //    {   
+    //        clog << "Config.cpp: WARNING: You are using \"\" i.e. empty TDirectory as parameter. Check load function in you Examples carefully,\
+    //        this often cause ROOT segment break error without throw a proper error!"
+    //        << endl;
+    //        d = (TDirectory*)m_fin->GetMotherDir();
+    //    }
     for (ProcessInfo* p : *(processes->content()))
     {
         const std::string& fullname = Utils::histString(p, r, v);
@@ -97,8 +102,8 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
                 TDirectory* d_syst = nullptr;
                 d_syst = (TDirectory*)d->Get("Systematics");
                 if (s->type == eSystematicType::TwoSide &&
-                    d_syst->GetListOfKeys()->Contains(fullnameWithSystUp.c_str()) &&
-                    d_syst->GetListOfKeys()->Contains(fullnameWithSystDown.c_str()))
+                        d_syst->GetListOfKeys()->Contains(fullnameWithSystUp.c_str()) &&
+                        d_syst->GetListOfKeys()->Contains(fullnameWithSystDown.c_str()))
                 {
                     TH1* hUp = (TH1*)d_syst->Get(fullnameWithSystUp.c_str());
                     TH1* hDown = (TH1*)d_syst->Get(fullnameWithSystDown.c_str());
@@ -106,7 +111,7 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
                     Utils::histAssignSyst(hDown, p, Utils::systString(s) + "__1down");
                 }
                 else if (s->type == eSystematicType::OneSide && 
-                         d_syst->GetListOfKeys()->Contains(fullnameWithSystUp.c_str()))
+                        d_syst->GetListOfKeys()->Contains(fullnameWithSystUp.c_str()))
                 {
                     TH1* hUp = (TH1*)d_syst->Get(fullnameWithSystUp.c_str());
                     Utils::histAssignSyst(hUp, p, Utils::systString(s) + "__1up");
@@ -118,6 +123,6 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
             }
         }
     }
-    
+
 }
 

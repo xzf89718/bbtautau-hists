@@ -40,6 +40,8 @@ public:
     virtual void paint(const Config* c) const;
     // drawing
     virtual void run(const Config* c) const override;
+    // drawing without ratio
+    void run_noratio(const Config* c) const;
 
 protected:
     const CompInfo* m_info;

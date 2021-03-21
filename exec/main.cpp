@@ -10,6 +10,7 @@ int main(/*int argc, char *argv[]*/)
     gROOT->SetBatch(1);
     
     cout << "Hello!" << endl;
+    hadhad_klsignals_examples("/home/zifeng/HistCxAOD/KLReweight/output/KLRecoReweigt_py8.root");
 
     // test_hadhad("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-klambda-v2.root");
 
@@ -42,7 +43,6 @@ int main(/*int argc, char *argv[]*/)
 
     // test_ranking();
 
-    cout << "Ciao!" << endl;
-
+    cout << "Finish Jobs!" << endl;
     return 0;
 }
