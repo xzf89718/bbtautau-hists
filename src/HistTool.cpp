@@ -123,7 +123,7 @@ void HistTool::makeYield(const Config* c, const std::string& tag) const
         int to = p->histogram->GetNbinsX() + 1;
         int nentries = p->histogram->GetEntries();
         double integral = p->histogram->IntegralAndError(from, to, error, "");
-        double eOverI = *(long*)(&integral) ? error / integral : 0.;
+        double eOverI = integral > (double)0. ? error / integral : 0.;
         fout << FIVE_COLUMN_TABLE(p->name, nentries, integral * p->norm_factor, error * p->norm_factor, eOverI);
 
         for (auto& pp : p->systematic_histograms) {
