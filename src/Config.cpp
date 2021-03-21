@@ -66,10 +66,7 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
     current_variable = v;
 
     TDirectory* d = nullptr;
-    if (m_dir != "")
-        d = (TDirectory*)m_fin->Get(m_dir.c_str());
-    else
-        d = (TDirectory*)m_fin->GetMotherDir();
+    d = m_fin->GetDirectory(m_dir.c_str());
 
     for (ProcessInfo* p : *(processes->content()))
     {
