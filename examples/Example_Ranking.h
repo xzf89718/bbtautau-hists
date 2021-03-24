@@ -11,43 +11,49 @@ using namespace std;
     << std::left << setw(15) << C \
     << std::left << setw(15) << D << endl;
 
-int test_ranking()
+int test_ranking(const std::string& filename, const std::string& outname)
 {
+    WorkspaceInfo* info = new WorkspaceInfo();
+    info->path = filename;
+    info->workspace_name = "combined";
+    info->use_asimov = false;
+
     auto timeStart = steady_clock::now();
-    ofstream output("/tmp/zhangbw/Ranking_SM_oneAsim.txt");
+    ofstream output(outname);
 
-    Engine* cEgn = new Engine();
-    cEgn->RunRanking();
+    RankingEngine* egn = new RankingEngine(info);
+    egn->RunRanking();
 
-    auto val = cEgn->GetFittedPOI();
-    auto res = cEgn->GetFittedPOIWithFixedNPs();
+    auto val = egn->GetFittedPOI();
+    auto res = egn->GetFittedPOIWithFixedNPs();
 
     output << OUTPUT_TABLE_4("FIXED NP", "POI_VALUE", "POI_ERROR_UP", "POI_ERROR_DOWN");
 
     Tools::println("% ->      VALUE %      ERROR_UP %      ERROR_DOWN %",
         "No fixed NP",
-        val[FitResult::ePOI::VALUE],
-        val[FitResult::ePOI::ERRORUP],
-        val[FitResult::ePOI::ERRORDOWN]);
+        val[WorkspaceTool::ePOI::VALUE],
+        val[WorkspaceTool::ePOI::ERRORUP],
+        val[WorkspaceTool::ePOI::ERRORDOWN]);
     output << OUTPUT_TABLE_4("None",
-        val[FitResult::ePOI::VALUE],
-        val[FitResult::ePOI::ERRORUP],
-        val[FitResult::ePOI::ERRORDOWN])
+        val[WorkspaceTool::ePOI::VALUE],
+        val[WorkspaceTool::ePOI::ERRORUP],
+        val[WorkspaceTool::ePOI::ERRORDOWN])
 
     for (auto& p : res) {
         Tools::println("% Fixed ->      VALUE %      ERROR_UP %      ERROR_DOWN %",
             p.first,
-            p.second[FitResult::ePOI::VALUE],
-            p.second[FitResult::ePOI::ERRORUP],
-            p.second[FitResult::ePOI::ERRORDOWN]);
+            p.second[WorkspaceTool::ePOI::VALUE],
+            p.second[WorkspaceTool::ePOI::ERRORUP],
+            p.second[WorkspaceTool::ePOI::ERRORDOWN]);
         output << OUTPUT_TABLE_4(
             p.first,
-            p.second[FitResult::ePOI::VALUE],
-            p.second[FitResult::ePOI::ERRORUP],
-            p.second[FitResult::ePOI::ERRORDOWN]);
+            p.second[WorkspaceTool::ePOI::VALUE],
+            p.second[WorkspaceTool::ePOI::ERRORUP],
+            p.second[WorkspaceTool::ePOI::ERRORDOWN]);
     }
 
-    delete cEgn;
+    delete info;
+    delete egn;
 
     auto timeEnd = steady_clock::now();
     Tools::println("Spent [%ms]", duration_cast<milliseconds>(timeEnd-timeStart).count());
@@ -55,11 +61,11 @@ int test_ranking()
     return EXIT_SUCCESS;
 }
 
-int test_ranking_plot()
+int test_ranking_plot(const char* in, const char* out)
 {
-    Plotter* plt = new Plotter();
-    plt->LoadFromTxt("/tmp/zhangbw/Ranking_SM_oneAsim.txt");
-    plt->Draw("/tmp/zhangbw/Ranking_SM_oneAsim.png");
+    RankingPlotter* plt = new RankingPlotter();
+    plt->LoadFromTxt(in);
+    plt->Draw(out);
 
     delete plt;
 
