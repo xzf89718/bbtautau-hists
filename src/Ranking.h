@@ -2,11 +2,14 @@
  * @brief: make this tool as a child of WorkspaceTool
  */
 
-#ifndef RANKINGTOOL_H
-#define RANKINGTOOL_H
+#ifndef RANKING_H
+#define RANKING_H
 
 #include "StatisticTool.h"
 #include "WorkspaceTool.h"
+
+#include <fstream>
+using std::ofstream;
 
 static mutex gMutex;
 
@@ -31,7 +34,7 @@ public:
     RankingEngine& operator=(RankingEngine& old) = delete;
 
 public:
-    virtual void RunRanking()
+    virtual void Execute() override
     {
         vector<thread> vThr;
 
@@ -69,6 +72,39 @@ public:
     map<string, map<WorkspaceTool::ePOI, double>> GetFittedPOIWithFixedNPs()
     {
         return m_mapAltPOIs;
+    }
+
+public:
+    void WriteToTxt(const std::string& outname)
+    {
+        /// @todo fix the copying
+        auto val = GetFittedPOI();
+        auto res = GetFittedPOIWithFixedNPs();
+        ofstream output(outname);
+        output << OUTPUT_TABLE_4("FIXED NP", "POI_VALUE", "POI_ERROR_UP", "POI_ERROR_DOWN");
+
+        Tools::println("% ->      VALUE %      ERROR_UP %      ERROR_DOWN %",
+            "No fixed NP",
+            val[WorkspaceTool::ePOI::VALUE],
+            val[WorkspaceTool::ePOI::ERRORUP],
+            val[WorkspaceTool::ePOI::ERRORDOWN]);
+        output << OUTPUT_TABLE_4("None",
+            val[WorkspaceTool::ePOI::VALUE],
+            val[WorkspaceTool::ePOI::ERRORUP],
+            val[WorkspaceTool::ePOI::ERRORDOWN])
+
+        for (auto& p : res) {
+            Tools::println("% Fixed ->      VALUE %      ERROR_UP %      ERROR_DOWN %",
+                p.first,
+                p.second[WorkspaceTool::ePOI::VALUE],
+                p.second[WorkspaceTool::ePOI::ERRORUP],
+                p.second[WorkspaceTool::ePOI::ERRORDOWN]);
+            output << OUTPUT_TABLE_4(
+                p.first,
+                p.second[WorkspaceTool::ePOI::VALUE],
+                p.second[WorkspaceTool::ePOI::ERRORUP],
+                p.second[WorkspaceTool::ePOI::ERRORDOWN]);
+        }
     }
 
 protected:
@@ -172,9 +208,9 @@ public:
         gROOT->SetStyle("ATLAS");
         gStyle->SetErrorX(0.5);
 
-        TCanvas* c1 = new TCanvas("c", "", 900, 1500);
+        TCanvas* c1 = new TCanvas("c", "", 900, 1200);
         c1->SetLeftMargin(0.20);
-        c1->SetBottomMargin(0.60);
+        c1->SetBottomMargin(0.50);
         TH1* h_one = new TH1D("one", "", nNPs, 0, nNPs);
         TH1* h_hi = new TH1D("hi", "", nNPs, 0, nNPs);
         TH1* h_lo = new TH1D("lo", "", nNPs, 0, nNPs);
@@ -193,7 +229,7 @@ public:
         h_hi->SetFillColor(kRed);
         h_hi->SetFillStyle(3245);
         h_hi->GetXaxis()->LabelsOption("v");
-        h_hi->GetYaxis()->SetRangeUser(-0.005, 0.005);
+        h_hi->GetYaxis()->SetRangeUser(-0.0008, 0.0008);
         // h_hi->GetYaxis()->SetRangeUser(-0.5, 0.5);
         h_hi->GetYaxis()->SetTitleOffset(2);
         h_hi->GetYaxis()->SetTitle("#Delta#mu");
@@ -223,17 +259,19 @@ public:
         text->SetNDC();
         text->SetTextFont(72);
         text->SetTextSize(0.050);
-        text->DrawLatex(0.21, 0.96, "ATLAS");
+        text->DrawLatex(0.50, 0.52, "ATLAS");
         text->SetTextFont(42);
-        text->DrawLatex(0.21 + 0.18, 0.96, "Internal");
+        text->DrawLatex(0.50 + 0.18, 0.52, "Internal");
         text->SetTextSize(0.045);
         text->SetTextSize(0.040);
-        text->DrawLatex(0.60, 0.96, "Fit to Asimov (#mu=0.1)");
+        text->DrawLatex(0.60, 0.96, "Fit to Data");
 
         c1->SaveAs(output.c_str());
 
         delete h_hi;
         delete h_lo;
+        delete legend;
+        delete text;
         delete c1;
     }
 
@@ -244,4 +282,4 @@ private:
     map<string, std::size_t> m_mapLookUp;
 };
 
-#endif // RANKINGTOOL_H
+#endif

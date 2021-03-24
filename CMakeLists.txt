@@ -44,7 +44,7 @@ add_library(HistToolLib SHARED
 add_library(WorkspaceToolLib SHARED
     src/WorkspaceTool.cpp
     src/Pulls.cpp
-    src/RankingTool.cpp)
+    src/Ranking.cpp)
 
 target_link_libraries(UtilsLib PUBLIC ${ROOT_LIBRARIES})
 target_link_libraries(ConfigLib PUBLIC stdc++fs ${ROOT_LIBRARIES})

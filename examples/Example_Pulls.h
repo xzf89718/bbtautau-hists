@@ -1,9 +1,9 @@
-#include "Ranking.h"
+#include "Pulls.h"
 #include <iostream>
 
 using namespace std;
 
-int test_ranking(const std::string& filename, const std::string& outname)
+int test_pulls(const std::string& filename, const std::string& outname)
 {
     WorkspaceInfo* info = new WorkspaceInfo();
     info->path = filename;
@@ -12,7 +12,7 @@ int test_ranking(const std::string& filename, const std::string& outname)
 
     auto timeStart = steady_clock::now();
 
-    RankingEngine* egn = new RankingEngine(info);
+    PullsEngine* egn = new PullsEngine(info);
     egn->Execute();
     egn->WriteToTxt(outname);
 
@@ -25,9 +25,9 @@ int test_ranking(const std::string& filename, const std::string& outname)
     return EXIT_SUCCESS;
 }
 
-int test_ranking_plot(const char* in, const char* out)
+int test_pulls_plot(const char* in, const char* out)
 {
-    RankingPlotter* plt = new RankingPlotter();
+    PullsPlotter* plt = new PullsPlotter();
     plt->LoadFromTxt(in);
     plt->Draw(out);
 

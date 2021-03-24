@@ -16,6 +16,7 @@
 #include <sstream>
 #include <filesystem>
 
+#include "CommonInclude.h"
 #include "CommonInclude_WS.h"
 #include "Utils_WS.h"
 #include "Utils.h"
