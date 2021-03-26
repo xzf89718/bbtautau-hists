@@ -94,52 +94,57 @@ public:
         gROOT->SetStyle("ATLAS");
         gStyle->SetErrorX(0.5);
 
-        TCanvas* c1 = new TCanvas("c", "", 1400, 800);
+        TCanvas* c1 = new TCanvas("c", "", 1800, 800);
         c1->SetBottomMargin(0.50);
         c1->SetLeftMargin(0.05);
         c1->SetRightMargin(0.025);
 
-        TMultiGraph* mg = new TMultiGraph();
-        
-        double x[2] = {0.0, m_fCounter - 0.5};
-        double y[2] = {0.0, 0.0};
-        double ex[2] = {0.0, 0.0};
-        double ey_two[2] = {2.0, 2.0};
-        double ey_one[2] = {1.0, 1.0};
-        TGraphErrors* g_two = new TGraphErrors(2, x, y, ex, ey_two);
-        TGraphErrors* g_one = new TGraphErrors(2, x, y, ex, ey_one);
-        TGraphAsymmErrors* g_nps = new TGraphAsymmErrors(vLabels.size(), 
-            &vX[0], &vY[0], &vX_ErrHi[0], &vX_ErrLo[0], &vY_ErrHi[0], &vY_ErrLo[0]);
+        TH1* h = new TH1D("h", "", vLabels.size(), 0, vLabels.size());
+        TH1* h2 = new TH1D("h", "", vLabels.size(), 0, vLabels.size());
 
-        g_two->SetLineWidth(0);
-        g_two->SetFillColor(kYellow+2);
-        g_one->SetLineWidth(0);
-        g_one->SetFillColor(kGreen+2);
-        g_nps->SetMarkerSize(1);
-        g_nps->SetMarkerColor(kBlack);
-        g_nps->SetMarkerStyle(20);
+        h2->GetYaxis()->SetTitle("Pull");
+        h2->GetYaxis()->SetTitleOffset(0.5);
+        h2->GetYaxis()->SetTitleSize(0.025);
+        h2->GetYaxis()->SetLabelSize(0.025);
+        h2->GetYaxis()->SetRangeUser(-4.2, 4.2);
+        h2->GetXaxis()->SetRangeUser(0., m_fCounter - 0.5);
+        h2->GetXaxis()->LabelsOption("v");
+        h2->GetXaxis()->SetLabelSize(0.025);
 
-        mg->Add(g_two, "E3");
-        mg->Add(g_one, "E3");
-        mg->Add(g_nps, "PE1");
+        h->SetLineWidth(0);
+        h->SetFillColor(kGreen-9);
+        h->SetMarkerSize(0);
 
-        mg->Draw("SAME");
+        h2->SetLineWidth(0);
+        h2->SetFillColor(kYellow-7);
+        h2->SetMarkerSize(0);
 
-        mg->GetYaxis()->SetTitle("Pull");
-        mg->GetYaxis()->SetTitleOffset(0.5);
-        mg->GetYaxis()->SetTitleSize(0.03);
-        mg->GetYaxis()->SetLabelSize(0.03);
-        mg->GetYaxis()->SetRangeUser(-4.2, 4.2);
-        mg->GetXaxis()->SetRangeUser(0., m_fCounter - 0.5);
-        mg->GetXaxis()->LabelsOption("v");
-        mg->GetXaxis()->SetLabelOffset(0.01);
-        mg->GetXaxis()->SetLabelSize(0.02);
         for (std::size_t i = 1; i <= vLabels.size(); ++i)
         {
             cout << i << ",  " << vLabels.at(i-1).c_str() << endl;
-            auto ibin = mg->GetXaxis()->FindBin((double)i - 0.5);
-            mg->GetXaxis()->SetBinLabel(ibin, Utils::systStringShort(vLabels.at(i-1)).c_str());
+            //auto ibin = h->GetXaxis()->FindBin((double)i - 0.5);
+            h->SetBinContent(i, 0.0);
+            h2->SetBinContent(i, 0.0);
+            h->SetBinError(i, 1.0);
+            h2->SetBinError(i, 2.0);
+            h2->GetXaxis()->SetBinLabel(i, Utils::systStringShort(vLabels.at(i-1)).c_str());
         }
+
+        h->LabelsDeflate("X");
+        h->LabelsDeflate("Y");
+        
+        h2->GetXaxis()->Paint("R");
+        h2->Draw("E2");
+        h->Draw("E2 SAME");
+        
+        TGraphAsymmErrors* g_nps = new TGraphAsymmErrors(vLabels.size(), 
+            &vX[0], &vY[0], &vX_ErrHi[0], &vX_ErrLo[0], &vY_ErrHi[0], &vY_ErrLo[0]);
+
+        g_nps->SetMarkerSize(1.0);
+        g_nps->SetMarkerColor(kBlack);
+        g_nps->SetMarkerStyle(21);
+
+        g_nps->Draw("P E0 SAME");
 
         TLegend* legend = new TLegend(0.75, 0.85, 0.90, 0.93);
         legend->SetTextFont(42);
@@ -147,27 +152,26 @@ public:
         legend->SetBorderSize(0);
         legend->SetTextSize(0.035);
         legend->SetTextAlign(12);
-        legend->AddEntry(g_one, "1#sigma");
-        legend->AddEntry(g_two, "2#sigma");
+        legend->AddEntry(h, "1#sigma");
+        legend->AddEntry(h2, "2#sigma");
         legend->Draw("same");
 
         TLatex *text = new TLatex();
         text->SetNDC();
         text->SetTextFont(72);
-        text->SetTextSize(0.050);
-        text->DrawLatex(0.20, 0.96, "ATLAS");
-        text->SetTextFont(42);
-        text->DrawLatex(0.20 + 0.1, 0.96, "Internal");
-        text->SetTextSize(0.045);
         text->SetTextSize(0.040);
-        text->DrawLatex(0.75, 0.96, "Fit to Data");
+        text->DrawLatex(0.10, 0.96, "ATLAS");
+        text->SetTextFont(42);
+        text->DrawLatex(0.10 + 0.08, 0.96, "Internal");
+        text->SetTextSize(0.035);
+        text->SetTextSize(0.030);
+        text->DrawLatex(0.85, 0.96, "Fit to Data");
 
         c1->SaveAs(output.c_str());
 
         delete g_nps;
-        delete g_two;
-        delete g_one;
-        delete mg;
+        delete h;
+        delete h2;
         delete legend;
         delete text;
         delete c1;

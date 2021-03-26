@@ -104,6 +104,9 @@ public:
         Tools::println("%", m_cWs);
         Tools::println("%", m_cSBModel->GetName());
 
+        const RooArgSet* observables = static_cast<const RooArgSet*>(m_cSBModel->GetObservables());
+        Tools::println("Observables:");
+        PrintObservables(observables);
         Tools::println("POIs:");
         PrintParametersOfInterest();
         Tools::println("NPs:");
@@ -223,6 +226,11 @@ private:
     void PrintParametersOfInterest()
     {
         _PrintParameters(m_cPOIs);
+    }
+
+    void PrintObservables(const RooArgSet* cParaSet)
+    {
+        ITX([this](const RooAbsArg* v){ v->Print(); });
     }
 
     void GetSetOfNPs(const RooArgSet* cParaSet)
