@@ -138,7 +138,7 @@ public:
         {
             cout << i << ",  " << vLabels.at(i-1).c_str() << endl;
             auto ibin = mg->GetXaxis()->FindBin((double)i - 0.5);
-            mg->GetXaxis()->SetBinLabel(ibin, vLabels.at(i-1).c_str());
+            mg->GetXaxis()->SetBinLabel(ibin, Utils::systStringShort(vLabels.at(i-1)).c_str());
         }
 
         TLegend* legend = new TLegend(0.75, 0.85, 0.90, 0.93);

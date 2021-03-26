@@ -215,7 +215,7 @@ public:
         TH1* h_hi = new TH1D("hi", "", nNPs, 0, nNPs);
         TH1* h_lo = new TH1D("lo", "", nNPs, 0, nNPs);
         for (std::size_t i = 1; i <= nNPs; i++) {
-            h_hi->GetXaxis()->SetBinLabel(i, m_vData[i-1].fixedNP.c_str());
+            h_hi->GetXaxis()->SetBinLabel(i, Utils::systStringShort(m_vData[i-1].fixedNP).c_str());
             h_hi->SetBinContent(i, m_vData[i-1].deltaMuByHi);
             h_lo->SetBinContent(i, m_vData[i-1].deltaMuByLo);
             h_one->SetBinContent(i, 0);
@@ -228,15 +228,21 @@ public:
         h_hi->SetLineWidth(1);
         h_hi->SetFillColor(kRed);
         h_hi->SetFillStyle(3245);
+        h_hi->SetMarkerSize(0);
+        h_hi->GetXaxis()->SetLabelSize(0.036);
+        h_hi->GetXaxis()->SetTitleSize(0.036);
         h_hi->GetXaxis()->LabelsOption("v");
         h_hi->GetYaxis()->SetRangeUser(-0.0008, 0.0008);
         // h_hi->GetYaxis()->SetRangeUser(-0.5, 0.5);
+        h_hi->GetYaxis()->SetLabelSize(0.036);
+        h_hi->GetYaxis()->SetTitleSize(0.036);
         h_hi->GetYaxis()->SetTitleOffset(2);
         h_hi->GetYaxis()->SetTitle("#Delta#mu");
         h_lo->SetLineColor(kBlue);
         h_lo->SetLineWidth(1);
         h_lo->SetFillColor(kBlue);
         h_lo->SetFillStyle(3254);
+        h_lo->SetMarkerSize(0);
 
         h_one->SetLineColor(kRed+1);
         h_one->SetLineWidth(3);
@@ -251,8 +257,8 @@ public:
         legend->SetBorderSize(0);
         legend->SetTextSize(0.035);
         legend->SetTextAlign(12);
-        legend->AddEntry(h_hi, "+1#sigma post-fit impact on #mu");
-        legend->AddEntry(h_lo, "-1#sigma post-fit impact on #mu");
+        legend->AddEntry(h_hi, "+1#sigma post-fit impact on #mu", "f");
+        legend->AddEntry(h_lo, "-1#sigma post-fit impact on #mu", "f");
         legend->Draw("same");
 
         TLatex *text = new TLatex();

@@ -48,7 +48,7 @@ int main(/*int argc, char *argv[]*/)
 
     // test_ranking("/scratchfs/atlas/zhangbw/ResolvedStatAna/WSMaker_Group/output/Chris_HadHadWSI_v3.1_HH_13TeV_1_Systs_hadhad_SM_MVA_0/workspaces/combined/0.root", 
     //              "/workfs2/atlas/zhangbw/bbtautau-hists/output/Ranking_SM_oneAsim.txt");
-    // test_ranking_plot("/workfs2/atlas/zhangbw/bbtautau-hists/output/Ranking_SM_oneAsim.txt", "/workfs2/atlas/zhangbw/bbtautau-hists/output/Ranking_SM_oneAsim.png");
+    test_ranking_plot("/workfs2/atlas/zhangbw/bbtautau-hists/output/Ranking_SM_oneAsim.txt", "/workfs2/atlas/zhangbw/bbtautau-hists/output/Ranking_SM_oneAsim.png");
 
     // test_pulls("/scratchfs/atlas/zhangbw/ResolvedStatAna/WSMaker_Group/output/Chris_HadHadWSI_v3.1_HH_13TeV_1_Systs_hadhad_SM_MVA_0/workspaces/combined/0.root", 
     //            "/workfs2/atlas/zhangbw/bbtautau-hists/output/Pulls_SM.txt");

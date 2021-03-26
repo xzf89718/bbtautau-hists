@@ -29,6 +29,7 @@ namespace Utils {
     string histString(const ProcessInfo* p, const RegionInfo* r, const VariableInfo* v);
     string systString(const SystematicInfo* s);
     string histStringSyst(const ProcessInfo* p, const RegionInfo* r, const VariableInfo* v, const SystematicInfo* s);
+    string systStringShort(const string& sSyst);
 
     static vector<pair<unsigned, unsigned>> paletteSysts = {         
         {kViolet, kAzure},
