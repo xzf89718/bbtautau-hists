@@ -232,7 +232,8 @@ public:
         h_hi->GetXaxis()->SetLabelSize(0.036);
         h_hi->GetXaxis()->SetTitleSize(0.036);
         h_hi->GetXaxis()->LabelsOption("v");
-        h_hi->GetYaxis()->SetRangeUser(-0.0008, 0.0008);
+        double max_of_hist = std::max(std::abs(h_hi->GetMaximum()), std::abs(h_lo->GetMaximum()));
+        h_hi->GetYaxis()->SetRangeUser(-1.6*max_of_hist, 1.6*max_of_hist);
         // h_hi->GetYaxis()->SetRangeUser(-0.5, 0.5);
         h_hi->GetYaxis()->SetLabelSize(0.036);
         h_hi->GetYaxis()->SetTitleSize(0.036);
