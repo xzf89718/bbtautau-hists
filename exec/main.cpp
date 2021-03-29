@@ -39,7 +39,7 @@ int main(/*int argc, char *argv[]*/)
     // test_ws_info("/publicfs/atlas/atlasnew/higgs/hh2X/zhangbw/WSMakerOutput/Bowen_HadHadWSI_v2.ZgenTtbarNorm_HH_13TeV_ZgenTtbarNorm_Systs_hadhad_2HDM_MVA_300/workspaces/combined/300.root");
     // test_ws_info("/publicfs/atlas/atlasnew/higgs/hh2X/zhangbw/WSMakerOutput/Bowen_HadHadWSI_v1.ZgenTtbarNorm_HH_13TeV_ZgenTtbarNorm_Systs_hadhad_2HDM_BDT_300/workspaces/combined/300.root");
 
-    test_ws_info("/publicfs/atlas/atlasnew/higgs/hh2X/zhangbw/WSMakerOutput/Bowen_HadHadWSI_v2.ZgenTtbarNorm_HH_13TeV_ZgenTtbarNorm_Systs_hadhad_2HDM_MVA_500/workspaces/combined/500.root");
+    // test_ws_info("/publicfs/atlas/atlasnew/higgs/hh2X/zhangbw/WSMakerOutput/Bowen_HadHadWSI_v2.ZgenTtbarNorm_HH_13TeV_ZgenTtbarNorm_Systs_hadhad_2HDM_MVA_500/workspaces/combined/500.root");
     // test_ws_info("/publicfs/atlas/atlasnew/higgs/hh2X/zhangbw/WSMakerOutput/Bowen_HadHadWSI_v1.ZgenTtbarNorm_HH_13TeV_ZgenTtbarNorm_Systs_hadhad_2HDM_BDT_500/workspaces/combined/500.root");
 
     // test_ranking("/publicfs/atlas/atlasnew/higgs/hh2X/zhangbw/WSMakerOutput/Bowen_HadHadWSI_v2.ZgenTtbarNorm_HH_13TeV_ZgenTtbarNorm_Systs_hadhad_SM_MVA_0/workspaces/combined/0.root", 

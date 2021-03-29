@@ -25,11 +25,11 @@ int test_ranking(const std::string& filename, const std::string& outname)
     return EXIT_SUCCESS;
 }
 
-int test_ranking_plot(const char* in, const char* out)
+int test_ranking_plot(const std::string& in, const std::string& out)
 {
     RankingPlotter* plt = new RankingPlotter();
-    plt->LoadFromTxt(in);
-    plt->Draw(out);
+    plt->LoadFromTxt(in.c_str());
+    plt->Draw(out.c_str());
 
     delete plt;
 
