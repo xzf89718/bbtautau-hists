@@ -16,5 +16,5 @@ int main(int argc, char *argv[])
     }
 
     test_ranking(std::string(argv[1]), std::string(argv[2])+".txt");
-    //test_ranking_plot(std::string(argv[2])+".txt", std::string(argv[2])+".png");
+    test_ranking_plot(std::string(argv[2])+".txt", std::string(argv[2])+".png");
 }
