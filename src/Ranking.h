@@ -11,7 +11,6 @@
 #include <fstream>
 using std::ofstream;
 
-static mutex gMutex;
 
 class RankingEngine : public StatisticTool
 {
@@ -26,7 +25,10 @@ public:
     {
         for (auto& p : m_fits)
         {
-            delete p.second;
+            if (!p.second)
+            {
+                delete p.second;
+            }
         }
         m_fits.clear();
     }
@@ -36,16 +38,17 @@ public:
 public:
     virtual void Execute() override
     {
-        vector<thread> vThr;
-
         auto run = [this](const string& sNP, const double nMode) 
         {
-            lock_guard<mutex> lg(gMutex);
             string sPostFix = nMode > 0 ? "_Hi" : "_Lo";
             m_fits[sNP + sPostFix] = new WorkspaceTool(m_cInfo);
             m_fits[sNP + sPostFix]->FitWithFixedPara(sNP, m_fits["base"]->GetFittedNPs(), nMode, -1);
             // m_fits[sNP + sPostFix]->Check();
             m_mapAltPOIs[sNP + sPostFix] = m_fits[sNP + sPostFix]->GetCache(m_fits[sNP + sPostFix]->NameOfPOI());
+            if (!m_bCache)
+            {
+                delete m_fits[sNP + sPostFix];
+            }
         };
 
         m_fits["base"] = new WorkspaceTool(m_cInfo);
@@ -58,10 +61,13 @@ public:
         {
             for (double nMode : {1.0f, -1.0f})
             {
-                vThr.emplace_back(run, sNP, nMode);
+                run(sNP, nMode);
             }
         }
-        for_each(vThr.begin(), vThr.end(), [](thread& t){ t.join(); });
+        if (!m_bCache)
+        {
+            delete m_fits["base"];
+        }
     }
 
     map<WorkspaceTool::ePOI, double> GetFittedPOI()
@@ -107,7 +113,14 @@ public:
         }
     }
 
+public:
+    void CacheWorkspaceTools()
+    {
+        m_bCache = true;
+    }
+
 protected:
+    bool m_bCache = false;
     const WorkspaceInfo* m_cInfo;
     map<string, WorkspaceTool*> m_fits;
     map<WorkspaceTool::ePOI, double> m_nPOI;

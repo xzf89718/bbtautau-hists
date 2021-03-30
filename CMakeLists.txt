@@ -51,12 +51,14 @@ target_link_libraries(ConfigLib PUBLIC stdc++fs ${ROOT_LIBRARIES})
 target_link_libraries(HistToolLib PUBLIC stdc++fs ${ROOT_LIBRARIES})
 target_link_libraries(WorkspaceToolLib PUBLIC stdc++fs Threads::Threads ${ROOT_LIBRARIES})
 
-add_executable(bbtautau-hists exec/main.cpp)
 
+add_executable(run-test exec/test.cpp)
+add_executable(bbtautau-hists exec/main.cpp)
 add_executable(run-ranking exec/run_ranking.cpp)
 
+target_link_libraries(run-test 
+    ConfigLib HistToolLib UtilsLib WorkspaceToolLib)
 target_link_libraries(bbtautau-hists 
     ConfigLib HistToolLib UtilsLib WorkspaceToolLib)
-
 target_link_libraries(run-ranking 
     ConfigLib HistToolLib UtilsLib WorkspaceToolLib)

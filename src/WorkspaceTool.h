@@ -80,6 +80,48 @@ struct WorkspaceInfo
     double mu_asimov = 1.0;
 };
 
+class WorkspaceLoad
+{
+public:
+    static WorkspaceLoad& instance() 
+    {
+        static WorkspaceLoad singleton;
+        return singleton;
+    }
+
+    WorkspaceLoad(WorkspaceLoad const&) = delete;
+    WorkspaceLoad& operator=(WorkspaceLoad const&) = delete;
+
+    void LoadRootFile(const WorkspaceInfo* cInfo)
+    {
+        if (!fs::exists(fs::path(cInfo->path)))
+        {
+            throw std::runtime_error("Input does not exist");
+        }
+        m_cFile = TFile::Open(cInfo->path.c_str(), "READ");
+        m_cWs = static_cast<RooWorkspace*>(m_cFile->Get(cInfo->workspace_name.c_str()));
+        if (!m_cWs)
+        {
+            throw std::runtime_error("Workspace does not exist");
+        }
+    }
+
+    RooWorkspace* GetWorkspace() { return m_cWs; }
+
+private:
+    WorkspaceLoad() = default;
+    ~WorkspaceLoad() 
+    {
+        m_cFile->Close();
+        m_cFile = nullptr;
+        m_cWs = nullptr;
+    }
+
+private:
+    TFile* m_cFile;
+    RooWorkspace* m_cWs;
+};
+
 class WorkspaceTool
 {
 public:
@@ -92,7 +134,8 @@ public:
 
     ~WorkspaceTool()
     {
-        m_cFile->Close();
+        // this reduce half memory usage, but why?
+        delete m_cWs;
     }
 
     WorkspaceTool(WorkspaceTool& old) = delete;
@@ -129,18 +172,12 @@ public:
 
 private:
     void Load() {
-        if (!fs::exists(fs::path(m_cInfo->path)))
-        {
-            throw std::runtime_error("Input does not exist");
-        }
-        m_cFile = TFile::Open(m_cInfo->path.c_str(), "READ");
-        m_cWs = static_cast<RooWorkspace*>(m_cFile->Get(m_cInfo->workspace_name.c_str()));
-
-        if (!m_cWs)
-        {
-            throw std::runtime_error("Workspace does not exist");
-        }
-
+        // use the singleton to load file and workspace
+        // this makes sure that m_cWs is loaded again for new WorkspaceTool instance
+        // while the root file is opened only once.
+        WorkspaceLoad::instance().LoadRootFile(m_cInfo);
+        m_cWs = WorkspaceLoad::instance().GetWorkspace();
+        
         m_cSBModel = static_cast<ModelConfig*>(m_cWs->obj(m_cInfo->config_name.c_str()));
         m_cNPs = m_cSBModel->GetNuisanceParameters();
         m_cPOIs = m_cSBModel->GetParametersOfInterest();
@@ -152,8 +189,7 @@ private:
             static_cast<RooRealVar*>(m_cPOIs->first())->setVal(m_cInfo->mu_asimov);
             RooArgSet* allParams = m_cSBModel->GetPdf()->getParameters(*m_cData);
             RooArgSet globObs("globObs");
-            RooAbsData* asimovData = AsymptoticCalculator::MakeAsimovData(*m_cSBModel, *allParams, globObs);
-            m_cData = asimovData;
+            m_cData = AsymptoticCalculator::MakeAsimovData(*m_cSBModel, *allParams, globObs);
         }
 
         GetSetOfNPs(m_cNPs);
@@ -161,7 +197,6 @@ private:
 
 protected:
     const WorkspaceInfo* m_cInfo;
-    TFile* m_cFile;
     RooWorkspace* m_cWs;
     ModelConfig* m_cSBModel;
     const RooArgSet* m_cNPs;
@@ -267,6 +302,8 @@ private:
                 cRes->status(), duration_cast<milliseconds>(timeEnd-timeStart).count());
         Tools::println("POI [%] final value is [%  %  %]",
                 cPOI->GetName(), cPOI->getVal(), cPOI->getErrorHi(), cPOI->getErrorLo());
+
+        delete cRes;
     }
 
 public:
