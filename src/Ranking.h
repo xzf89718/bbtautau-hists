@@ -42,7 +42,7 @@ public:
         {
             string sPostFix = nMode > 0 ? "_Hi" : "_Lo";
             m_fits[sNP + sPostFix] = new WorkspaceTool(m_cInfo);
-            m_fits[sNP + sPostFix]->FitWithFixedPara(sNP, m_fits["base"]->GetFittedNPs(), nMode, -1);
+            m_fits[sNP + sPostFix]->FitWithFixedPara(sNP, m_fits["base"]->GetFittedNPs(), nMode);
             // m_fits[sNP + sPostFix]->Check();
             m_mapAltPOIs[sNP + sPostFix] = m_fits[sNP + sPostFix]->GetCache(m_fits[sNP + sPostFix]->NameOfPOI());
             if (!m_bCache)
@@ -53,7 +53,7 @@ public:
 
         m_fits["base"] = new WorkspaceTool(m_cInfo);
         Tools::println(">> All: ");
-        m_fits["base"]->FitAll(-1);
+        m_fits["base"]->FitAll();
         m_nPOI = m_fits["base"]->GetCache(m_fits["base"]->NameOfPOI());
         m_fits["base"]->Check();
         Tools::println(">> Fixed NP: ");

@@ -76,8 +76,10 @@ struct WorkspaceInfo
     string workspace_name;
     string config_name = "ModelConfig";
     string data_name = "obsData";
-    bool use_asimov = true;
     double mu_asimov = 1.0;
+    int8_t logLevel = -1;
+    bool use_asimov = true;
+    bool use_oneline_fit = true;
 };
 
 class WorkspaceLoad
@@ -188,7 +190,7 @@ private:
             Tools::println("Using Asimov data! with mu = %", m_cInfo->mu_asimov);
             static_cast<RooRealVar*>(m_cPOIs->first())->setVal(m_cInfo->mu_asimov);
             RooArgSet* allParams = m_cSBModel->GetPdf()->getParameters(*m_cData);
-            RooArgSet globObs("globObs");
+            RooArgSet globObs("globObs"); // ?
             m_cData = AsymptoticCalculator::MakeAsimovData(*m_cSBModel, *allParams, globObs);
         }
 
@@ -277,8 +279,130 @@ private:
 // Fitting
 // ============================================================================
 private:
-    // em. layers of snapshot, not sure
-    void Fit(int8_t nLogLevel=-1) {
+    RooFitResult* OneLinerFit(RooArgSet& cConstrainParas)
+    {
+        std::clog << "Fitting with: \n"
+        "o------------------------------------------------------------o\n"
+        "| [One liner version]                                        |\n"
+        "o------------------------------------------------------------o\n"
+        "| It seems that this is much quicker than the above (*)      |\n"
+        "| Not sure about the difference yet                          |\n"
+        "| I think it still makes sense to still use this for ranking |\n"
+        "| (*) need to test a little more                             |\n"
+        "o------------------------------------------------------------o\n";
+
+        RooFitResult* cRes = m_cSBModel->GetPdf()->fitTo(
+            *m_cData, InitialHesse(false), Minos(false), Minimizer("Minuit", "Migrad"),
+            Strategy(1), PrintLevel(m_cInfo->logLevel), Constrain(cConstrainParas), Save(true),
+            Offset(RooStats::IsNLLOffset()));
+
+        return cRes;
+    }
+
+    RooFitResult* CustomizedFit(RooArgSet& cConstrainParas)
+    {
+        std::clog << "Fitting with: \n"
+        "o------------------------------------------------------------o\n"
+        "| [Customized version]                                       |\n"
+        "o------------------------------------------------------------o\n"
+        "| The speed depends on the tolarence                         |\n"
+        "| It is set to be 1e-5 x initial NLL value                   |\n"
+        "| This might not be optimal                                  |\n"
+        "o------------------------------------------------------------o\n";
+
+        RooMsgService::instance().setGlobalKillBelow(ERROR);
+
+        // Define NLL
+        RooAbsReal *cNLL = m_cSBModel->GetPdf()->createNLL(*m_cData, 
+            Constrain(cConstrainParas), 
+            GlobalObservables(*(m_cSBModel->GetGlobalObservables())), 
+            Offset(RooStats::IsNLLOffset()), NumCPU(4));
+
+        // Staring NLL value
+        Tools::println("Starting NLL value = %", cNLL->getVal());
+
+        // Define Minimizer
+        RooMinimizer cMinimizer(*cNLL);
+        // Print level
+        cMinimizer.setPrintLevel(m_cInfo->logLevel);
+        // Strategy
+        const int nStrategy = ROOT::Math::MinimizerOptions::DefaultStrategy();
+        cMinimizer.setStrategy(nStrategy);
+        // double fTolerance = ROOT::Math::MinimizerOptions::DefaultTolerance();
+        double fTolerance = 1e-5 * cNLL->getVal();
+        cMinimizer.setEps(fTolerance);
+        int nStatus = -1;
+        constexpr int nOptConstFlag = 2; // ?
+        cMinimizer.optimizeConst(nOptConstFlag);
+        const std::string sAlgorithm = ROOT::Math::MinimizerOptions::DefaultMinimizerAlgo();
+        // Max calls and iterations
+        const int nMaxCalls = ROOT::Math::MinimizerOptions::DefaultMaxFunctionCalls();
+        const int nMaxIterations = ROOT::Math::MinimizerOptions::DefaultMaxIterations();
+        cMinimizer.setMaxFunctionCalls(nMaxCalls);
+        cMinimizer.setMaxIterations(nMaxIterations);
+        // Error engine
+        constexpr bool bUseMinos = false;
+
+        Tools::println("Tolerance = [%]", fTolerance);
+        Tools::println("Max Calls = [%], Max Iterations = [%]", nMaxCalls, nMaxIterations);
+
+        // Do minimization
+        nStatus = cMinimizer.minimize("Minuit2", sAlgorithm.c_str());
+        Tools::println("Minimize status = [%]", nStatus);
+
+        // Save the fit result pre
+        RooFitResult* cResPre = cMinimizer.save();
+
+        // Covariant matrix
+        const TMatrixDSym cCovMatrix = cResPre->covarianceMatrix();
+        double fDeterminant = cCovMatrix.Determinant();
+        if (m_cInfo->logLevel > 0)
+        {
+            Tools::println("Covariant matrix determinant = [%]", fDeterminant);
+        }
+
+        // Eigen value maker
+        TMatrixDSymEigen cEigenValueMaker(cCovMatrix);
+        TVectorT<double> cEigenValues = cEigenValueMaker.GetEigenValues();
+        // TMatrixT<double> cEigenVectors = cEigenValueMaker.GetEigenVectors();
+        if (m_cInfo->logLevel > 0)
+        {
+            for (int i = 0; i < cEigenValues.GetNrows(); ++i) 
+            {
+                Tools::println("Eigen values -> %", cEigenValues[i]);
+            }
+        }
+
+        // Improve fit result
+        if (nStatus % 100 == 0) 
+        {
+            cMinimizer.setMinimizerType("Minuit2");
+            nStatus = cMinimizer.hesse();
+            Tools::println("Hesse status = [%]", nStatus);
+            if (bUseMinos)
+            {
+                cMinimizer.minos();
+            }
+        }
+        else 
+        {
+            Tools::println("Minimize failed with status code [%]", nStatus);
+        }
+
+        // Final NLL value
+        typedef std::numeric_limits<double> dbl;
+        std::cout.precision(dbl::digits10);
+        Tools::println("Final NLL value = %", cNLL->getVal());
+
+        RooFitResult* cRes = cMinimizer.save();
+
+        delete cResPre;
+
+        return cRes;
+    }
+
+    void Fit() {
+        // Information from workspace
         RooRealVar* cPOI = static_cast<RooRealVar*>(m_cPOIs->first());
         auto sMinimizerType = ROOT::Math::MinimizerOptions::DefaultMinimizerType();
         Tools::println("POI [%] initial value is [%]", cPOI->GetName(), cPOI->getVal());
@@ -288,38 +412,50 @@ private:
         cConstrainParas.add(*m_cNPs);
         RooStats::RemoveConstantParameters(&cConstrainParas);
         auto timeStart = steady_clock::now();
-        // >>> hack this <<<
-        RooFitResult* cRes = m_cSBModel->GetPdf()->fitTo(
-                    *m_cData, InitialHesse(false), Minos(false), Minimizer("Minuit", "Migrad"),
-                    Strategy(1), PrintLevel(nLogLevel), Constrain(cConstrainParas), Save(true),
-                    Offset(RooStats::IsNLLOffset()));
+
+        RooFitResult* cRes = nullptr;
+
+        // >>> core of fitting <<< START
+        if (m_cInfo->use_oneline_fit)
+        {
+            cRes = OneLinerFit(cConstrainParas);
+        }
+        else 
+        {
+            cRes = CustomizedFit(cConstrainParas);
+        }
+        // >>> core of fitting <<< END
+
         auto timeEnd = steady_clock::now();
 
         bFitted = true;
-        if (nLogLevel > 0)
+        if (m_cInfo->logLevel > 0)
             cRes->Print();
         Tools::println("Fit status [%], spent [%ms]",
                 cRes->status(), duration_cast<milliseconds>(timeEnd-timeStart).count());
         Tools::println("POI [%] final value is [%  %  %]",
                 cPOI->GetName(), cPOI->getVal(), cPOI->getErrorHi(), cPOI->getErrorLo());
 
-        delete cRes;
+        if (cRes)
+        {
+            delete cRes;
+        }
     }
 
 public:
-    void FitAll(int8_t nLogLevel=-1) {
+    void FitAll() {
         // prefit paramters (not useful)
         UpdateMapNPsInit(m_cNPs);
         // Fitting
-        Fit(nLogLevel);
+        Fit();
         // Store results in maps and take snapshot
         UpdateMapNPsFinal(m_cNPs);
         UpdateMapPOIsFitted(m_cPOIs);
     }
 
-    void FitWithFixedPara(const string& sPara,
+    void FitWithFixedPara(const string& sPara, 
                           const map<string, tuple<double, double, double>>& mapNPsFromFitAll,
-                          double nMode, int8_t nLogLevel=-1)
+                          double nMode)
     {
         const auto& tupleVal = mapNPsFromFitAll.at(sPara);
         Tools::println("Initial value: % | error_up % | error_down %",
@@ -329,7 +465,7 @@ public:
         RooRealVar* cNP = (RooRealVar*)m_cNPs->find(sPara.c_str());
         cNP->setVal(fFixedVal);
         cNP->setConstant(true);
-        Fit(nLogLevel);
+        Fit();
         UpdateMapNPsFinal(m_cNPs);
         UpdateMapPOIsFitted(m_cPOIs);
     }

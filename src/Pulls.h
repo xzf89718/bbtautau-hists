@@ -29,7 +29,7 @@ public:
     {
         m_cTool = new WorkspaceTool(m_cInfo);
         Tools::println(">> All: ");
-        m_cTool->FitAll(-1);
+        m_cTool->FitAll();
         m_mapFittedNPs = m_cTool->GetFittedNPs();
     }
 
@@ -100,7 +100,7 @@ public:
         c1->SetRightMargin(0.025);
 
         TH1* h = new TH1D("h", "", vLabels.size(), 0, vLabels.size());
-        TH1* h2 = new TH1D("h", "", vLabels.size(), 0, vLabels.size());
+        TH1* h2 = new TH1D("h2", "", vLabels.size(), 0, vLabels.size());
 
         h2->GetYaxis()->SetTitle("Pull");
         h2->GetYaxis()->SetTitleOffset(0.5);
@@ -112,11 +112,11 @@ public:
         h2->GetXaxis()->SetLabelSize(0.025);
 
         h->SetLineWidth(0);
-        h->SetFillColor(kGreen-9);
+        h->SetFillColor(kGreen+1);
         h->SetMarkerSize(0);
 
         h2->SetLineWidth(0);
-        h2->SetFillColor(kYellow-7);
+        h2->SetFillColor(kYellow+1);
         h2->SetMarkerSize(0);
 
         for (std::size_t i = 1; i <= vLabels.size(); ++i)

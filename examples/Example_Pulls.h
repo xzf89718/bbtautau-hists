@@ -9,6 +9,7 @@ int test_pulls(const std::string& filename, const std::string& outname)
     info->path = filename;
     info->workspace_name = "combined";
     info->use_asimov = false;
+    info->use_oneline_fit = true;
 
     auto timeStart = steady_clock::now();
 

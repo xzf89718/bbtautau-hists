@@ -11,8 +11,10 @@
 #include "TDirectory.h"
 
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
+#include <climits>
 
 using std::string;
 using std::vector;
@@ -78,6 +80,26 @@ public:
     {
         Tools::print(fmt, value, args...);
         Tools::print("\n");
+    }
+
+    static int getInteger(const std::string& prompt = "Type in an integer: ", 
+                          const std::string& reprompt = "It is not integer. Retry. \n")
+    {
+        while (1)
+        {
+            std::cout << prompt;
+            std::string line;
+            if (!getline(std::cin, line)) throw std::domain_error("Failed to get line from cin.");
+
+            std::istringstream iss(line);
+            int i; char a;
+            if (iss >> i && !(iss >> a))
+            {
+                return i;
+            }
+            std::cout << reprompt;
+        }
+        return INT_MIN;
     }
 
 };
