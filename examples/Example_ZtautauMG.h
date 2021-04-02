@@ -99,7 +99,7 @@ void test_hadhad_ZtautauMG(const std::string& filename)
         info->parameter = "Presel";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
-        ct->output_path = "/tmp/zhangbw/ZtautauMG";
+        ct->output_path = "/tmp/bowenzhang/ZtautauMG";
         if (ct->check(c))
         {
             ct->manipulate(c);
@@ -135,7 +135,7 @@ void test_hadhad_ZtautauMG(const std::string& filename)
         info->parameter = "PNN";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
-        ct->output_path = "/tmp/zhangbw/ZtautauMG";
+        ct->output_path = "/tmp/bowenzhang/ZtautauMG";
         if (ct->check(c))
         {
             ct->manipulate(c);
@@ -169,7 +169,7 @@ void test_hadhad_ZtautauMG(const std::string& filename)
         info->parameter = "BDT";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
-        ct->output_path = "/tmp/zhangbw/ZtautauMG";
+        ct->output_path = "/tmp/bowenzhang/ZtautauMG";
         if (ct->check(c))
         {
             ct->manipulate(c);

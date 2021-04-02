@@ -107,7 +107,7 @@ void test_hadhad(const std::string& filename)
 
         c->updateHistogramPtr(rs->content()->front(), v);
         DrawStackTool* ds = new DrawStackTool(info);
-        ds->output_path = "/tmp/zhangbw/bbtautau_sr";
+        ds->output_path = "/tmp/bowenzhang/bbtautau_sr";
         if (ds->check(c))
         {
             ds->manipulate(c);

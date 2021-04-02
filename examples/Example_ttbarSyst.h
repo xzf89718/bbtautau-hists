@@ -67,7 +67,7 @@ void test_lephad_ttbarSys(const std::string& filename)
         info->parameter = "Presel";
         c->updateHistogramPtr(rs->content()->front(), v);
         LephadTTBarCompTool* ct = new LephadTTBarCompTool(info);
-        ct->output_path = "/tmp/zhangbw/ttbarSys";
+        ct->output_path = "/tmp/bowenzhang/ttbarSys";
         if (ct->check(c))
         {
             ct->manipulate(c);

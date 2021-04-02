@@ -77,7 +77,7 @@ void test_hadhad_NonRes(const std::string& filename)
         info->parameter = "Presel";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
-        ct->output_path = "/tmp/zhangbw/NonRes";
+        ct->output_path = "/tmp/bowenzhang/NonRes";
         if (ct->check(c))
         {
             ct->makeYield(c);
@@ -109,7 +109,7 @@ void test_hadhad_NonRes(const std::string& filename)
         info->parameter = "BDT";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
-        ct->output_path = "/tmp/zhangbw/NonRes";
+        ct->output_path = "/tmp/bowenzhang/NonRes";
         if (ct->check(c))
         {
             ct->makeYield(c);

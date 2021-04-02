@@ -74,7 +74,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         info->parameter = "Wt_ISR_Presel";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new SystCompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
+        ct->output_path = "/tmp/bowenzhang/Stop";
         if (ct->check(c))
         {
             ct->manipulate(c);
@@ -107,7 +107,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         info->parameter = "Wt_ISR_PNN";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new SystCompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
+        ct->output_path = "/tmp/bowenzhang/Stop";
         if (ct->check(c))
         {
             ct->manipulate(c);
@@ -138,7 +138,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         info->parameter = "Wt_ISR_BDT";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new SystCompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
+        ct->output_path = "/tmp/bowenzhang/Stop";
         if (ct->check(c))
         {
             ct->manipulate(c);
@@ -171,7 +171,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         info->parameter = "Wt_FSR_Presel";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new SystCompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
+        ct->output_path = "/tmp/bowenzhang/Stop";
         if (ct->check(c))
         {
             ct->manipulate(c);
@@ -204,7 +204,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         info->parameter = "Wt_FSR_PNN";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new SystCompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
+        ct->output_path = "/tmp/bowenzhang/Stop";
         if (ct->check(c))
         {
             ct->manipulate(c);
@@ -235,7 +235,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         info->parameter = "Wt_FSR_BDT";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new SystCompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
+        ct->output_path = "/tmp/bowenzhang/Stop";
         if (ct->check(c))
         {
             ct->manipulate(c);
@@ -271,7 +271,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         info->parameter = "Wt_PDF_Presel";
         c->updateHistogramPtr(rs->content()->front(), v);
         SystCompTool* ct = new SystCompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
+        ct->output_path = "/tmp/bowenzhang/Stop";
         if (ct->check(c))
         {
             ct->manipulate(c);
@@ -308,7 +308,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         info->parameter = "Wt_PDF_PNN";
         c->updateHistogramPtr(rs->content()->front(), v);
         SystCompTool* ct = new SystCompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
+        ct->output_path = "/tmp/bowenzhang/Stop";
         if (ct->check(c))
         {
             ct->manipulate(c);
@@ -343,7 +343,7 @@ void test_hadhad_WtOTF(const std::string& filename)
         info->parameter = "Wt_PDF_BDT";
         c->updateHistogramPtr(rs->content()->front(), v);
         SystCompTool* ct = new SystCompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
+        ct->output_path = "/tmp/bowenzhang/Stop";
         if (ct->check(c))
         {
             ct->manipulate(c);

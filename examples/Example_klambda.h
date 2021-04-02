@@ -70,7 +70,7 @@ void test_hadhad_klambda(const std::string& filename)
             info->parameter = "from1p0";
             c->updateHistogramPtr(rs->content()->front(), v);
             CompTool* ct = new CompTool(info);
-            ct->output_path = "/tmp/zhangbw/hhttbbKL10p0from1p0";
+            ct->output_path = "/tmp/bowenzhang/hhttbbKL10p0from1p0";
             if (ct->check(c))
             {
                 ct->paint(c);
@@ -93,11 +93,11 @@ void test_hadhad_klambda(const std::string& filename)
             ps->add("hhttbbKL1p0from10p0",  "HH (#kappa_{#lambda}=1) reweighted",  eProcessType::SIG,  eProcess::HHKLXFROM10,   "HH (#kappa_{#lambda}=10) reweighted", kRed+1);
 
             Config* c = new Config(b, ps, rs, vs);
-            c->load("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
+            c->load("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
             info->parameter = "from10p0";
             c->updateHistogramPtr(rs->content()->front(), v);
             CompTool* ct = new CompTool(info);
-            ct->output_path = "/tmp/zhangbw/hhttbbKL1p0from10p0";
+            ct->output_path = "/tmp/bowenzhang/hhttbbKL1p0from10p0";
             if (ct->check(c))
             {
                 ct->paint(c);
@@ -134,11 +134,11 @@ void test_hadhad_klambda(const std::string& filename)
                         "HH (#kappa_{#lambda}="+nice_kl()+") from #kappa_{#lambda}=10", kRed+1);
 
                 Config* c = new Config(b, ps, rs, vs);
-                c->load("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
+                c->load("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
                 info->parameter = "to"+klambda;
                 c->updateHistogramPtr(rs->content()->front(), v);
                 CompTool* ct = new CompTool(info);
-                ct->output_path = "/tmp/zhangbw/hhttbbKLxfrom1and10";
+                ct->output_path = "/tmp/bowenzhang/hhttbbKLxfrom1and10";
                 if (ct->check(c))
                 {
                     ct->paint(c);
