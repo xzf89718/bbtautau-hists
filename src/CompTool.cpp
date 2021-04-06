@@ -268,12 +268,12 @@ void CompTool::run_noratio(const Config* c) const
     gROOT->SetStyle("ATLAS");
     gStyle->SetErrorX(0.5);
 
-    TCanvas* c1 = new TCanvas("c", "", 600, 400);
+    TCanvas* c1 = new TCanvas("c", "", 3*600, 3*400);
     c1->SetRightMargin(1.6 * c1->GetRightMargin());
 
 //     TPad* upper_pad = new TPad("upper_pad", "", 0, 0.5, 1, 1);
      gPad->SetRightMargin(1.6 * gPad->GetRightMargin());
-     gPad->SetBottomMargin(0.03);
+ //    gPad->SetBottomMargin(0.03);
      gPad->SetTickx(false);
      gPad->SetTicky(false);
      gPad->SetLogx(m_info->logx);
@@ -305,10 +305,12 @@ void CompTool::run_noratio(const Config* c) const
         }
     }
     TH1* base = ps->front()->histogram;
-    base->Draw("HIST E1");
-    base->GetXaxis()->SetLabelSize(0);
-    //base->GetXaxis()->SetTitleSize(0);
-    base->GetXaxis()->SetTitleOffset(1.3);
+    base->Draw("HIST ");
+    base->GetXaxis()->SetLabelSize(0.04);
+    base->GetXaxis()->SetTitleSize(0.045);
+    base->GetXaxis()->SetTitle(ps->front()->current_variable->name_tex.c_str());
+    base->GetYaxis()->ChangeLabel(1, -1, 0);
+    //base->GetXaxis()->SetTitleOffset(1.3);
     base->GetYaxis()->SetTitle("Events");
     base->GetYaxis()->SetLabelSize(0.04);
     base->GetYaxis()->SetTitleSize(0.045);
@@ -317,7 +319,7 @@ void CompTool::run_noratio(const Config* c) const
 
     for (auto& pp : ps->front()->systematic_histograms)
     {
-        pp.second->Draw("HIST E1 SAME");
+        pp.second->Draw("HIST SAME");
     }
 
     for_each(ps->begin()+1, ps->end(), [this](const ProcessInfo* p) {
@@ -326,7 +328,7 @@ void CompTool::run_noratio(const Config* c) const
         } else {
             p->histogram->Scale(p->norm_factor);
         }
-        p->histogram->Draw("HIST E1 SAME"); });
+        p->histogram->Draw("HIST SAME"); });
 
     double y = 0.92 - 0.05 * (ps->size() + ps->front()->systematic_histograms.size() + 1);
     TLegend* legend = new TLegend(0.60, y, 0.90, 0.92);
@@ -430,7 +432,7 @@ void CompTool::run_noratio(const Config* c) const
     oss_out << output_path << "/" 
             << c->current_region->name << "_"
             << c->current_variable->name << "_"
-            << m_info->parameter << ".pdf";
+            << m_info->parameter << ".png";
     c1->Update();
     c1->SaveAs(oss_out.str().c_str());
 
