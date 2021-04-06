@@ -281,14 +281,13 @@ private:
 private:
     RooFitResult* OneLinerFit(RooArgSet& cConstrainParas)
     {
-        std::clog << "Fitting with: \n"
+        std::cout << "Fitting with: \n"
         "o------------------------------------------------------------o\n"
         "| [One liner version]                                        |\n"
         "o------------------------------------------------------------o\n"
-        "| It seems that this is much quicker than the above (*)      |\n"
-        "| Not sure about the difference yet                          |\n"
+        "| This is quicker than the customized version (*)            |\n"
         "| I think it still makes sense to still use this for ranking |\n"
-        "| (*) need to test a little more                             |\n"
+        "| (*) need to make more tests                                |\n"
         "o------------------------------------------------------------o\n";
 
         RooFitResult* cRes = m_cSBModel->GetPdf()->fitTo(
@@ -301,7 +300,7 @@ private:
 
     RooFitResult* CustomizedFit(RooArgSet& cConstrainParas)
     {
-        std::clog << "Fitting with: \n"
+        std::cout << "Fitting with: \n"
         "o------------------------------------------------------------o\n"
         "| [Customized version]                                       |\n"
         "o------------------------------------------------------------o\n"

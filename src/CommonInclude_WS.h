@@ -48,5 +48,8 @@
 #include "RooStats/MinNLLTestStat.h"
 #include "RooStats/AsymptoticCalculator.h"
 
+// Huirun's pdf in ext/
+#include "RooTwoSidedCBShape.h"
+
 using namespace RooFit;
 using namespace RooStats;

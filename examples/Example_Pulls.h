@@ -8,8 +8,10 @@ int test_pulls(const std::string& filename, const std::string& outname)
     WorkspaceInfo* info = new WorkspaceInfo();
     info->path = filename;
     info->workspace_name = "combined";
+    // info->workspace_name = "combWS";
+    // info->data_name = "asimovData_SB_SM";
     info->use_asimov = false;
-    info->use_oneline_fit = true;
+    info->use_oneline_fit = false;
 
     auto timeStart = steady_clock::now();
 

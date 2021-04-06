@@ -8,6 +8,8 @@ int test_ranking(const std::string& filename, const std::string& outname)
     WorkspaceInfo* info = new WorkspaceInfo();
     info->path = filename;
     info->workspace_name = "combined";
+    // info->workspace_name = "combWS";
+    // info->data_name = "asimovData_SB_SM";
     info->use_asimov = false;
 
     auto timeStart = steady_clock::now();

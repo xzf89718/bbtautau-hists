@@ -13,15 +13,18 @@ set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wpedantic -Wextra -g")
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
-SET(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
-SET(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
+set(CMAKE_C_ARCHIVE_FINISH   "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
+set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
 
 find_package(ROOT REQUIRED COMPONENTS Core Hist Tree RIO Net 
     Matrix Physics MathCore HistFactory RooFit RooFitCore RooFitMore RooStats)
 
 find_package(Threads REQUIRED)
 
-include_directories(SYSTEM ${ROOT_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/examples)
+include_directories(SYSTEM ${ROOT_INCLUDE_DIR} 
+    ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/ext ${CMAKE_SOURCE_DIR}/examples)
+
+root_generate_dictionary(${PROJECT_NAME}Dict RooTwoSidedCBShape.h LINKDEF LinkDef.h)
 
 add_library(UtilsLib SHARED
     src/Utils.cpp 
@@ -44,7 +47,10 @@ add_library(HistToolLib SHARED
 add_library(WorkspaceToolLib SHARED
     src/WorkspaceTool.cpp
     src/Pulls.cpp
-    src/Ranking.cpp)
+    src/Ranking.cpp
+    ext/RooTwoSidedCBShape.cxx
+    ext/LinkDef.h
+    ${PROJECT_NAME}Dict.cxx)
 
 target_link_libraries(UtilsLib PUBLIC ${ROOT_LIBRARIES})
 target_link_libraries(ConfigLib PUBLIC stdc++fs ${ROOT_LIBRARIES})
