@@ -2,7 +2,7 @@
 #define PULLS_H
 
 #include "StatisticTool.h"
-#include "WorkspaceTool.h"
+#include "WorkSpace.h"
 
 #include <fstream>
 
@@ -27,7 +27,7 @@ public:
 public:
     virtual void Execute() override 
     {
-        m_cTool = new WorkspaceTool(m_cInfo);
+        m_cTool = new WorkSpace(m_cInfo);
         Tools::println(">> All: ");
         m_cTool->FitAll();
         m_mapFittedNPs = m_cTool->GetFittedNPs();
@@ -49,7 +49,7 @@ public:
 
 private:
     const WorkspaceInfo* m_cInfo;
-    WorkspaceTool* m_cTool;
+    WorkSpace* m_cTool;
     map<string, tuple<double, double, double>> m_mapFittedNPs;
 };
 

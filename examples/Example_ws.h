@@ -1,4 +1,4 @@
-#include "WorkspaceTool.h"
+#include "WorkSpace.h"
 
 void test_ws_info(const std::string& filename) {
 
@@ -7,7 +7,7 @@ void test_ws_info(const std::string& filename) {
     info->workspace_name = "combined";
     info->use_asimov = false;
 
-    WorkspaceTool* wst = new WorkspaceTool(info);
+    WorkSpace* wst = new WorkSpace(info);
     wst->Check();
     wst->FitAll();
     wst->CheckParaMaps();

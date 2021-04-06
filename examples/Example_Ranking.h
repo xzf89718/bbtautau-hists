@@ -1,4 +1,4 @@
-#include "Ranking.h"
+#include "RankingTool.h"
 #include <iostream>
 
 using namespace std;

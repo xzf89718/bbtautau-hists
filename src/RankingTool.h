@@ -1,12 +1,12 @@
 /**
- * @brief: make this tool as a child of WorkspaceTool
+ * @brief: make this tool as a child of WorkSpace
  */
 
 #ifndef RANKING_H
 #define RANKING_H
 
 #include "StatisticTool.h"
-#include "WorkspaceTool.h"
+#include "WorkSpace.h"
 
 #include <fstream>
 using std::ofstream;
@@ -41,7 +41,7 @@ public:
         auto run = [this](const string& sNP, const double nMode) 
         {
             string sPostFix = nMode > 0 ? "_Hi" : "_Lo";
-            m_fits[sNP + sPostFix] = new WorkspaceTool(m_cInfo);
+            m_fits[sNP + sPostFix] = new WorkSpace(m_cInfo);
             m_fits[sNP + sPostFix]->FitWithFixedPara(sNP, m_fits["base"]->GetFittedNPs(), nMode);
             // m_fits[sNP + sPostFix]->Check();
             m_mapAltPOIs[sNP + sPostFix] = m_fits[sNP + sPostFix]->GetCache(m_fits[sNP + sPostFix]->NameOfPOI());
@@ -51,7 +51,7 @@ public:
             }
         };
 
-        m_fits["base"] = new WorkspaceTool(m_cInfo);
+        m_fits["base"] = new WorkSpace(m_cInfo);
         Tools::println(">> All: ");
         m_fits["base"]->FitAll();
         m_nPOI = m_fits["base"]->GetCache(m_fits["base"]->NameOfPOI());
@@ -70,12 +70,12 @@ public:
         }
     }
 
-    map<WorkspaceTool::ePOI, double> GetFittedPOI()
+    map<WorkSpace::ePOI, double> GetFittedPOI()
     {
         return m_nPOI;
     }
 
-    map<string, map<WorkspaceTool::ePOI, double>> GetFittedPOIWithFixedNPs()
+    map<string, map<WorkSpace::ePOI, double>> GetFittedPOIWithFixedNPs()
     {
         return m_mapAltPOIs;
     }
@@ -91,30 +91,30 @@ public:
 
         Tools::println("% ->      VALUE %      ERROR_UP %      ERROR_DOWN %",
             "No fixed NP",
-            val[WorkspaceTool::ePOI::VALUE],
-            val[WorkspaceTool::ePOI::ERRORUP],
-            val[WorkspaceTool::ePOI::ERRORDOWN]);
+            val[WorkSpace::ePOI::VALUE],
+            val[WorkSpace::ePOI::ERRORUP],
+            val[WorkSpace::ePOI::ERRORDOWN]);
         output << OUTPUT_TABLE_4("None",
-            val[WorkspaceTool::ePOI::VALUE],
-            val[WorkspaceTool::ePOI::ERRORUP],
-            val[WorkspaceTool::ePOI::ERRORDOWN])
+            val[WorkSpace::ePOI::VALUE],
+            val[WorkSpace::ePOI::ERRORUP],
+            val[WorkSpace::ePOI::ERRORDOWN])
 
         for (auto& p : res) {
             Tools::println("% Fixed ->      VALUE %      ERROR_UP %      ERROR_DOWN %",
                 p.first,
-                p.second[WorkspaceTool::ePOI::VALUE],
-                p.second[WorkspaceTool::ePOI::ERRORUP],
-                p.second[WorkspaceTool::ePOI::ERRORDOWN]);
+                p.second[WorkSpace::ePOI::VALUE],
+                p.second[WorkSpace::ePOI::ERRORUP],
+                p.second[WorkSpace::ePOI::ERRORDOWN]);
             output << OUTPUT_TABLE_4(
                 p.first,
-                p.second[WorkspaceTool::ePOI::VALUE],
-                p.second[WorkspaceTool::ePOI::ERRORUP],
-                p.second[WorkspaceTool::ePOI::ERRORDOWN]);
+                p.second[WorkSpace::ePOI::VALUE],
+                p.second[WorkSpace::ePOI::ERRORUP],
+                p.second[WorkSpace::ePOI::ERRORDOWN]);
         }
     }
 
 public:
-    void CacheWorkspaceTools()
+    void CacheWorkSpaces()
     {
         m_bCache = true;
     }
@@ -122,9 +122,9 @@ public:
 protected:
     bool m_bCache = false;
     const WorkspaceInfo* m_cInfo;
-    map<string, WorkspaceTool*> m_fits;
-    map<WorkspaceTool::ePOI, double> m_nPOI;
-    map<string, map<WorkspaceTool::ePOI, double>> m_mapAltPOIs;
+    map<string, WorkSpace*> m_fits;
+    map<WorkSpace::ePOI, double> m_nPOI;
+    map<string, map<WorkSpace::ePOI, double>> m_mapAltPOIs;
 };
 
 struct RankingData
@@ -162,16 +162,16 @@ public:
                 else if (nRow == 1)
                 {
                     iss >> tmp 
-                        >> m_nPOI[WorkspaceTool::ePOI::VALUE] 
-                        >> m_nPOI[WorkspaceTool::ePOI::ERRORUP] 
-                        >> m_nPOI[WorkspaceTool::ePOI::ERRORDOWN]; // symmetric of up due to Hesse
+                        >> m_nPOI[WorkSpace::ePOI::VALUE] 
+                        >> m_nPOI[WorkSpace::ePOI::ERRORUP] 
+                        >> m_nPOI[WorkSpace::ePOI::ERRORDOWN]; // symmetric of up due to Hesse
                 }
                 else
                 {
                     iss >> tmp 
-                        >> m_mapAltPOIs[tmp][WorkspaceTool::ePOI::VALUE] 
-                        >> m_mapAltPOIs[tmp][WorkspaceTool::ePOI::ERRORUP] 
-                        >> m_mapAltPOIs[tmp][WorkspaceTool::ePOI::ERRORDOWN]; // symmetric of up due to Hesse
+                        >> m_mapAltPOIs[tmp][WorkSpace::ePOI::VALUE] 
+                        >> m_mapAltPOIs[tmp][WorkSpace::ePOI::ERRORUP] 
+                        >> m_mapAltPOIs[tmp][WorkSpace::ePOI::ERRORDOWN]; // symmetric of up due to Hesse
                 }
                 nRow++;
             }
@@ -186,22 +186,22 @@ public:
                 m_mapLookUp[sNameOfNP] = m_vData.size();
                 if (sDirection == "Hi")
                 {
-                    m_vData.emplace_back(sNameOfNP, p.second[WorkspaceTool::ePOI::VALUE]-m_nPOI[WorkspaceTool::ePOI::VALUE], -999);
+                    m_vData.emplace_back(sNameOfNP, p.second[WorkSpace::ePOI::VALUE]-m_nPOI[WorkSpace::ePOI::VALUE], -999);
                 }
                 else 
                 {
-                    m_vData.emplace_back(sNameOfNP, -999, p.second[WorkspaceTool::ePOI::VALUE]-m_nPOI[WorkspaceTool::ePOI::VALUE]);
+                    m_vData.emplace_back(sNameOfNP, -999, p.second[WorkSpace::ePOI::VALUE]-m_nPOI[WorkSpace::ePOI::VALUE]);
                 }
             }
             else 
             {
                 if (sDirection == "Hi")
                 {
-                    m_vData[m_mapLookUp[sNameOfNP]].deltaMuByHi = p.second[WorkspaceTool::ePOI::VALUE]-m_nPOI[WorkspaceTool::ePOI::VALUE];
+                    m_vData[m_mapLookUp[sNameOfNP]].deltaMuByHi = p.second[WorkSpace::ePOI::VALUE]-m_nPOI[WorkSpace::ePOI::VALUE];
                 }
                 else
                 {
-                    m_vData[m_mapLookUp[sNameOfNP]].deltaMuByLo = p.second[WorkspaceTool::ePOI::VALUE]-m_nPOI[WorkspaceTool::ePOI::VALUE];
+                    m_vData[m_mapLookUp[sNameOfNP]].deltaMuByLo = p.second[WorkSpace::ePOI::VALUE]-m_nPOI[WorkSpace::ePOI::VALUE];
                 }
             }
         }
@@ -296,8 +296,8 @@ public:
     }
 
 private:
-    map<WorkspaceTool::ePOI, double> m_nPOI;
-    map<string, map<WorkspaceTool::ePOI, double>> m_mapAltPOIs;
+    map<WorkSpace::ePOI, double> m_nPOI;
+    map<string, map<WorkSpace::ePOI, double>> m_mapAltPOIs;
     vector<RankingData> m_vData;
     map<string, std::size_t> m_mapLookUp;
 };

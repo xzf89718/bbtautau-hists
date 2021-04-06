@@ -44,10 +44,10 @@ add_library(HistToolLib SHARED
     src/SystCompTool.cpp
     src/LephadTTBarCompTool.cpp)
 
-add_library(WorkspaceToolLib SHARED
-    src/WorkspaceTool.cpp
-    src/Pulls.cpp
-    src/Ranking.cpp
+add_library(StatsLib SHARED
+    src/WorkSpace.cpp
+    src/PullsTool.cpp
+    src/RankingTool.cpp
     ext/RooTwoSidedCBShape.cxx
     ext/LinkDef.h
     ${PROJECT_NAME}Dict.cxx)
@@ -55,19 +55,18 @@ add_library(WorkspaceToolLib SHARED
 target_link_libraries(UtilsLib PUBLIC ${ROOT_LIBRARIES})
 target_link_libraries(ConfigLib PUBLIC stdc++fs ${ROOT_LIBRARIES})
 target_link_libraries(HistToolLib PUBLIC stdc++fs ${ROOT_LIBRARIES})
-target_link_libraries(WorkspaceToolLib PUBLIC stdc++fs Threads::Threads ${ROOT_LIBRARIES})
+target_link_libraries(StatsLib PUBLIC stdc++fs Threads::Threads ${ROOT_LIBRARIES})
 
 
 add_executable(run-test exec/test.cpp)
-add_executable(bbtautau-hists exec/main.cpp)
+add_executable(run-main exec/main.cpp)
 add_executable(run-pulls exec/run_pulls.cpp)
 add_executable(run-ranking exec/run_ranking.cpp)
 
-target_link_libraries(run-test 
-    ConfigLib HistToolLib UtilsLib WorkspaceToolLib)
-target_link_libraries(bbtautau-hists 
-    ConfigLib HistToolLib UtilsLib WorkspaceToolLib)
-target_link_libraries(run-pulls 
-    UtilsLib WorkspaceToolLib)
-target_link_libraries(run-ranking 
-    UtilsLib WorkspaceToolLib)
+target_link_libraries(run-test ConfigLib HistToolLib UtilsLib StatsLib)
+target_link_libraries(run-main ConfigLib HistToolLib UtilsLib StatsLib)
+target_link_libraries(run-pulls UtilsLib StatsLib)
+target_link_libraries(run-ranking UtilsLib StatsLib)
+
+add_custom_target(link_target ALL
+    COMMAND ${CMAKE_COMMAND} -E create_symlink run-main bbtautau-hists)

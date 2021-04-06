@@ -1,5 +1,5 @@
-#ifndef WORKSPACETOOL_H
-#define WORKSPACETOOL_H
+#ifndef WorkSpace_H
+#define WorkSpace_H
 
 #include <iostream>
 #include <chrono>
@@ -124,25 +124,25 @@ private:
     RooWorkspace* m_cWs;
 };
 
-class WorkspaceTool
+class WorkSpace
 {
 public:
-    WorkspaceTool(const WorkspaceInfo* info)
+    WorkSpace(const WorkspaceInfo* info)
         : m_cInfo(info)
     {
         RooMsgService::instance().setGlobalKillBelow(ERROR);
         Load();
     };
 
-    ~WorkspaceTool()
+    ~WorkSpace()
     {
         // this reduce half memory usage, but why?
         delete m_cWs;
     }
 
-    WorkspaceTool(WorkspaceTool& old) = delete;
+    WorkSpace(WorkSpace& old) = delete;
 
-    WorkspaceTool& operator=(WorkspaceTool& old) = delete;
+    WorkSpace& operator=(WorkSpace& old) = delete;
 
 public:
     void Check() {
@@ -175,7 +175,7 @@ public:
 private:
     void Load() {
         // use the singleton to load file and workspace
-        // this makes sure that m_cWs is loaded again for new WorkspaceTool instance
+        // this makes sure that m_cWs is loaded again for new WorkSpace instance
         // while the root file is opened only once.
         WorkspaceLoad::instance().LoadRootFile(m_cInfo);
         m_cWs = WorkspaceLoad::instance().GetWorkspace();
@@ -485,7 +485,7 @@ public:
         return m_setStrNPs;
     }
 
-    map<WorkspaceTool::ePOI, double> GetCache(const string& nm)
+    map<WorkSpace::ePOI, double> GetCache(const string& nm)
     {
         tuple<double, double, double> tupleVals;
         if (m_mapNPsFitted.find(nm) != m_mapNPsFitted.end())
@@ -493,10 +493,10 @@ public:
         else if (m_mapPOIsFitted.find(nm) != m_mapPOIsFitted.end())
             tupleVals = m_mapPOIsFitted.at(nm);
 
-        map<WorkspaceTool::ePOI, double> res = {
-            {WorkspaceTool::ePOI::VALUE,   std::get<0>(tupleVals)},
-            {WorkspaceTool::ePOI::ERRORUP, std::get<1>(tupleVals)},
-            {WorkspaceTool::ePOI::ERRORDOWN, std::get<2>(tupleVals)}
+        map<WorkSpace::ePOI, double> res = {
+            {WorkSpace::ePOI::VALUE,   std::get<0>(tupleVals)},
+            {WorkSpace::ePOI::ERRORUP, std::get<1>(tupleVals)},
+            {WorkSpace::ePOI::ERRORDOWN, std::get<2>(tupleVals)}
         };
 
         return std::move(res);
