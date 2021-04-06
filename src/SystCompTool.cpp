@@ -69,6 +69,7 @@ void SystCompTool::paint(const Config* c) const
             pp.second->SetMarkerColor(Utils::paletteSysts[idx].second);
             pp.second->SetLineColor(Utils::paletteSysts[idx].second);
         }
+        idx++;
     }
 }
 

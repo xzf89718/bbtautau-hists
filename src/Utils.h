@@ -35,14 +35,10 @@ namespace Utils {
 
     static vector<pair<unsigned, unsigned>> paletteSysts = {         
         {kViolet, kAzure},
-        {kViolet-1, kAzure-1},
-        {kViolet-2, kAzure-2},
-        {kViolet-3, kAzure-3},
-        {kViolet-4, kAzure-4},
-        {kViolet+1, kAzure+1},
         {kViolet+2, kAzure+2},
-        {kViolet+3, kAzure+3},
         {kViolet+4, kAzure+4},
+        {kMagenta+2, kBlue+2},
+        {kMagenta+4, kBlue+4},
     };
 }
 
