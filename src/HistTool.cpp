@@ -98,11 +98,12 @@ void HistTool::manipulate(Config* c)
     // if do draw stack, the bkg and sig must be sorted!
 }
 
-void HistTool::makeYield(const Config* c) const
+void HistTool::makeYield(const Config* c, const std::string& tag) const
 {   
     ostringstream oss;
     oss << output_path << "/" 
         << c->current_region->name << "_" 
+        << tag << "_" 
         << c->current_variable->name << ".txt";
 
     ofstream fout(oss.str());
@@ -122,7 +123,7 @@ void HistTool::makeYield(const Config* c) const
         int to = p->histogram->GetNbinsX() + 1;
         int nentries = p->histogram->GetEntries();
         double integral = p->histogram->IntegralAndError(from, to, error, "");
-        double eOverI = *(long*)(&integral) ? error / integral : 0.;
+        double eOverI = integral > (double)0. ? error / integral : 0.;
         fout << FIVE_COLUMN_TABLE(p->name, nentries, integral * p->norm_factor, error * p->norm_factor, eOverI);
 
         for (auto& pp : p->systematic_histograms) {

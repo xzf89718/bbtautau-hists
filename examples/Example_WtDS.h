@@ -64,11 +64,11 @@ void test_hadhad_WtDS(const std::string& filename)
         info->parameter = "Wt_DS_Presel";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
+        ct->output_path = "/tmp/bowenzhang/Stop";
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -95,11 +95,11 @@ void test_hadhad_WtDS(const std::string& filename)
         info->parameter = "Wt_DS_PNN";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
+        ct->output_path = "/tmp/bowenzhang/Stop";
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -124,11 +124,11 @@ void test_hadhad_WtDS(const std::string& filename)
         info->parameter = "Wt_DS_BDT";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
+        ct->output_path = "/tmp/bowenzhang/Stop";
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }

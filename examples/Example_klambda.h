@@ -80,30 +80,30 @@ void test_hadhad_klambda(const std::string& filename="default")
             info->parameter = "from1p0";
             c->updateHistogramPtr(rs->content()->front(), v);
             CompTool* ct = new CompTool(info);
-            //ct->output_path = "/tmp/zhangbw/hhttbbKL10p0from1p0";
-            ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/plots";
-            if (ct->check(c))
-            {
-                ct->paint(c);
-                ct->run(c);
-            }
-            else 
-            {
-                clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
-            }
-
-            delete ps;
-            delete ct;
-            delete c;
+        //ct->output_path = "/tmp/zhangbw/hhttbbKL10p0from1p0";
+        ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/plots";
+        if (ct->check(c))
+        {
+            ct->paint(c);
+            ct->run(c);
+        }
+        else 
+        {
+            clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
         }
 
-        {
-            Processes* ps = new Processes();
-            ps->assign_norm_factors = false;
-            ps->add("hhttbbKL1p0",          "HH (#kappa_{#lambda}=1) generated",   eProcessType::SIG,  eProcess::HHKL10,        "HH (#kappa_{#lambda}=10) generated",  kBlue+1);
-            ps->add("hhttbbKL1p0from10p0",  "HH (#kappa_{#lambda}=1) reweighted",  eProcessType::SIG,  eProcess::HHKLXFROM10,   "HH (#kappa_{#lambda}=10) reweighted", kRed+1);
+        delete ps;
+        delete ct;
+        delete c;
+    }
 
-            Config* c = new Config(b, ps, rs, vs);
+    {
+        Processes* ps = new Processes();
+        ps->assign_norm_factors = false;
+        ps->add("hhttbbKL1p0",          "HH (#kappa_{#lambda}=1) generated",   eProcessType::SIG,  eProcess::HHKL10,        "HH (#kappa_{#lambda}=10) generated",  kBlue+1);
+        ps->add("hhttbbKL1p0from10p0",  "HH (#kappa_{#lambda}=1) reweighted",  eProcessType::SIG,  eProcess::HHKLXFROM10,   "HH (#kappa_{#lambda}=10) reweighted", kRed+1);
+
+        Config* c = new Config(b, ps, rs, vs);
             //c->load("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
             c->load("/home/zifeng/HistCxAOD/KLReweight/output/KLReweight_py8.root", "Preselection");
             info->parameter = "from10p0";

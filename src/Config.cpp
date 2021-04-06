@@ -66,16 +66,7 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
     current_variable = v;
 
     TDirectory* d = nullptr;
-    d = (TDirectory*)m_fin->Get(m_dir.c_str());
-    //    if (m_dir != "")
-    //        d = (TDirectory*)m_fin->Get(m_dir.c_str());
-    //    else
-    //    {   
-    //        clog << "Config.cpp: WARNING: You are using \"\" i.e. empty TDirectory as parameter. Check load function in you Examples carefully,\
-    //        this often cause ROOT segment break error without throw a proper error!"
-    //        << endl;
-    //        d = (TDirectory*)m_fin->GetMotherDir();
-    //    }
+    d = m_fin->GetDirectory(m_dir.c_str());
     for (ProcessInfo* p : *(processes->content()))
     {
         const std::string& fullname = Utils::histString(p, r, v);

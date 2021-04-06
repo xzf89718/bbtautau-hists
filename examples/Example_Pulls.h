@@ -1,18 +1,19 @@
-#include "Ranking.h"
+#include "Pulls.h"
 #include <iostream>
 
 using namespace std;
 
-int test_ranking(const std::string& filename, const std::string& outname)
+int test_pulls(const std::string& filename, const std::string& outname)
 {
     WorkspaceInfo* info = new WorkspaceInfo();
     info->path = filename;
     info->workspace_name = "combined";
     info->use_asimov = false;
+    info->use_oneline_fit = true;
 
     auto timeStart = steady_clock::now();
 
-    RankingEngine* egn = new RankingEngine(info);
+    PullsEngine* egn = new PullsEngine(info);
     egn->Execute();
     egn->WriteToTxt(outname);
 
@@ -25,9 +26,9 @@ int test_ranking(const std::string& filename, const std::string& outname)
     return EXIT_SUCCESS;
 }
 
-int test_ranking_plot(const std::string& in, const std::string& out)
+int test_pulls_plot(const std::string& in, const std::string& out)
 {
-    RankingPlotter* plt = new RankingPlotter();
+    PullsPlotter* plt = new PullsPlotter();
     plt->LoadFromTxt(in.c_str());
     plt->Draw(out.c_str());
 

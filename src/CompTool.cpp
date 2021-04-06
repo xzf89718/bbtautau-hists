@@ -157,11 +157,7 @@ void CompTool::run(const Config* c) const
             for (auto& pp : p->systematic_histograms)
             {
                 std::string updown;
-                if (pp.first.find("1up") != std::string::npos)
-                { updown = "(1 up)"; }
-                else if (pp.first.find("1down") != std::string::npos)
-                { updown = "(1 down)"; }
-                legend->AddEntry(pp.second, (p->name_tex + " " + updown).c_str(), "lep");
+                legend->AddEntry(pp.second, pp.first.c_str(), "lep");
             }
         }
     });
@@ -177,11 +173,6 @@ void CompTool::run(const Config* c) const
         text->SetTextFont(42);
         text->DrawLatex(0.20 + 0.12, 0.86, m_info->atlas_label);
         text->SetTextSize(0.045);
-        if (c->systematics)
-        {
-            vector<SystematicInfo*>* ss = c->systematics->content();
-            text->DrawLatex(0.60, 0.60, ss->front()->name.c_str());
-        }
     }
     ostringstream oss{c->basic->ecm};
     text->DrawLatex(0.20, 0.80, oss.str().c_str());

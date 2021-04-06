@@ -75,7 +75,7 @@ void hadhadsr_v15_yield(const std::string& filename)
 
         c->updateHistogramPtr(r, vs->content()->front());
         DrawStackTool* ds = new DrawStackTool(info);
-        ds->output_path = "/tmp/zhangbw/";
+        ds->output_path = "/tmp/bowenzhang/";
         if (ds->check(c))
         {
             ds->makeYield(c);

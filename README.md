@@ -19,9 +19,14 @@ make
 
 ## run an example
 ```bash
-# the `test_hadhad()` will be executed in `main.cpp` by default
 # in `build/`, do
 ./bbtautau-hists
+```
+
+## run ranking
+```bash
+# in `bbtautau-hists/`, do
+hep_sub jobs/submit_ranking.sh -g atlas -os CentOS7 -o path/to/stdout -e path/to/stderr -argu workspace.root path/to/output -mem 4000 -wt mid
 ```
 
 ## more info
