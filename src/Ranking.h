@@ -271,8 +271,8 @@ public:
         legend->SetBorderSize(0);
         legend->SetTextSize(0.035);
         legend->SetTextAlign(12);
-        legend->AddEntry(h_hi, "+1#sigma post-fit impact on #mu", "f");
-        legend->AddEntry(h_lo, "-1#sigma post-fit impact on #mu", "f");
+        legend->AddEntry(h_hi, "+1#sigma pre-fit impact on #mu", "f");
+        legend->AddEntry(h_lo, "-1#sigma pre-fit impact on #mu", "f");
         legend->Draw("same");
 
         TLatex *text = new TLatex();
