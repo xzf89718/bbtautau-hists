@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/peppapiggyme/bbtautau-hists.svg?branch=master)](https://travis-ci.com/peppapiggyme/bbtautau-hists)
 
-a plotting tool for bbtautau-ers
+(not just) a plotting tool for bbtautau-ers
 
 ## dependency
 c++17, ROOT, CMake
@@ -17,16 +17,41 @@ cmake ../bbtautau-hists/
 make
 ```
 
+## Examples
+- Stack plots: Example.h, HadhadSR_v15.h
+- Yield tables: Example_yield.h, HadHadSR_v15_yield.h
+- klambda comparison: Example_klambda.h
+- Nonres signal comparison (Py vs Hw): Example_NonRes.h
+- Ztautau MadGraph uncertainty: Example_ZtautauMG.h
+- Single top (Wt) uncertainty: Example_WtDS(Gen,OTF).h
+- LepHad ttbar uncertainties: Example_ttbarSyst.h
+- Lephad ttbar different reweighting method: Example_ttbarRew.h
+- Example use Workspace: Example_ws.h
+- Produce pulls&constrains of NPs: Example_Pulls.h
+- Produce ranking of NPs (pre-fit impact on mu): Example_Ranking.h
+
 ## run an example
 ```bash
 # in `build/`, do
-./bbtautau-hists
+./run-main
+```
+
+## run a test
+```bash
+# in `build/`, do
+./run-test
+```
+
+## run pulls
+```bash
+# in `build/`, do
+./run-pulls <path/to/workspace> <path/to/output/tag>
 ```
 
 ## run ranking
 ```bash
-# in `bbtautau-hists/`, do
-hep_sub jobs/submit_ranking.sh -g atlas -os CentOS7 -o path/to/stdout -e path/to/stderr -argu workspace.root path/to/output -mem 4000 -wt mid
+# in `build/`, do
+./run-ranking <path/to/workspace> <path/to/output/tag>
 ```
 
 ## more info
