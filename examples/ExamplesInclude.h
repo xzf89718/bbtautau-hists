@@ -7,6 +7,7 @@
 #include "Example_WtOTF.h"
 #include "Example_NonRes.h"
 #include "Example_ttbarSyst.h"
+#include "Example_ttbarRew.h"
 
 #include "HadHadSR_v15.h"
 #include "HadHadSR_v15_yield.h"

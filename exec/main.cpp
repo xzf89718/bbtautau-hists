@@ -29,6 +29,8 @@ int main(/*int argc, char *argv[]*/)
 
     // test_lephad_ttbarSys("/scratchfs/atlas/bowenzhang/CxAODReaderForSystStudy/run/hist-TTBar-v3.root");
 
+    // test_lephad_ttbarRew("/scratchfs/atlas/bowenzhang/CxAODReaderForSystStudy/run/hist-TTBar-v4.root");
+
     // hadhadsr_v15("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-HadHad-v1.root");
 
     // hadhadsr_v15_yield("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-HadHadWSI-v1.all.root");
