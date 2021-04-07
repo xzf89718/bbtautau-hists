@@ -106,6 +106,19 @@ void SystCompTool::run(const Config* c) const
     lower_pad->Draw();
 
     upper_pad->cd();
+    if (m_info->shape_only) {
+        ps->front()->histogram->Scale(1.0 / ps->front()->histogram->Integral());
+        for (auto &pp : ps->front()->systematic_histograms)
+        {
+            pp.second->Scale(1.0 / pp.second->Integral());
+        }
+    } else {
+        ps->front()->histogram->Scale(ps->front()->norm_factor);
+        for (auto &pp : ps->front()->systematic_histograms)
+        {
+            pp.second->Scale(ps->front()->norm_factor);
+        }
+    }
 
     TH1* base = ps->front()->histogram;
     base->Draw("HIST E1");
