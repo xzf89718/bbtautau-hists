@@ -271,8 +271,8 @@ public:
         legend->SetBorderSize(0);
         legend->SetTextSize(0.035);
         legend->SetTextAlign(12);
-        legend->AddEntry(h_hi, "+1#sigma pre-fit impact on #mu", "f");
-        legend->AddEntry(h_lo, "-1#sigma pre-fit impact on #mu", "f");
+        legend->AddEntry(h_hi, "+1#sigma post-fit impact on #mu", "f");
+        legend->AddEntry(h_lo, "-1#sigma post-fit impact on #mu", "f");
         legend->Draw("same");
 
         TLatex *text = new TLatex();
@@ -281,7 +281,7 @@ public:
         text->SetTextSize(0.050);
         text->DrawLatex(0.50, 0.52, "ATLAS");
         text->SetTextFont(42);
-        text->DrawLatex(0.50 + 0.18, 0.52, "Internal");
+        text->DrawLatex(ost50 + 0.18, 0.52, "Internal");
         text->SetTextSize(0.045);
         text->SetTextSize(0.040);
         text->DrawLatex(0.60, 0.96, "Fit to Data");
