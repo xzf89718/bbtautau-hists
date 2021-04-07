@@ -281,7 +281,7 @@ public:
         text->SetTextSize(0.050);
         text->DrawLatex(0.50, 0.52, "ATLAS");
         text->SetTextFont(42);
-        text->DrawLatex(ost50 + 0.18, 0.52, "Internal");
+        text->DrawLatex(0.50 + 0.18, 0.52, "Internal");
         text->SetTextSize(0.045);
         text->SetTextSize(0.040);
         text->DrawLatex(0.60, 0.96, "Fit to Data");
