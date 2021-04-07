@@ -30,6 +30,7 @@ int main(/*int argc, char *argv[]*/)
     // test_lephad_ttbarSys("/scratchfs/atlas/bowenzhang/CxAODReaderForSystStudy/run/hist-TTBar-v3.root");
 
     // test_lephad_ttbarRew("/scratchfs/atlas/bowenzhang/CxAODReaderForSystStudy/run/hist-TTBar-v4.root");
+    // test_hadhad_ttbarRew("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-ttbarReweight-HadHad-v1.root");
 
     // hadhadsr_v15("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-HadHad-v1.root");
 
