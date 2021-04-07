@@ -147,3 +147,20 @@ void HistTool::makeYield(const Config* c, const std::string& tag) const
 
     clog << "INFO: Yields saved in " << oss.str() << '\n';
 }
+
+
+bool HistToolHelper::check(const Config* c) 
+{
+    vector<ProcessInfo*>* ps = c->processes->content();
+    clog << "INFO: removing nullptrs\n";
+    ps->erase(remove_if(ps->begin(), ps->end(), [](const ProcessInfo* p) {
+        return !p->histogram; }), ps->end());
+
+    if (ps->size() < 1)
+    {
+        cerr << "FAIL: empty input\n";
+        return false;
+    }
+
+    return true;
+}

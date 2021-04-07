@@ -27,4 +27,13 @@ public:
     string output_path;
 };
 
+/**
+ * Sometimes the static function is handy
+ */
+class HistToolHelper
+{
+public:
+    static bool check(const Config* c);
+};
+
 #endif // HISTTOOL_H
