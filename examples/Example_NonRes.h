@@ -59,9 +59,9 @@ void test_hadhad_NonRes(const std::string& filename)
     vs_bdt->add("SMBDT",                   "SM BDT Score",                                      50, binning_bdt, 13);
 
     CompInfo* info = new CompInfo();
-    info->ratio_high = 1.38;
-    info->ratio_low = 0.62;
-    info->shape_only = true;
+    info->ratio_high = 1.48;
+    info->ratio_low = 0.52;
+    info->shape_only = false;
     info->ratio_tex = "Herwig7 / Pythia8";
 
     for (VariableInfo* v : *(vs_presel->content()))
@@ -72,7 +72,7 @@ void test_hadhad_NonRes(const std::string& filename)
 
         Config* c = new Config(b, ps, rs, vs_presel);
         c->load(filename, "Preselection");
-        info->parameter = "Presel_ShapeOnly";
+        info->parameter = "Presel";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
         ct->output_path = "/scratchfs/atlas/bowenzhang/bbtautau-hists/output/NonRes";
@@ -103,7 +103,7 @@ void test_hadhad_NonRes(const std::string& filename)
 
         Config* c = new Config(b, ps, rs, vs_bdt);
         c->load(filename, "BDTScorePreselection");
-        info->parameter = "BDT_ShapeOnly";
+        info->parameter = "BDT";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
         ct->output_path = "/scratchfs/atlas/bowenzhang/bbtautau-hists/output/NonRes";
