@@ -25,7 +25,7 @@ int main(/*int argc, char *argv[]*/)
 
     // test_hadhad_WtOTF("/scratchfs/atlas/bowenzhang/CxAODReaderForSystStudy/run/hist-top-v2.root");
 
-    // test_hadhad_NonRes("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-NonRes-v0.root");
+    // test_hadhad_NonRes("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-NonRes-v2.root");
 
     // test_lephad_ttbarSys("/scratchfs/atlas/bowenzhang/CxAODReaderForSystStudy/run/hist-TTBar-v3.root");
 
