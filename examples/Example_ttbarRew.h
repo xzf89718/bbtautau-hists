@@ -93,9 +93,8 @@ void test_hadhad_ttbarRew(const std::string& filename)
     rs->add("2tag2pjet_0ptv_LL_OS",     "2 b-tag, 2 loose #tau, OS",        eRegionType::SR);
 
     Variables* vs_presel = new Variables();
-    double binning_mass[17] = {0, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 300};
-    vs_presel->add("mBB",                  "m_{BB} [GeV]",                                      1, binning_mass, 16);
-    vs_presel->add("mMMC",                 "m_{#tau#tau} (MMC) [GeV]",                          1, binning_mass, 16);
+    vs_presel->add("mBB",                  "m_{BB} [GeV]",                                      20);
+    vs_presel->add("mMMC",                 "m_{#tau#tau} (MMC) [GeV]",                          20);
     vs_presel->add("mHH",                  "m_{HH} [GeV]",                                      12);
     vs_presel->add("mHHScaled",            "m_{HH} (Scaled) [GeV]",                             12);
     vs_presel->add("dRBB",                 "#Delta R(B,B)",                                     5 );
@@ -128,6 +127,26 @@ void test_hadhad_ttbarRew(const std::string& filename)
     vs_presel->add("Tau1Ntrk",             "Sub-leading #tau_{had} N_{tracks}",                 1 );
     vs_presel->add("dPhiTauTau",           "#Delta #phi (#tau_{had},#tau_{had})",               4 );
 
+    Variables* vs_pnn = new Variables();
+    vs_pnn->add("PNN260",                  "PNN260",                                            100);
+    vs_pnn->add("PNN300",                  "PNN300",                                            100);
+    vs_pnn->add("PNN350",                  "PNN350",                                            100);
+    vs_pnn->add("PNN400",                  "PNN400",                                            100);
+    vs_pnn->add("PNN450",                  "PNN450",                                            100);
+    vs_pnn->add("PNN500",                  "PNN500",                                            100);
+    vs_pnn->add("PNN550",                  "PNN550",                                            100);
+    vs_pnn->add("PNN600",                  "PNN600",                                            100);
+    vs_pnn->add("PNN700",                  "PNN700",                                            100);
+    vs_pnn->add("PNN800",                  "PNN800",                                            100);
+    vs_pnn->add("PNN900",                  "PNN900",                                            100);
+    vs_pnn->add("PNN1000",                 "PNN1000",                                           100);
+    vs_pnn->add("PNN1200",                 "PNN1200",                                           100);
+    vs_pnn->add("PNN1400",                 "PNN1400",                                           100);
+    vs_pnn->add("PNN1600",                 "PNN1600",                                           100);
+
+    Variables* vs_bdt = new Variables();
+    vs_bdt->add("SMBDT",                   "SM BDT",                                            100);
+
     Systematics* ss = new Systematics();
     // OK the name is misleading. It is ttbar with the nominal ttbar reweighting applied
     ss->add("TTBAR_REWEIGHT_ADHOC", "t#bar{t} ad-hoc reweight", eSystematicType::TwoSide);
@@ -136,7 +155,7 @@ void test_hadhad_ttbarRew(const std::string& filename)
     CompInfo* info = new CompInfo();
     info->ratio_high = 1.38;
     info->ratio_low = 0.62;
-    info->shape_only = false;
+    info->shape_only = true;
 
     for (VariableInfo* v : *(vs_presel->content()))
     {
@@ -149,6 +168,78 @@ void test_hadhad_ttbarRew(const std::string& filename)
         Config* c = new Config(b, ps, rs, vs_presel, ss);
         c->load(filename, "Preselection");
         info->parameter = "Presel_HadHad";
+        c->updateHistogramPtr(rs->content()->front(), v);
+        SystCompTool* ct = new SystCompTool(info);
+        ct->output_path = "/scratchfs/atlas/bowenzhang/bbtautau-hists/output/ttbarRew/";
+        
+        if (HistToolHelper::check(c)) {
+            ct->manipulate(c);
+        }
+
+        if (ct->check(c))
+        {
+            ct->makeYield(c, info->parameter);
+            ct->paint(c);
+            ct->run(c);
+        }
+        else 
+        {
+            clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
+        }
+
+        delete ps;
+        delete ct;
+        delete c;
+    }
+
+    info->logy = true;
+
+    for (VariableInfo* v : *(vs_pnn->content()))
+    {
+        Processes* ps = new Processes();
+        ps->add("ttbar",            "ttbar Nominal",        eProcessType::BKG,      eProcess::TTBAR,            "ttbar Nominal",        kBlack);
+        ps->add("ttbarTF",          "ttbar Nominal",        eProcessType::BKG,      eProcess::TTBAR,            "ttbar Nominal",        kBlack);
+        ps->add("ttbarFT",          "ttbar Nominal",        eProcessType::BKG,      eProcess::TTBAR,            "ttbar Nominal",        kBlack);
+        ps->add("ttbarFF",          "ttbar Nominal",        eProcessType::BKG,      eProcess::TTBAR,            "ttbar Nominal",        kBlack);
+
+        Config* c = new Config(b, ps, rs, vs_presel, ss);
+        c->load(filename, "PNNScorePreselection");
+        info->parameter = "PNN_HadHad";
+        c->updateHistogramPtr(rs->content()->front(), v);
+        SystCompTool* ct = new SystCompTool(info);
+        ct->output_path = "/scratchfs/atlas/bowenzhang/bbtautau-hists/output/ttbarRew/";
+        
+        if (HistToolHelper::check(c)) {
+            ct->manipulate(c);
+        }
+
+        if (ct->check(c))
+        {
+            ct->makeYield(c, info->parameter);
+            ct->paint(c);
+            ct->run(c);
+        }
+        else 
+        {
+            clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
+        }
+
+        delete ps;
+        delete ct;
+        delete c;
+    }
+
+    for (VariableInfo* v : *(vs_bdt->content()))
+    {
+        Processes* ps = new Processes();
+        ps->add("ttbar",            "ttbar Nominal",        eProcessType::BKG,      eProcess::TTBAR,            "ttbar Nominal",        kBlack);
+        ps->add("ttbarTF",          "ttbar Nominal",        eProcessType::BKG,      eProcess::TTBAR,            "ttbar Nominal",        kBlack);
+        ps->add("ttbarFT",          "ttbar Nominal",        eProcessType::BKG,      eProcess::TTBAR,            "ttbar Nominal",        kBlack);
+        ps->add("ttbarFF",          "ttbar Nominal",        eProcessType::BKG,      eProcess::TTBAR,            "ttbar Nominal",        kBlack);
+
+        Config* c = new Config(b, ps, rs, vs_presel, ss);
+        c->load(filename, "BDTScorePreselection");
+        info->parameter = "BDT_HadHad";
         c->updateHistogramPtr(rs->content()->front(), v);
         SystCompTool* ct = new SystCompTool(info);
         ct->output_path = "/scratchfs/atlas/bowenzhang/bbtautau-hists/output/ttbarRew/";
