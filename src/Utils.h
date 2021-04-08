@@ -33,6 +33,11 @@ namespace Utils {
     string histStringSyst(const ProcessInfo* p, const RegionInfo* r, const VariableInfo* v, const SystematicInfo* s);
     string systStringShort(const string& sSyst);
 
+    /**
+     * @note: return automatic binning (using 1/n quantiles)
+     */
+    std::vector<double> binningQuantile(TH1* h, double* x, const std::size_t n); 
+
     static vector<pair<unsigned, unsigned>> paletteSysts = {         
         {kViolet, kAzure},
         {kViolet+2, kAzure+2},
