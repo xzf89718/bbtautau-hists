@@ -11,6 +11,7 @@
 
 #include "HadHadSR_v15.h"
 #include "HadHadSR_v15_yield.h"
+#include "HadHadSR_v15_binning.h"
 
 #include "Example_ws.h"
 #include "Example_Ranking.h"

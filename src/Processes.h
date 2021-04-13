@@ -19,21 +19,22 @@ using std::shared_ptr;
 // ENUMS
 enum class eProcessType { DATA, BKG, SIG };
 
+// NOTE: BKG is special, it usually means total bkg, don't use it in ProcessInfo construction!
 enum class eProcess {
-    DATA, OTHERS, BKG, 
-    TTBAR, TTBARTRUE, TTBARFAKE, TTBARTT, TTBARTF, TTBARFT, TTBARFF,
-    TTBARPH7, TTBARAMCP8, TTBARPP8RADHI,
-    STOP, STOPT, STOPS, STOPWT,
-    STOPT_AMC, STOPT_HW7, 
-    STOPWT_AMC, STOPWT_HW7, STOPWT_DS, 
-    ZJETS, ZtautauJETS, ZtautauHF, ZtautauLF, ZllJETS, ZllLF, ZllHF,
-    WJETS, WtauvJETS, WtauvHF, WtauvLF, WlvJETS, WlvLF, WlvHF, ttV,
-    H, VH, WH, ZH, ttH, ggH, VBFH,
-    DIBOSON, WW, WZ, ZZ, FAKE, QCD, MULTIJET,
-    ZJETSMG, ZllLFMG, ZllHFMG,
-    SIG, SMHH, HH, XtoHH, StoHH,
-    HHKL1, HHKL3FROM1, HHKL0FROM1, HHKL10, HHKL10FROM1,
-    HHKLXFROM1, HHKLXFROM10
+    DATA, BKG, OTHERS, // 2 
+    TOP, TTBAR, TTBARTRUE, TTBARFAKE, TTBARTT, TTBARTF, TTBARFT, TTBARFF, // 10
+    TTBARPH7, TTBARAMCP8, TTBARPP8RADHI, // 13
+    STOP, STOPT, STOPS, STOPWT, // 17
+    STOPT_AMC, STOPT_HW7, // 19
+    STOPWT_AMC, STOPWT_HW7, STOPWT_DS, // 22 
+    ZJETS, ZtautauJETS, ZtautauHF, ZtautauLF, ZllJETS, ZllLF, ZllHF, // 29
+    WJETS, WtauvJETS, WtauvHF, WtauvLF, WlvJETS, WlvLF, WlvHF, ttV, // 37
+    H, VH, WH, ZH, ttH, ggH, VBFH, // 44
+    DIBOSON, WW, WZ, ZZ, FAKE, QCD, MULTIJET, //51
+    ZJETSMG, ZllLFMG, ZllHFMG, // 54
+    SIG, SMHH, HH, XtoHH, StoHH, // 59
+    HHKL1, HHKL3FROM1, HHKL0FROM1, HHKL10, HHKL10FROM1, // 64
+    HHKLXFROM1, HHKLXFROM10 //66
 };
 
 // ENTRY

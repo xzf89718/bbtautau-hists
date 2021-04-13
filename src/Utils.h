@@ -103,6 +103,15 @@ public:
         return INT_MIN;
     }
 
+    template<typename T>
+    static void print_queue(T q) { // NB: pass by value so the print uses a copy
+        while(!q.empty()) {
+            std::cout << q.top() << ' ';
+            q.pop();
+        }
+        std::cout << '\n';
+    }
+
 };
 
 #endif // UTILS_H

@@ -61,24 +61,27 @@ void test_hadhad_NonRes(const std::string& filename)
     CompInfo* info = new CompInfo();
     info->ratio_high = 1.48;
     info->ratio_low = 0.52;
-    info->shape_only = false;
+    info->shape_only = true;
     info->ratio_tex = "Herwig7 / Pythia8";
 
     for (VariableInfo* v : *(vs_presel->content()))
     {
         Processes* ps = new Processes();
-        ps->add("hhttbb",       "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kBlue+1);
-        ps->add("hhttbbPhH7",   "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kRed+1);
+        // ps->add("hhttbb",       "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kBlue+1);
+        // ps->add("hhttbbPhH7",   "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kRed+1);
+        ps->add("hhttbbL10",       "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kBlue+1);
+        ps->add("hhttbbL10PhH7",   "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kRed+1);
 
         Config* c = new Config(b, ps, rs, vs_presel);
         c->load(filename, "Preselection");
-        info->parameter = "Presel";
+        // info->parameter = "Presel_ShapeOnly";
+        info->parameter = "Presel_l10_ShapeOnly";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
         ct->output_path = "/scratchfs/atlas/bowenzhang/bbtautau-hists/output/NonRes";
         if (ct->check(c))
         {
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -98,18 +101,21 @@ void test_hadhad_NonRes(const std::string& filename)
     for (VariableInfo* v : *(vs_bdt->content()))
     {
         Processes* ps = new Processes();
-        ps->add("hhttbb",       "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kBlue+1);
-        ps->add("hhttbbPhH7",   "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kRed+1);
+        // ps->add("hhttbb",       "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kBlue+1);
+        // ps->add("hhttbbPhH7",   "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kRed+1);
+        ps->add("hhttbbL10",       "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kBlue+1);
+        ps->add("hhttbbL10PhH7",   "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kRed+1);
 
         Config* c = new Config(b, ps, rs, vs_bdt);
         c->load(filename, "BDTScorePreselection");
-        info->parameter = "BDT";
+        // info->parameter = "BDT_ShapeOnly";
+        info->parameter = "BDT_l10_ShapeOnly";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
         ct->output_path = "/scratchfs/atlas/bowenzhang/bbtautau-hists/output/NonRes";
         if (ct->check(c))
         {
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }

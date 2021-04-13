@@ -42,13 +42,15 @@ add_library(HistToolLib SHARED
     src/DrawStackTool.cpp
     src/CompTool.cpp
     src/SystCompTool.cpp
-    src/LephadTTBarCompTool.cpp)
+    src/LephadTTBarCompTool.cpp
+    src/AutoBinningTool.cpp)
 
 add_library(StatsLib SHARED
     src/WorkSpace.cpp
     src/PullsTool.cpp
     src/RankingTool.cpp
-    ext/RooTwoSidedCBShape.cxx
+    ext/roofitUtils.cpp
+    ext/RooTwoSidedCBShape.cpp
     ext/LinkDef.h
     ${PROJECT_NAME}Dict.cxx)
 

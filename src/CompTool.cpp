@@ -124,7 +124,14 @@ void CompTool::run(const Config* c) const
     base->GetXaxis()->SetLabelSize(0);
     base->GetXaxis()->SetTitleSize(0);
     base->GetXaxis()->SetTitleOffset(1.3);
-    base->GetYaxis()->SetTitle("Events");
+    if (!m_info->shape_only)
+    {
+        base->GetYaxis()->SetTitle("Events");
+    }
+    else
+    {
+        base->GetYaxis()->SetTitle("a.u.");
+    }
     base->GetYaxis()->SetLabelSize(0.04);
     base->GetYaxis()->SetTitleSize(0.045);
     base->SetMaximum(base->GetMaximum() * 1.4);
@@ -236,7 +243,7 @@ void CompTool::run(const Config* c) const
     oss_out << output_path << "/" 
             << c->current_region->name << "_"
             << c->current_variable->name << "_"
-            << m_info->parameter << ".png";
+            << m_info->parameter << ".pdf";
     c1->Update();
     c1->SaveAs(oss_out.str().c_str());
 
