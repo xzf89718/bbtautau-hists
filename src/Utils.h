@@ -103,13 +103,20 @@ public:
         return INT_MIN;
     }
 
+    // NB: pass by value so the print uses a copy
     template<typename T>
-    static void print_queue(T q) { // NB: pass by value so the print uses a copy
-        while(!q.empty()) {
-            std::cout << q.top() << ' ';
+    static void print_queue(T q) 
+    {
+        while(!q.empty()) 
+        {
+            std::cout << q.top();
+            if (q.size() != 1)
+            {
+                std::cout << ", ";
+            } 
             q.pop();
         }
-        std::cout << '\n';
+        std::cout << "\n";
     }
 
 };

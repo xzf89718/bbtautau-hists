@@ -50,7 +50,8 @@ ps->add("VBFHtautau",           "SM Higgs",               eProcessType::BKG,    
 for (VariableInfo* v : *(VARSET->content())) \
 { \
     info->parameter = ROOTDIR; \
-    info->required_mcstats = 0.5; \
+    info->required_mcstats = 0.2; /* 0.2 to be more conservative */\
+    info->min_mcstats = 0.2; \
     info->min_bkg = 5; \
     info->n_bins = NBINS; \
  \
@@ -89,9 +90,11 @@ void hadhadsr_v15_binning(const std::string& filename)
     Regions* rs = new Regions();
     rs->add("2tag2pjet_0ptv_LL_OS",     "2 b-tag, 2 loose #tau, OS",        eRegionType::SR);
 
-    Variables* vs_bdt = new Variables();        vs_bdt->add("SMBDT",                  "BDT Score",         1);
+    Variables* vs_bdt = new Variables();        vs_bdt->add("SMBDT",              "BDT Score",         1);
     Variables* vs_260 = new Variables();        vs_260->add("PNN260",             "PNN260",            1);
+    Variables* vs_280 = new Variables();        vs_280->add("PNN280",             "PNN280",            1);
     Variables* vs_300 = new Variables();        vs_300->add("PNN300",             "PNN300",            1);
+    Variables* vs_325 = new Variables();        vs_325->add("PNN325",             "PNN325",            1);
     Variables* vs_350 = new Variables();        vs_350->add("PNN350",             "PNN350",            1);
     Variables* vs_400 = new Variables();        vs_400->add("PNN400",             "PNN400",            1);
     Variables* vs_450 = new Variables();        vs_450->add("PNN450",             "PNN450",            1);
@@ -102,25 +105,29 @@ void hadhadsr_v15_binning(const std::string& filename)
     Variables* vs_800 = new Variables();        vs_800->add("PNN800",             "PNN800",            1);
     Variables* vs_900 = new Variables();        vs_900->add("PNN900",             "PNN900",            1);
     Variables* vs_1000 = new Variables();       vs_1000->add("PNN1000",           "PNN1000",           1);
+    Variables* vs_1100 = new Variables();       vs_1100->add("PNN1100",           "PNN1100",           1);
     Variables* vs_1200 = new Variables();       vs_1200->add("PNN1200",           "PNN1200",           1);
     Variables* vs_1400 = new Variables();       vs_1400->add("PNN1400",           "PNN1400",           1);
     Variables* vs_1600 = new Variables();       vs_1600->add("PNN1600",           "PNN1600",           1);
 
     AutoBinningInfo* info = new AutoBinningInfo();
 
-    TESTAUTOBINNING(vs_bdt,     "BDTScorePreselection",     "hhttbb",                   14);
-    TESTAUTOBINNING(vs_260,     "PNNScorePreselection",     "Hhhbbtautau260",           14);
-    TESTAUTOBINNING(vs_300,     "PNNScorePreselection",     "Hhhbbtautau300",           14);
-    TESTAUTOBINNING(vs_350,     "PNNScorePreselection",     "Hhhbbtautau350",           14);
-    TESTAUTOBINNING(vs_400,     "PNNScorePreselection",     "Hhhbbtautau400",           14);
-    TESTAUTOBINNING(vs_450,     "PNNScorePreselection",     "Hhhbbtautau450",           14);
-    TESTAUTOBINNING(vs_500,     "PNNScorePreselection",     "Hhhbbtautau500",           14);
+    TESTAUTOBINNING(vs_bdt,     "BDTScorePreselection",     "hhttbb",                   20);
+    TESTAUTOBINNING(vs_260,     "PNNScorePreselection",     "Hhhbbtautau260",           20);
+    TESTAUTOBINNING(vs_280,     "PNNScorePreselection",     "Hhhbbtautau280",           20);
+    TESTAUTOBINNING(vs_300,     "PNNScorePreselection",     "Hhhbbtautau300",           20);
+    TESTAUTOBINNING(vs_325,     "PNNScorePreselection",     "Hhhbbtautau325",           20);
+    TESTAUTOBINNING(vs_350,     "PNNScorePreselection",     "Hhhbbtautau350",           20);
+    TESTAUTOBINNING(vs_400,     "PNNScorePreselection",     "Hhhbbtautau400",           20);
+    TESTAUTOBINNING(vs_450,     "PNNScorePreselection",     "Hhhbbtautau450",           20);
+    TESTAUTOBINNING(vs_500,     "PNNScorePreselection",     "Hhhbbtautau500",           20);
     TESTAUTOBINNING(vs_550,     "PNNScorePreselection",     "Hhhbbtautau550",           14);
     TESTAUTOBINNING(vs_600,     "PNNScorePreselection",     "Hhhbbtautau600",           14);
     TESTAUTOBINNING(vs_700,     "PNNScorePreselection",     "Hhhbbtautau700",           14);
     TESTAUTOBINNING(vs_800,     "PNNScorePreselection",     "Hhhbbtautau800",            8);
     TESTAUTOBINNING(vs_900,     "PNNScorePreselection",     "Hhhbbtautau900",            8);
     TESTAUTOBINNING(vs_1000,    "PNNScorePreselection",    "Hhhbbtautau1000",            8);
+    TESTAUTOBINNING(vs_1100,    "PNNScorePreselection",    "Hhhbbtautau1100",            8);
     TESTAUTOBINNING(vs_1200,    "PNNScorePreselection",    "Hhhbbtautau1200",            8);
     TESTAUTOBINNING(vs_1400,    "PNNScorePreselection",    "Hhhbbtautau1400",            8);
     TESTAUTOBINNING(vs_1600,    "PNNScorePreselection",    "Hhhbbtautau1600",            8);
@@ -129,7 +136,9 @@ void hadhadsr_v15_binning(const std::string& filename)
     delete rs;
     delete vs_bdt;
     delete vs_260;
+    delete vs_280;
     delete vs_300;
+    delete vs_325;
     delete vs_350;
     delete vs_400;
     delete vs_450;
@@ -140,6 +149,7 @@ void hadhadsr_v15_binning(const std::string& filename)
     delete vs_800;
     delete vs_900;
     delete vs_1000;
+    delete vs_1100;
     delete vs_1200;
     delete vs_1400;
     delete vs_1600;

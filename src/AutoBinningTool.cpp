@@ -166,21 +166,39 @@ double BinContent::significanceBinByBin(std::priority_queue<std::size_t, std::ve
     return std::sqrt(fTotalSig2);
 }
 
-bool BinContent::allBkgMCStatsAndSumPassFromXtoY(double fBkg, double fBkgErr, std::size_t x, std::size_t y) const
+bool BinContent::passCaseOneFromXtoY(double fBkg, double fBkgErr, double fReqErr, std::size_t x, std::size_t y) const
 {
+    // if 3 main bkg pass this criteria, then it's okay
+    // 2 -> total bkg and signal
+    int nBkg = data.size() - 2;
+    // int nOkay = nBkg / 2; // -> 3 for hadhad
+    int nOkay = 2;
     for (const auto& d : data)
     {
         if (d.first.first == eProcessType::BKG)
         {
             double fErrOfThisProc = errSumFromXtoY(d.second.second, x, y) / sumFromXtoY(d.second.first, x, y);
-            if (fErrOfThisProc > fBkgErr)
+            if (fErrOfThisProc > fReqErr)
             {
-                // Tools::println(" -> not good, Proc [%] Err [%] > %", static_cast<int>(d.first.second), fErrOfThisProc, fBkgErr);
-                return false;
+                // Tools::println(" -> not good, Proc [%] Err [%] > %", static_cast<int>(d.first.second), fErrOfThisProc, fReqErr);
+                nBkg--;
             }
-            // Tools::println(" <> good, Proc [%] Err [%] < %", static_cast<int>(d.first.second), fErrOfThisProc, fBkgErr);
+            // Tools::println(" <> good, Proc [%] Err [%] < %", static_cast<int>(d.first.second), fErrOfThisProc, fReqErr);
         }
     }
+
+    if (nBkg < nOkay)
+    {
+        return false;
+    }
+
+    double fTotalBkgErr = errSumFromXtoY(data.at(BKGBKG).second, x, y);
+    if (fTotalBkgErr < fBkgErr)
+    {
+        // Tools::println(" -> not good, Total Bkg [%] < %", fTotalBkgErr, fBkgErr);
+        return false;
+    }
+
     double fTotalBkg = sumFromXtoY(data.at(BKGBKG).first, x, y);
     if (fTotalBkg < fBkg)
     {
@@ -287,7 +305,7 @@ void AutoBinningTool_v1::run(const Config* c) const
     while (bc->curX > 0)
     {
         // why do it need curX and curY as member?
-        if (!bc->allBkgMCStatsAndSumPassFromXtoY(m_info->min_bkg, m_info->required_mcstats, bc->curX, bc->curY))
+        if (!bc->passCaseOneFromXtoY(m_info->min_bkg, m_info->min_mcstats, m_info->required_mcstats, bc->curX, bc->curY))
         {
             bc->curX--;
         }
@@ -346,7 +364,7 @@ void AutoBinningTool_v1::run(const Config* c) const
     Tools::println("The optimal here is %", sig_final);
     Tools::println(" -> Difference is %", sig_final / sig_max);
 
-    Tools::print_queue(pq);
+    // Tools::print_queue(pq);
 
     size_t i = 1;
     auto pq_forBinEdges = pq;
@@ -381,6 +399,8 @@ void AutoBinningTool_v1::run(const Config* c) const
         pq_bin.push(pq_forBin.top() + offset); // bin number
         pq_forBin.pop();
     }
+
+    Tools::print_queue(pq_bin);
 
     while(!pq_bin.empty())
     {

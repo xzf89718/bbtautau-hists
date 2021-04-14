@@ -22,8 +22,9 @@ public:
     const char* atlas_label = "Simulation Internal";
     std::string parameter;
     unsigned n_bins = 8;
-    double min_bkg = 5;
-    double required_mcstats = 0.2;
+    double min_bkg = 5; // all bkg
+    double min_mcstats = 0.2; // all bkg
+    double required_mcstats = 0.2; // individual component (leading half)
 };
 
 // ----------------------------------------------------------------------------
@@ -61,9 +62,9 @@ public:
 
 public:
     /**
-     * Data checks
+     * Data checks case 1 : allBkgMCStatsAndSumPassFromXtoY
      */
-    bool allBkgMCStatsAndSumPassFromXtoY(double fBkg, double fBkgErr, std::size_t x, std::size_t y) const;
+    bool passCaseOneFromXtoY(double fBkg, double fBkgErr, double fReqErr, std::size_t x, std::size_t y) const;
 
 public:
     std::map<std::pair<eProcessType, eProcess>, std::pair<double*, double*>> data;
