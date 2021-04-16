@@ -18,12 +18,12 @@ make
 ```
 
 ## Examples
-- Stack plots: Example.h, HadhadSR_v15.h
+- Stack plots: Example.h, HadHadSR_v15.h
 - Yield tables: Example_yield.h, HadHadSR_v15_yield.h
 - klambda comparison: Example_klambda.h
 - Nonres signal comparison (Py vs Hw): Example_NonRes.h
 - Ztautau MadGraph uncertainty: Example_ZtautauMG.h
-- Single top (Wt) uncertainty: Example_WtDS(Gen,OTF).h
+- Single top (Wt) uncertainty: Example_WtDS.h, Example_WtGen.h, Example_WtOTF.h
 - LepHad ttbar uncertainties: Example_ttbarSyst.h
 - Lephad/Hadhad ttbar reweighting comparison: Example_ttbarRew.h
 - Example use Workspace: Example_ws.h
