@@ -243,7 +243,7 @@ void CompTool::run(const Config* c) const
     oss_out << output_path << "/" 
             << c->current_region->name << "_"
             << c->current_variable->name << "_"
-            << m_info->parameter << ".pdf";
+            << m_info->parameter << ".png";
     c1->Update();
     c1->SaveAs(oss_out.str().c_str());
 

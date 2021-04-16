@@ -19,12 +19,14 @@ public:
     bool logy = false;
     bool atlas = true;
     bool shape_only = false;
-    const char* atlas_label = "Simulation Internal";
-    std::string parameter;
     unsigned n_bins = 8;
     double min_bkg = 5; // all bkg
     double min_mcstats = 0.2; // all bkg
     double required_mcstats = 0.2; // individual component (leading half)
+    double eff_factor = 0.5; // effective factor
+    double significance_delta = 1e-5; // stop adding bins if delta significance < 1e-5
+    const char* atlas_label = "Simulation Internal";
+    std::string parameter = "TAG";
 };
 
 // ----------------------------------------------------------------------------
@@ -62,9 +64,33 @@ public:
 
 public:
     /**
-     * Data checks case 1 : allBkgMCStatsAndSumPassFromXtoY
+     * @note 
+     * Case 1 : 
+     * from right to left, scan for bin edges that satisfy:
+     * - # Bkg > MinBkg (typically _5_) 
+     *   -> validity of asymptotic test statistic formula
+     * - MC stat. error of total bkg > MinTotalErr (typically _20%_)
+     *   -> generally reasonable mc stats
+     * - MC stat. error of leading two components (typically _20%_)
+     *   -> enough stats to show systematic variation of major bkg components
+     * 
+     * Q: any cons?
      */
-    bool passCaseOneFromXtoY(double fBkg, double fBkgErr, double fReqErr, std::size_t x, std::size_t y) const;
+    bool passCaseOneFromXtoY(double fBkg, double fBkgErr, double fReqFactor, std::size_t x, std::size_t y) const;
+    /**
+     * @note
+     * Case 2 : 
+     * from right to left, scan for bin edges that satisfy:
+     * - # Bkg > MinBkg (typically _5_) 
+     *   -> validity of asymptotic test statistic formula
+     * - MC stat. error of total bkg > min of MinTotalErr (typically _20%_) 
+     *   and EffectiveFactor * (# sig_i / # sig_tot) (typically _1_)
+     *   -> generally reasonable mc stats
+     *   -> (sometimes sharply) monotonic behaviour of bkg (and sig) distribution
+     * - MC stat. error of leading two components (typically _20%_)
+     *   -> enough stats to show systematic variation of major bkg components
+     */
+    bool passCaseTwoFromXtoY(double fBkg, double fBkgErr, double fEffErr, double fReqFactor, std::size_t x, std::size_t y) const;
 
 public:
     std::map<std::pair<eProcessType, eProcess>, std::pair<double*, double*>> data;
@@ -76,13 +102,23 @@ private:
     std::size_t m_size;
 };
 
+// ---------------------------------------------------------------------------
+// Method Enum
+// ---------------------------------------------------------------------------
+enum class BinningCriteria 
+{
+    CaseOne,
+    CaseTwo
+};
+
+
 // ----------------------------------------------------------------------------
 // Auto Binning Engines
 // ----------------------------------------------------------------------------
 class AutoBinningTool : public HistTool
 {
 public:
-    explicit AutoBinningTool(const AutoBinningInfo* info);
+    AutoBinningTool(const AutoBinningInfo* info, BinningCriteria bc);
     virtual ~AutoBinningTool() override { delete m_binEdges; }
 
 public:
@@ -97,6 +133,7 @@ public:
 protected:
     const AutoBinningInfo* m_info;
     vector<double>* m_binEdges;
+    BinningCriteria m_bc;
 };
 
 /**
@@ -109,7 +146,7 @@ protected:
 class AutoBinningTool_v1 : public AutoBinningTool
 {
 public:
-    explicit AutoBinningTool_v1(const AutoBinningInfo* info);
+    AutoBinningTool_v1(const AutoBinningInfo* info, BinningCriteria bc);
 
 public: 
     virtual void run(const Config* c) const override;

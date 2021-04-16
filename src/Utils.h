@@ -32,6 +32,7 @@ namespace Utils {
     string systString(const SystematicInfo* s);
     string histStringSyst(const ProcessInfo* p, const RegionInfo* r, const VariableInfo* v, const SystematicInfo* s);
     string systStringShort(const string& sSyst);
+    string signalTypeName(const string& sSigName);
 
     /**
      * @note: return automatic binning (using 1/n quantiles)

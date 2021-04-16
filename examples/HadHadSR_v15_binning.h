@@ -54,6 +54,7 @@ for (VariableInfo* v : *(VARSET->content())) \
     info->min_mcstats = 0.2; \
     info->min_bkg = 5; \
     info->n_bins = NBINS; \
+    info->eff_factor = 1.0; /* only for CaseTwo */\
  \
     Processes* ps = new Processes(); \
     ADDBKGTOPS(); \
@@ -63,13 +64,13 @@ for (VariableInfo* v : *(VARSET->content())) \
     c->load(filename, ROOTDIR); \
  \
     c->updateHistogramPtr(rs->content()->front(), v); \
-    AutoBinningTool* ab = new AutoBinningTool_v1(info); \
-    ab->output_path = "/scratchfs/atlas/bowenzhang/bbtautau-hists/output/binning"; \
+    AutoBinningTool* ab = new AutoBinningTool_v1(info, BinningCriteria::CaseTwo); \
+    ab->output_path = "/scratchfs/atlas/bowenzhang/bbtautau-hists/output/binning/CaseTwo"; \
     if (ab->check(c)) \
     { \
         ab->manipulate(c); \
         ab->paint(c); \
-        ab->makeYield(c); \
+        ab->makeYield(c, info->parameter); \
         ab->run(c); \
     } \
     else  \

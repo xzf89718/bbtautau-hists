@@ -77,6 +77,24 @@ string systStringShort(const string& sSyst)
     return sSyst;
 }
 
+string signalTypeName(const string& sSigName)
+{
+    string name_SMHH("hhttbb");
+    string name_2HDM("Hhhbbtautau");
+    string sName(sSigName);
+
+    if (sSigName == name_SMHH)
+    {
+        sName = "SM";
+    }
+    else if (sSigName.find(name_2HDM) != string::npos)
+    {
+        sName = "2HDM" + sSigName.substr(string(name_2HDM).length());
+    }
+
+    return sName;
+}
+
 std::vector<double> binningQuantile(TH1* h, double* x, const std::size_t n)
 {
     std::vector<double> y(n+1);

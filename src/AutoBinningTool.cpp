@@ -166,24 +166,23 @@ double BinContent::significanceBinByBin(std::priority_queue<std::size_t, std::ve
     return std::sqrt(fTotalSig2);
 }
 
-bool BinContent::passCaseOneFromXtoY(double fBkg, double fBkgErr, double fReqErr, std::size_t x, std::size_t y) const
+bool BinContent::passCaseOneFromXtoY(double fBkg, double fBkgErr, double fReqFactor, std::size_t x, std::size_t y) const
 {
-    // if 3 main bkg pass this criteria, then it's okay
+    // if leading 2 main bkg pass this criteria, then it's okay
     // 2 -> total bkg and signal
     int nBkg = data.size() - 2;
-    // int nOkay = nBkg / 2; // -> 3 for hadhad
     int nOkay = 2;
     for (const auto& d : data)
     {
         if (d.first.first == eProcessType::BKG)
         {
             double fErrOfThisProc = errSumFromXtoY(d.second.second, x, y) / sumFromXtoY(d.second.first, x, y);
-            if (fErrOfThisProc > fReqErr)
+            if (fErrOfThisProc > fReqFactor)
             {
-                // Tools::println(" -> not good, Proc [%] Err [%] > %", static_cast<int>(d.first.second), fErrOfThisProc, fReqErr);
+                // Tools::println(" -> not good, Proc [%] Err [%] > %", static_cast<int>(d.first.second), fErrOfThisProc, fReqFactor);
                 nBkg--;
             }
-            // Tools::println(" <> good, Proc [%] Err [%] < %", static_cast<int>(d.first.second), fErrOfThisProc, fReqErr);
+            // Tools::println(" <> good, Proc [%] Err [%] < %", static_cast<int>(d.first.second), fErrOfThisProc, fReqFactor);
         }
     }
 
@@ -192,12 +191,13 @@ bool BinContent::passCaseOneFromXtoY(double fBkg, double fBkgErr, double fReqErr
         return false;
     }
 
-    double fTotalBkgErr = errSumFromXtoY(data.at(BKGBKG).second, x, y);
-    if (fTotalBkgErr < fBkgErr)
+    double fTotalBkgErr = errSumFromXtoY(data.at(BKGBKG).second, x, y) / sumFromXtoY(data.at(BKGBKG).first, x, y);
+    if (fTotalBkgErr > fBkgErr)
     {
-        // Tools::println(" -> not good, Total Bkg [%] < %", fTotalBkgErr, fBkgErr);
+        // Tools::println(" -> not good, Total Bkg Err [%] > %", fTotalBkgErr, fBkgErr);
         return false;
     }
+    // Tools::println(" <> good, Total Bkg Err [%] < %", fTotalBkgErr, fBkgErr);
 
     double fTotalBkg = sumFromXtoY(data.at(BKGBKG).first, x, y);
     if (fTotalBkg < fBkg)
@@ -209,8 +209,62 @@ bool BinContent::passCaseOneFromXtoY(double fBkg, double fBkgErr, double fReqErr
     return true;
 }
 
-AutoBinningTool::AutoBinningTool(const AutoBinningInfo* info)
-    : m_info(info), m_binEdges(new std::vector<double>(m_info->n_bins + 1, 0.))
+bool BinContent::passCaseTwoFromXtoY(double fBkg, double fBkgErr, double fEffErr, double fReqFactor, std::size_t x, std::size_t y) const
+{
+    // if leading 2 main bkg pass this criteria, then it's okay
+    // 2 -> total bkg and signal
+    int nBkg = data.size() - 2;
+    int nOkay = 2;
+
+    auto itSig = std::find_if(data.begin(), data.end(), 
+        [](const std::pair<std::pair<eProcessType, eProcess>, std::pair<double*, double*>>& d)
+        { return d.first.first == eProcessType::SIG; });
+
+    for (const auto& d : data)
+    {
+        if (d.first.first == eProcessType::BKG)
+        {
+            double fErrOfThisProc = errSumFromXtoY(d.second.second, x, y) / sumFromXtoY(d.second.first, x, y);
+            if (fErrOfThisProc > fReqFactor)
+            {
+                // Tools::println(" -> not good, Proc [%] Err [%] > %", static_cast<int>(d.first.second), fErrOfThisProc, fReqFactor);
+                nBkg--;
+            }
+            // Tools::println(" <> good, Proc [%] Err [%] < %", static_cast<int>(d.first.second), fErrOfThisProc, fReqFactor);
+        }
+    }
+
+    if (nBkg < nOkay)
+    {
+        return false;
+    }
+
+    /// @note Hardcoded offset!
+    constexpr double fOffset = 0.01;
+    double fTotalSig = sumFromXtoY(itSig->second.first, x, y);
+    double fTotalSigAll = sumFromXtoY(itSig->second.first, 0, size() - 1);
+    double fTotalBkgErr = errSumFromXtoY(data.at(BKGBKG).second, x, y) / sumFromXtoY(data.at(BKGBKG).first, x, y);
+    double fErr = fTotalSig > 0 ? std::min(fBkgErr, fOffset + fEffErr * (fTotalSig / fTotalSigAll)) : fBkgErr;
+
+    if (fTotalBkgErr > fErr)
+    {
+        // Tools::println(" -> not good, Total Bkg Err [%] > %", fTotalBkgErr, fErr);
+        return false;
+    }
+    // Tools::println(" <> good, Total Bkg Err [%] < %", fTotalBkgErr, fErr);
+
+    double fTotalBkg = sumFromXtoY(data.at(BKGBKG).first, x, y);
+    if (fTotalBkg < fBkg)
+    {
+        // Tools::println(" -> not good, Total Bkg [%] < %", fTotalBkg, fBkg);
+        return false;
+    }
+    // Tools::println(" <> good, Total Bkg [%] > %", fTotalBkg, fBkg);
+    return true;
+}
+
+AutoBinningTool::AutoBinningTool(const AutoBinningInfo* info, BinningCriteria bc)
+    : m_info(info), m_binEdges(new std::vector<double>(m_info->n_bins + 1, 0.)), m_bc(BinningCriteria::CaseTwo)
 {
 }
 
@@ -279,8 +333,8 @@ void AutoBinningTool::paint(const Config* c) const
 // v1
 // ----------------------------------------------------------------------------
 
-AutoBinningTool_v1::AutoBinningTool_v1(const AutoBinningInfo* info)
-    : AutoBinningTool(info)
+AutoBinningTool_v1::AutoBinningTool_v1(const AutoBinningInfo* info, BinningCriteria bc)
+    : AutoBinningTool(info, bc)
 {
 }
 
@@ -304,8 +358,23 @@ void AutoBinningTool_v1::run(const Config* c) const
     // TODO: change this to binary searching
     while (bc->curX > 0)
     {
-        // why do it need curX and curY as member?
-        if (!bc->passCaseOneFromXtoY(m_info->min_bkg, m_info->min_mcstats, m_info->required_mcstats, bc->curX, bc->curY))
+        bool bPass = false;
+
+        // Choose binning criteria here
+        switch (m_bc)
+        {
+        case BinningCriteria::CaseOne:
+            bPass = bc->passCaseOneFromXtoY(m_info->min_bkg, m_info->min_mcstats, m_info->required_mcstats, bc->curX, bc->curY);
+            break;
+        case BinningCriteria::CaseTwo:
+            bPass = bc->passCaseTwoFromXtoY(m_info->min_bkg, m_info->min_mcstats, m_info->eff_factor, m_info->required_mcstats, bc->curX, bc->curY);
+            break;
+        default:
+            bPass = bc->passCaseTwoFromXtoY(m_info->min_bkg, m_info->min_mcstats, m_info->eff_factor, m_info->required_mcstats, bc->curX, bc->curY);
+            break;
+        }
+
+        if (!bPass)
         {
             bc->curX--;
         }
@@ -356,13 +425,20 @@ void AutoBinningTool_v1::run(const Config* c) const
                 }
             }
         }
-        pq.push(bestX);
-        lookup.insert(bestX);
+        // no repeated edge and ignore zero which has been pushed to pq already (see above)
+        if (lookup.find(bestX) == lookup.end() && bestX != 0) {
+            pq.push(bestX);
+            lookup.insert(bestX);
+        }
+        if ((sig_max - bestSig) / sig_max < m_info->significance_delta)
+        {
+            break;
+        }
     }
 
     double sig_final = bc->significanceBinByBin(pq);
     Tools::println("The optimal here is %", sig_final);
-    Tools::println(" -> Difference is %", sig_final / sig_max);
+    Tools::println(" -> Difference is %", (sig_max - sig_final) / sig_max);
 
     // Tools::print_queue(pq);
 
@@ -383,7 +459,7 @@ void AutoBinningTool_v1::run(const Config* c) const
     ostringstream oss;
     oss << output_path << "/" 
         << "Binning_" 
-        << (*itSig)->name << ".txt";
+        << Utils::signalTypeName((*itSig)->name) << ".txt";
     ofstream fout(oss.str());
 
     // Em.. WSMaker wants the opposite so

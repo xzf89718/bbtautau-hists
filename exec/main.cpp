@@ -34,7 +34,7 @@ int main(/*int argc, char *argv[]*/)
 
     // hadhadsr_v15("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-HadHad-v1.root");
     // hadhadsr_v15_yield("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-HadHadWSI-v1.all.root");
-    hadhadsr_v15_binning("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-HadHadWSI-v1.all.root");
+    // hadhadsr_v15_binning("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-HadHadWSI-v1.all.root");
 
     // test_ws_info("/publicfs/atlas/atlasnew/higgs/hh2X/bowenzhang/WSMakerOutput/Bowen_HadHadWSI_v2.ZgenTtbarNorm_HH_13TeV_ZgenTtbarNorm_Systs_hadhad_SM_MVA_0/workspaces/combined/0.root");
     // test_ws_info("/publicfs/atlas/atlasnew/higgs/hh2X/bowenzhang/WSMakerOutput/Bowen_HadHadWSI_v1.ZgenTtbarNorm_HH_13TeV_ZgenTtbarNorm_Systs_hadhad_SM_BDT_0/workspaces/combined/0.root");
