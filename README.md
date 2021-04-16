@@ -26,6 +26,7 @@ make
 - Single top (Wt) uncertainty: Example_WtDS(Gen,OTF).h
 - LepHad ttbar uncertainties: Example_ttbarSyst.h
 - Lephad/Hadhad ttbar reweighting comparison: Example_ttbarRew.h
+- Auto-binning for MVA score distribution: HadHadSR_v15_binning.h
 - Example use Workspace: Example_ws.h
 - Produce pulls&constrains of NPs: Example_Pulls.h
 - Produce ranking of NPs (pre-fit impact on mu): Example_Ranking.h
