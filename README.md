@@ -18,18 +18,18 @@ make
 ```
 
 ## Examples
-- Stack plots: Example.h, HadHadSR_v15.h
-- Yield tables: Example_yield.h, HadHadSR_v15_yield.h
-- klambda comparison: Example_klambda.h
-- Nonres signal comparison (Py vs Hw): Example_NonRes.h
-- Ztautau MadGraph uncertainty: Example_ZtautauMG.h
-- Single top (Wt) uncertainty: Example_WtDS.h, Example_WtGen.h, Example_WtOTF.h
-- LepHad ttbar uncertainties: Example_ttbarSyst.h
-- Lephad/Hadhad ttbar reweighting comparison: Example_ttbarRew.h
-- Auto-binning for MVA score distribution: HadHadSR_v15_binning.h
-- Example use Workspace: Example_ws.h
-- Produce pulls&constrains of NPs: Example_Pulls.h
-- Produce ranking of NPs (pre-fit impact on mu): Example_Ranking.h
+- Stack plots: Example.cpp, HadHadSR_v15.cpp
+- Yield tables: Example_yield.cpp, HadHadSR_v15_yield.cpp
+- klambda comparison: Example_klambda.cpp
+- Nonres signal comparison (Py vs Hw): Example_NonRes.cpp
+- Ztautau MadGraph uncertainty: Example_ZtautauMG.cpp
+- Single top (Wt) uncertainty: Example_WtDS.cpp, Example_WtGen.cpp, Example_WtOTF.cpp
+- LepHad ttbar uncertainties: Example_ttbarSyst.cpp
+- Lephad/Hadhad ttbar reweighting comparison: Example_ttbarRew.cpp
+- Auto-binning for MVA score distribution: HadHadSR_v15_binning.cpp
+- Example use Workspace: Example_ws.cpp
+- Produce pulls&constrains of NPs: Example_Pulls.cpp
+- Produce ranking of NPs (pre-fit impact on mu): Example_Ranking.cpp
 
 > If not specify, then for hadhad
 
