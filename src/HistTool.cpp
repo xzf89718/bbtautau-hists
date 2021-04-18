@@ -191,7 +191,7 @@ void HistToolHelper::rebinByNRebin(const Config* c)
         p->histogram->Rebin(c->current_variable->n_rebin);
         for (auto& pp : p->systematic_histograms)
         {
-            pp.second->Rebin(c->current_variable->n_bins);
+            pp.second->Rebin(c->current_variable->n_rebin);
         }
     });
 }
