@@ -57,33 +57,43 @@ void test_hadhad_WtDS(const std::string& filename)
     vs_presel->add("dPhiTauTau",           "#Delta #phi (#tau_{had},#tau_{had})",               1);
 
     Variables* vs_pnn = new Variables();
-    vs_pnn->add("PNN260",                  "PNN260",                                            1);
-    vs_pnn->add("PNN300",                  "PNN300",                                            1);
-    vs_pnn->add("PNN350",                  "PNN350",                                            1);
-    vs_pnn->add("PNN400",                  "PNN400",                                            1);
-    vs_pnn->add("PNN450",                  "PNN450",                                            1);
-    vs_pnn->add("PNN500",                  "PNN500",                                            1);
-    vs_pnn->add("PNN550",                  "PNN550",                                            1);
-    vs_pnn->add("PNN600",                  "PNN600",                                            1);
-    vs_pnn->add("PNN700",                  "PNN700",                                            1);
-    vs_pnn->add("PNN800",                  "PNN800",                                            1);
-    vs_pnn->add("PNN900",                  "PNN900",                                            1);
-    vs_pnn->add("PNN1000",                 "PNN1000",                                           1);
-    vs_pnn->add("PNN1200",                 "PNN1200",                                           1);
-    vs_pnn->add("PNN1400",                 "PNN1400",                                           1);
-    vs_pnn->add("PNN1600",                 "PNN1600",                                           1);
+    vs_pnn->add("PNN260",                  "PNN260",                                            250);
+    vs_pnn->add("PNN280",                  "PNN280",                                            250);
+    vs_pnn->add("PNN300",                  "PNN300",                                            250);
+    vs_pnn->add("PNN325",                  "PNN325",                                            250);
+    vs_pnn->add("PNN350",                  "PNN350",                                            250);
+    vs_pnn->add("PNN400",                  "PNN400",                                            250);
+    vs_pnn->add("PNN450",                  "PNN450",                                            250);
+    vs_pnn->add("PNN500",                  "PNN500",                                            250);
+    vs_pnn->add("PNN550",                  "PNN550",                                            250);
+    vs_pnn->add("PNN600",                  "PNN600",                                            250);
+    vs_pnn->add("PNN700",                  "PNN700",                                            500);
+    vs_pnn->add("PNN800",                  "PNN800",                                            500);
+    vs_pnn->add("PNN900",                  "PNN900",                                            500);
+    vs_pnn->add("PNN1000",                 "PNN1000",                                           500);
+    vs_pnn->add("PNN1100",                 "PNN1100",                                           500);
+    vs_pnn->add("PNN1200",                 "PNN1200",                                           500);
+    vs_pnn->add("PNN1400",                 "PNN1400",                                           500);
+    vs_pnn->add("PNN1600",                 "PNN1600",                                           500);
 
     Variables* vs_bdt = new Variables();
-    vs_bdt->add("SMBDT",                   "SM BDT",                                            1);
+    vs_bdt->add("SMBDT",                   "SM BDT",                                            250);
+
+    Systematics* ss = new Systematics();
+    // ss->add("SingleTop_DS_mHH", "SingleTop_DS_mHH", eSystematicType::TwoSide);
+    ss->add("SingleTop_DS_pTBB", "SingleTop_DS_pTBB", eSystematicType::TwoSide);
+    // ss->add("SingleTop_DS_pTB0", "SingleTop_DS_pTB0", eSystematicType::TwoSide);
+    // ss->add("SingleTop_DS_pTB1", "SingleTop_DS_pTB1", eSystematicType::TwoSide);
 
     CompInfo* info = new CompInfo();
     info->ratio_high = 1.78;
     info->ratio_low = 0.22;
     info->shape_only = false;
+    info->save_ratio = true;
 
     AutoBinningInfo* abi = new AutoBinningInfo();
-    abi->n_bins = 8;
-    AutoBinningTool* abt = new AutoBinningTool_v2(abi, eProcess::STOPWT_DS);
+    abi->n_bins = 6;
+    AutoBinningTool* abt = new AutoBinningTool_v2(abi, eProcess::STOPWT);
 
     for (VariableInfo* v : *(vs_presel->content()))
     {
@@ -91,7 +101,7 @@ void test_hadhad_WtDS(const std::string& filename)
         ps->add("stopWt",       "s-top Wt Nominal",  eProcessType::BKG,  eProcess::STOPWT,      "s-top Wt Nominal",  kBlue+1);
         ps->add("stopWtDS",     "s-top Wt DS",       eProcessType::BKG,  eProcess::STOPWT_DS,   "s-top Wt DS",       kGreen+1);
 
-        Config* c = new Config(b, ps, rs, vs_presel);
+        Config* c = new Config(b, ps, rs, vs_presel, ss);
         c->load(filename, "Preselection");
         info->parameter = "Wt_DS_Presel";
         c->updateHistogramPtr(rs->content()->front(), v);
@@ -116,7 +126,7 @@ void test_hadhad_WtDS(const std::string& filename)
         delete c;
     }
 
-    // info->logy = true;
+    info->logy = true;
 
     for (VariableInfo* v : *(vs_pnn->content()))
     {
@@ -124,7 +134,7 @@ void test_hadhad_WtDS(const std::string& filename)
         ps->add("stopWt",       "s-top Wt Nominal",  eProcessType::BKG,  eProcess::STOPWT,      "s-top Wt Nominal",  kBlue+1);
         ps->add("stopWtDS",     "s-top Wt DS",       eProcessType::BKG,  eProcess::STOPWT_DS,   "s-top Wt DS",       kGreen+1);
 
-        Config* c = new Config(b, ps, rs, vs_pnn);
+        Config* c = new Config(b, ps, rs, vs_pnn, ss);
         c->load(filename, "PNNScorePreselection");
         info->parameter = "Wt_DS_PNN";
         c->updateHistogramPtr(rs->content()->front(), v);
@@ -133,8 +143,7 @@ void test_hadhad_WtDS(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            abt->run(c);
-            abt->rebin(c);
+            ct->rebin(c, eRebinOption::N_Rebin);
             ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
@@ -155,7 +164,7 @@ void test_hadhad_WtDS(const std::string& filename)
         ps->add("stopWt",       "s-top Wt Nominal",  eProcessType::BKG,  eProcess::STOPWT,      "s-top Wt Nominal",  kBlue+1);
         ps->add("stopWtDS",     "s-top Wt DS",       eProcessType::BKG,  eProcess::STOPWT_DS,   "s-top Wt DS",       kGreen+1);
 
-        Config* c = new Config(b, ps, rs, vs_bdt);
+        Config* c = new Config(b, ps, rs, vs_bdt, ss);
         c->load(filename, "BDTScorePreselection");
         info->parameter = "Wt_DS_BDT";
         c->updateHistogramPtr(rs->content()->front(), v);
@@ -164,8 +173,7 @@ void test_hadhad_WtDS(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            abt->run(c);
-            abt->rebin(c);
+            ct->rebin(c, eRebinOption::N_Rebin);
             ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
