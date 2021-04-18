@@ -38,22 +38,26 @@ void CompTool::paint(const Config* c) const
         p->histogram->SetMarkerSize(0);
         p->histogram->SetMarkerColor(p->color);
         p->histogram->SetLineColor(p->color);
+
+        size_t idx = 0;
         for (auto& pp : p->systematic_histograms)
         {
             pp.second->SetLineWidth(2);
             pp.second->SetLineStyle(2);
             pp.second->SetMarkerSize(0);
+            idx %= Utils::paletteSysts.size();
             if (pp.first.find("1up") != std::string::npos)
             {
-                pp.second->SetMarkerColor(kViolet);
-                pp.second->SetLineColor(kViolet);
+                pp.second->SetMarkerColor(Utils::paletteSysts[idx].first);
+                pp.second->SetLineColor(Utils::paletteSysts[idx].first);
             }
             else if (pp.first.find("1down") != std::string::npos)
             {
-                pp.second->SetMarkerColor(kAzure);
-                pp.second->SetLineColor(kAzure);
+                pp.second->SetMarkerColor(Utils::paletteSysts[idx].second);
+                pp.second->SetLineColor(Utils::paletteSysts[idx].second);
             }
-        } 
+            idx++;
+        }
     });
 }
 
@@ -120,7 +124,10 @@ void CompTool::run(const Config* c) const
     base->GetYaxis()->SetLabelSize(0.04);
     base->GetYaxis()->SetTitleSize(0.045);
     base->SetMaximum(base->GetMaximum() * 1.4);
-    base->SetMinimum(0);
+    if (!m_info->logy)
+    {
+        base->SetMinimum(0);
+    }
     base->GetYaxis()->ChangeLabel(1, -1, 0);
 
     for (auto& pp : ps->front()->systematic_histograms)
@@ -200,7 +207,7 @@ void CompTool::run(const Config* c) const
     err->SetMaximum(m_info->ratio_high);
     err->Draw("E2");
 
-    /// @todo: other tool might also need this!
+    /// @todo other tool might also need this!
     {
         TLegend* legend = new TLegend(0.60, 0.88, 0.90, 0.98);
         legend->SetTextFont(42);
@@ -212,11 +219,21 @@ void CompTool::run(const Config* c) const
         legend->Draw("SAME");
     }
 
-    for_each(ps->begin()+1, ps->end(), [&base_scale](const ProcessInfo* p) {
+    for_each(ps->begin()+1, ps->end(), [this, &base_scale](const ProcessInfo* p) {
         TH1* rat = (TH1*)p->histogram->Clone();
         rat->Divide(base_scale);
         // rat->Fit("pol1", "", "", 0, 250);
-        rat->Draw("E0 SAME"); });
+        rat->Draw("E0 SAME"); 
+        if (m_info->save_ratio)
+        {
+            ostringstream oss;
+            oss << output_path << "/CompareTo_" << rat->GetName() << ".root";
+            TFile f(oss.str().c_str(), "recreate");
+            f.cd();
+            rat->Write(("ratio_acc_"+p->current_variable->name).c_str());
+            f.Close();
+        }
+    });
     
     for (auto& pp : ps->front()->systematic_histograms)
     {

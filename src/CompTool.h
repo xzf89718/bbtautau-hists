@@ -17,7 +17,7 @@ public:
     bool logy = false;
     bool atlas = true;
     bool shape_only = false;
-    bool auto_binning = false;
+    bool save_ratio = false;
     double ratio_high = 1.24;
     double ratio_low = 0.76;
     const char* atlas_label = "Simulation Internal";
