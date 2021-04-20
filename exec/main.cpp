@@ -19,7 +19,7 @@ int main(/*int argc, char *argv[]*/)
 
     // test_hadhad_ZtautauMG("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-Ztautau-v1.root");
 
-    // test_hadhad_WtDS("/scratchfs/atlas/bowenzhang/CxAODReaderForSystStudy/run/hist-top-v3.root");
+    test_hadhad_WtDS("/scratchfs/atlas/bowenzhang/CxAODReaderForSystStudy/run/hist-top-v3.root");
     // test_hadhad_WtGen("/scratchfs/atlas/bowenzhang/CxAODReaderForSystStudy/run/hist-top-v3.root");
     // test_hadhad_WtOTF("/scratchfs/atlas/bowenzhang/CxAODReaderForSystStudy/run/hist-top-v3.root");
 
@@ -33,6 +33,8 @@ int main(/*int argc, char *argv[]*/)
     // hadhadsr_v15("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-HadHad-v1.root");
     // hadhadsr_v15_yield("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-HadHadWSI-v1.all.root");
     // hadhadsr_v15_binning("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-HadHadWSI-v1.all.root");
+
+    // test_ttbarKine("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-ttbar-kinematics.root");
 
     cout << "Ciao!" << endl;
 

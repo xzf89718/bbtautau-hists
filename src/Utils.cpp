@@ -28,7 +28,7 @@ string histString(const ProcessInfo* p, const RegionInfo* r, const VariableInfo*
 
 string systString(const SystematicInfo* s)
 {
-    return s->name;
+    return s->name_tex;
 }
 
 string histStringSyst(const ProcessInfo* p, const RegionInfo* r, const VariableInfo* v, const SystematicInfo* s)

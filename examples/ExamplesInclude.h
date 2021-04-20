@@ -14,3 +14,4 @@ void test_hadhad_ttbarRew(const std::string& filename);
 void hadhadsr_v15(const std::string& filename);
 void hadhadsr_v15_yield(const std::string& filename);
 void hadhadsr_v15_binning(const std::string& filename);
+void test_ttbarKine(const std::string& filename);

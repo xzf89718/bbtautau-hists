@@ -99,14 +99,29 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
                 {
                     TH1* hUp = (TH1*)d_syst->Get(fullnameWithSystUp.c_str());
                     TH1* hDown = (TH1*)d_syst->Get(fullnameWithSystDown.c_str());
-                    Utils::histAssignSyst(hUp, p, Utils::systString(s) + "__1up");
-                    Utils::histAssignSyst(hDown, p, Utils::systString(s) + "__1down");
+                    if (s->name == s->name_tex)
+                    {
+                        Utils::histAssignSyst(hUp, p, Utils::systString(s) + "__1up");
+                        Utils::histAssignSyst(hDown, p, Utils::systString(s) + "__1down");
+                    }
+                    else
+                    {
+                        Utils::histAssignSyst(hUp, p, Utils::systString(s) + " (1up)");
+                        Utils::histAssignSyst(hDown, p, Utils::systString(s) + " (1down)");
+                    }
                 }
                 else if (s->type == eSystematicType::OneSide && 
                          d_syst->GetListOfKeys()->Contains(fullnameWithSystUp.c_str()))
                 {
                     TH1* hUp = (TH1*)d_syst->Get(fullnameWithSystUp.c_str());
-                    Utils::histAssignSyst(hUp, p, Utils::systString(s) + "__1up");
+                    if (s->name == s->name_tex)
+                    {
+                        Utils::histAssignSyst(hUp, p, Utils::systString(s) + "__1up");
+                    }
+                    else
+                    {
+                        Utils::histAssignSyst(hUp, p, Utils::systString(s) + " (1up)");
+                    }
                 }
                 else
                 {

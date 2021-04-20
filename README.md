@@ -27,6 +27,7 @@ make
 - LepHad ttbar uncertainties: Example_ttbarSyst.cpp
 - Lephad/Hadhad ttbar reweighting comparison: Example_ttbarRew.cpp
 - Auto-binning for MVA score distribution: HadHadSR_v15_binning.cpp
+- LepHad, HadHad, ZCR ttbar kinematics: Example_ttbarKine.cpp
 - Example use Workspace: Example_WS.cpp
 - Produce pulls&constrains of NPs: Example_Pulls.cpp
 - Produce ranking of NPs (pre-fit impact on mu): Example_Ranking.cpp

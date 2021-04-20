@@ -70,7 +70,8 @@ add_library(ExamplesLib SHARED
     examples/Example_ZtautauMG.cpp
     examples/HadHadSR_v15_binning.cpp
     examples/HadHadSR_v15.cpp
-    examples/HadHadSR_v15_yield.cpp)
+    examples/HadHadSR_v15_yield.cpp
+    examples/Example_ttbarKine.cpp)
 
 target_link_libraries(UtilsLib PUBLIC ${ROOT_LIBRARIES})
 target_link_libraries(ConfigLib PUBLIC stdc++fs ${ROOT_LIBRARIES})
