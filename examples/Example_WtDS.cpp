@@ -57,31 +57,33 @@ void test_hadhad_WtDS(const std::string& filename)
     vs_presel->add("dPhiTauTau",           "#Delta #phi (#tau_{had},#tau_{had})",               1);
 
     Variables* vs_pnn = new Variables();
-    vs_pnn->add("PNN260",                  "PNN260",                                            250);
-    vs_pnn->add("PNN280",                  "PNN280",                                            250);
-    vs_pnn->add("PNN300",                  "PNN300",                                            250);
-    vs_pnn->add("PNN325",                  "PNN325",                                            250);
-    vs_pnn->add("PNN350",                  "PNN350",                                            250);
-    vs_pnn->add("PNN400",                  "PNN400",                                            250);
-    vs_pnn->add("PNN450",                  "PNN450",                                            250);
-    vs_pnn->add("PNN500",                  "PNN500",                                            250);
-    vs_pnn->add("PNN550",                  "PNN550",                                            250);
-    vs_pnn->add("PNN600",                  "PNN600",                                            250);
-    vs_pnn->add("PNN700",                  "PNN700",                                            500);
-    vs_pnn->add("PNN800",                  "PNN800",                                            500);
-    vs_pnn->add("PNN900",                  "PNN900",                                            500);
-    vs_pnn->add("PNN1000",                 "PNN1000",                                           500);
-    vs_pnn->add("PNN1100",                 "PNN1100",                                           500);
-    vs_pnn->add("PNN1200",                 "PNN1200",                                           500);
-    vs_pnn->add("PNN1400",                 "PNN1400",                                           500);
-    vs_pnn->add("PNN1600",                 "PNN1600",                                           500);
+    vector<double> binning_low =  {0, 0.1, 0.2, 0.3, 0.6, 1.0};
+    vector<double> binning_high = {0, 0.1, 0.2, 0.5, 1.0};
+    vs_pnn->add("PNN260",                  "PNN260",                    1, &binning_low[0], binning_low.size()-1);
+    vs_pnn->add("PNN280",                  "PNN280",                    1, &binning_low[0], binning_low.size()-1);
+    vs_pnn->add("PNN300",                  "PNN300",                    1, &binning_low[0], binning_low.size()-1);
+    vs_pnn->add("PNN325",                  "PNN325",                    1, &binning_low[0], binning_low.size()-1);
+    vs_pnn->add("PNN350",                  "PNN350",                    1, &binning_low[0], binning_low.size()-1);
+    vs_pnn->add("PNN400",                  "PNN400",                    1, &binning_low[0], binning_low.size()-1);
+    vs_pnn->add("PNN450",                  "PNN450",                    1, &binning_low[0], binning_low.size()-1);
+    vs_pnn->add("PNN500",                  "PNN500",                    1, &binning_low[0], binning_low.size()-1);
+    vs_pnn->add("PNN550",                  "PNN550",                    1, &binning_low[0], binning_low.size()-1);
+    vs_pnn->add("PNN600",                  "PNN600",                    1, &binning_low[0], binning_low.size()-1);
+    vs_pnn->add("PNN700",                  "PNN700",                    1, &binning_high[0], binning_high.size()-1);
+    vs_pnn->add("PNN800",                  "PNN800",                    1, &binning_high[0], binning_high.size()-1);
+    vs_pnn->add("PNN900",                  "PNN900",                    1, &binning_high[0], binning_high.size()-1);
+    vs_pnn->add("PNN1000",                 "PNN1000",                   1, &binning_high[0], binning_high.size()-1);
+    vs_pnn->add("PNN1100",                 "PNN1100",                   1, &binning_high[0], binning_high.size()-1);
+    vs_pnn->add("PNN1200",                 "PNN1200",                   1, &binning_high[0], binning_high.size()-1);
+    vs_pnn->add("PNN1400",                 "PNN1400",                   1, &binning_high[0], binning_high.size()-1);
+    vs_pnn->add("PNN1600",                 "PNN1600",                   1, &binning_high[0], binning_high.size()-1);
 
     Variables* vs_bdt = new Variables();
     vs_bdt->add("SMBDT",                   "SM BDT",                                            250);
 
     Systematics* ss = new Systematics();
     // ss->add("SingleTop_DS_mHH", "SingleTop_DS_mHH", eSystematicType::TwoSide);
-    ss->add("SingleTop_DS_pTBB", "SingleTop_DS_pTBB", eSystematicType::TwoSide);
+    ss->add("SingleTop_DS_pTBB", "Top interference", eSystematicType::TwoSide);
     // ss->add("SingleTop_DS_pTB0", "SingleTop_DS_pTB0", eSystematicType::TwoSide);
     // ss->add("SingleTop_DS_pTB1", "SingleTop_DS_pTB1", eSystematicType::TwoSide);
 
@@ -143,7 +145,7 @@ void test_hadhad_WtDS(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->rebin(c, eRebinOption::N_Rebin);
+            ct->rebin(c, eRebinOption::Array);
             ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
@@ -173,7 +175,7 @@ void test_hadhad_WtDS(const std::string& filename)
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->rebin(c, eRebinOption::N_Rebin);
+            ct->rebin(c, eRebinOption::Array);
             ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
