@@ -66,16 +66,8 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
     current_variable = v;
 
     TDirectory* d = nullptr;
-    d = (TDirectory*)m_fin->Get(m_dir.c_str());
-    //    if (m_dir != "")
-    //        d = (TDirectory*)m_fin->Get(m_dir.c_str());
-    //    else
-    //    {   
-    //        clog << "Config.cpp: WARNING: You are using \"\" i.e. empty TDirectory as parameter. Check load function in you Examples carefully,\
-    //        this often cause ROOT segment break error without throw a proper error!"
-    //        << endl;
-    //        d = (TDirectory*)m_fin->GetMotherDir();
-    //    }
+    d = m_fin->GetDirectory(m_dir.c_str());
+
     for (ProcessInfo* p : *(processes->content()))
     {
         const std::string& fullname = Utils::histString(p, r, v);
@@ -107,14 +99,29 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
                 {
                     TH1* hUp = (TH1*)d_syst->Get(fullnameWithSystUp.c_str());
                     TH1* hDown = (TH1*)d_syst->Get(fullnameWithSystDown.c_str());
-                    Utils::histAssignSyst(hUp, p, Utils::systString(s) + "__1up");
-                    Utils::histAssignSyst(hDown, p, Utils::systString(s) + "__1down");
+                    if (s->name == s->name_tex)
+                    {
+                        Utils::histAssignSyst(hUp, p, Utils::systString(s) + "__1up");
+                        Utils::histAssignSyst(hDown, p, Utils::systString(s) + "__1down");
+                    }
+                    else
+                    {
+                        Utils::histAssignSyst(hUp, p, Utils::systString(s) + " (1up)");
+                        Utils::histAssignSyst(hDown, p, Utils::systString(s) + " (1down)");
+                    }
                 }
                 else if (s->type == eSystematicType::OneSide && 
                         d_syst->GetListOfKeys()->Contains(fullnameWithSystUp.c_str()))
                 {
                     TH1* hUp = (TH1*)d_syst->Get(fullnameWithSystUp.c_str());
-                    Utils::histAssignSyst(hUp, p, Utils::systString(s) + "__1up");
+                    if (s->name == s->name_tex)
+                    {
+                        Utils::histAssignSyst(hUp, p, Utils::systString(s) + "__1up");
+                    }
+                    else
+                    {
+                        Utils::histAssignSyst(hUp, p, Utils::systString(s) + " (1up)");
+                    }
                 }
                 else
                 {

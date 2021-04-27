@@ -1,3 +1,5 @@
+#include "ExamplesInclude.h"
+
 #include "Config.h"
 #include "Utils.h"
 #include "CompTool.h"
@@ -65,11 +67,12 @@ void test_hadhad_WtGen(const std::string& filename)
         info->parameter = "Wt_Gen_Presel";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
+        ct->output_path = "/tmp/bowenzhang/Stop";
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->rebin(c, eRebinOption::N_Rebin);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -97,11 +100,12 @@ void test_hadhad_WtGen(const std::string& filename)
         info->parameter = "Wt_Gen_PNN";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
+        ct->output_path = "/tmp/bowenzhang/Stop";
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->rebin(c, eRebinOption::N_Rebin);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }
@@ -127,11 +131,12 @@ void test_hadhad_WtGen(const std::string& filename)
         info->parameter = "Wt_Gen_BDT";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
-        ct->output_path = "/tmp/zhangbw/Stop";
+        ct->output_path = "/tmp/bowenzhang/Stop";
         if (ct->check(c))
         {
             ct->manipulate(c);
-            ct->makeYield(c);
+            ct->rebin(c, eRebinOption::N_Rebin);
+            ct->makeYield(c, info->parameter);
             ct->paint(c);
             ct->run(c);
         }

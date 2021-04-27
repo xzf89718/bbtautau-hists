@@ -38,8 +38,6 @@ double Processes::normFactors(ProcessInfo* p) const
     case eProcess::ZJETSMG:
     case eProcess::ZllLFMG:
     case eProcess::ZllHFMG:
-        // cross section corr to compare with Sherpa
-        // the cross section are updated, might need to re-calculate
         return 2091.16 / 2097.184;
     case eProcess::STOPT_AMC:
         return 70.426 / 64.326;

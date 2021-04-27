@@ -17,6 +17,7 @@ public:
     bool logy = false;
     bool atlas = true;
     bool shape_only = false;
+    bool save_ratio = false;
     double ratio_high = 1.24;
     double ratio_low = 0.76;
     const char* atlas_label = "Simulation Internal";
@@ -26,7 +27,7 @@ public:
 };
 
 /**
- * @brief: compare with the first entry
+ * @brief compare with the first entry
  */
 class CompTool : public HistTool
 {

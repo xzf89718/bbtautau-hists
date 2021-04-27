@@ -1,3 +1,5 @@
+#include "ExamplesInclude.h"
+
 #include "Config.h"
 #include "Utils.h"
 #include "CompTool.h"
@@ -84,6 +86,7 @@ void test_hadhad_klambda(const std::string& filename="default")
             ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/plots";
             if (ct->check(c))
             {
+                ct->rebin(c, eRebinOption::N_Rebin);
                 ct->paint(c);
                 ct->run(c);
             }
@@ -104,14 +107,23 @@ void test_hadhad_klambda(const std::string& filename="default")
             ps->add("hhttbbKL1p0from10p0",  "HH (#kappa_{#lambda}=1) reweighted",  eProcessType::SIG,  eProcess::HHKLXFROM10,   "HH (#kappa_{#lambda}=10) reweighted", kRed+1);
 
             Config* c = new Config(b, ps, rs, vs);
+<<<<<<< HEAD:examples/Example_klambda.h
             //c->load("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
             c->load("/home/zifeng/HistCxAOD/KLReweight/output/KLReweight_py8.root", "Preselection");
             info->parameter = "from10p0";
             c->updateHistogramPtr(rs->content()->front(), v);
             CompTool* ct = new CompTool(info);
             ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/plots";
+=======
+            c->load("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
+            info->parameter = "from10p0";
+            c->updateHistogramPtr(rs->content()->front(), v);
+            CompTool* ct = new CompTool(info);
+            ct->output_path = "/tmp/bowenzhang/hhttbbKL1p0from10p0";
+>>>>>>> 98d72d13f4fa7a7bc5c25d9177afc89942cbdfdd:examples/Example_klambda.cpp
             if (ct->check(c))
             {
+                ct->rebin(c, eRebinOption::N_Rebin);
                 ct->paint(c);
                 ct->run(c);
             }
@@ -146,14 +158,23 @@ void test_hadhad_klambda(const std::string& filename="default")
                         "HH (#kappa_{#lambda}="+nice_kl()+") from #kappa_{#lambda}=10", kRed+1);
 
                 Config* c = new Config(b, ps, rs, vs);
+<<<<<<< HEAD:examples/Example_klambda.h
                 //c->load("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
                 c->load("/home/zifeng/HistCxAOD/KLReweight/output/KLReweight_py8.root", "Preselection");
                 info->parameter = "to"+klambda;
                 c->updateHistogramPtr(rs->content()->front(), v);
                 CompTool* ct = new CompTool(info);
                 ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/plots";
+=======
+                c->load("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
+                info->parameter = "to"+klambda;
+                c->updateHistogramPtr(rs->content()->front(), v);
+                CompTool* ct = new CompTool(info);
+                ct->output_path = "/tmp/bowenzhang/hhttbbKLxfrom1and10";
+>>>>>>> 98d72d13f4fa7a7bc5c25d9177afc89942cbdfdd:examples/Example_klambda.cpp
                 if (ct->check(c))
                 {
+                    ct->rebin(c, eRebinOption::N_Rebin);
                     ct->paint(c);
                     ct->run(c);
                 }

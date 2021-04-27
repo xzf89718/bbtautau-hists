@@ -2,6 +2,8 @@
 #include "Utils.h"
 #include "CompTool.h"
 
+#include "ExamplesInclude.h"
+
 #include "TFile.h"
 #include "TH1.h"
 
@@ -55,32 +57,34 @@ void test_hadhad_NonRes(const std::string& filename)
     vs_presel->add("dPhiTauTau",           "#Delta #phi (#tau_{had},#tau_{had})",               4 );
 
     Variables* vs_bdt = new Variables();
-    double binning_bdt[12] = {0.0, 0.2, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 0.98, 0.99, 1.0};
-    vs_bdt->add("SMBDT",                   "SM BDT Score",                                      50, binning_bdt, 11);
+    double binning_bdt[14] = {0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 0.98, 0.99, 1.0};
+    vs_bdt->add("SMBDT",                   "SM BDT Score",                                      50, binning_bdt, 13);
 
     CompInfo* info = new CompInfo();
     info->ratio_high = 1.48;
     info->ratio_low = 0.52;
     info->shape_only = true;
-    info->ratio_tex = "Pythia8 / Herwig7";
+    info->ratio_tex = "Herwig7 / Pythia8";
 
     for (VariableInfo* v : *(vs_presel->content()))
     {
         Processes* ps = new Processes();
-        ps->add("hhttbbKL1p0",      "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kBlue+1);
-        ps->add("hhttbbPy8KL1p0",   "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kRed+1);
-        // ps->add("hhttbbKL10p0",      "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kBlue+1);
-        // ps->add("hhttbbPy8KL10p0",   "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kRed+1);
+        // ps->add("hhttbb",       "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kBlue+1);
+        // ps->add("hhttbbPhH7",   "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kRed+1);
+        ps->add("hhttbbL10",       "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kBlue+1);
+        ps->add("hhttbbL10PhH7",   "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kRed+1);
 
         Config* c = new Config(b, ps, rs, vs_presel);
         c->load(filename, "Preselection");
-        info->parameter = "Presel";
+        // info->parameter = "Presel_ShapeOnly";
+        info->parameter = "Presel_l10_ShapeOnly";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
-        ct->output_path = "/tmp/zhangbw/NonRes";
+        ct->output_path = "/scratchfs/atlas/bowenzhang/bbtautau-hists/output/NonRes";
         if (ct->check(c))
         {
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
+            ct->rebin(c, eRebinOption::Array);
             ct->paint(c);
             ct->run(c);
         }
@@ -95,24 +99,27 @@ void test_hadhad_NonRes(const std::string& filename)
     }
 
     info->logy = true;
+    // info->auto_binning = true;
 
     for (VariableInfo* v : *(vs_bdt->content()))
     {
         Processes* ps = new Processes();
-        ps->add("hhttbbKL1p0",      "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kBlue+1);
-        ps->add("hhttbbPy8KL1p0",   "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kRed+1);
-        // ps->add("hhttbbKL10p0",      "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kBlue+1);
-        // ps->add("hhttbbPy8KL10p0",   "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kRed+1);
+        // ps->add("hhttbb",       "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kBlue+1);
+        // ps->add("hhttbbPhH7",   "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kRed+1);
+        ps->add("hhttbbL10",       "Pythia8",  eProcessType::SIG,  eProcess::HH,    "Pythia8",  kBlue+1);
+        ps->add("hhttbbL10PhH7",   "Herwig7",  eProcessType::SIG,  eProcess::HH,    "Herwig7",  kRed+1);
 
         Config* c = new Config(b, ps, rs, vs_bdt);
         c->load(filename, "BDTScorePreselection");
-        info->parameter = "BDT";
+        // info->parameter = "BDT_ShapeOnly";
+        info->parameter = "BDT_l10_ShapeOnly";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
-        ct->output_path = "/tmp/zhangbw/NonRes";
+        ct->output_path = "/scratchfs/atlas/bowenzhang/bbtautau-hists/output/NonRes";
         if (ct->check(c))
         {
-            ct->makeYield(c);
+            ct->makeYield(c, info->parameter);
+            ct->rebin(c, eRebinOption::Array);
             ct->paint(c);
             ct->run(c);
         }

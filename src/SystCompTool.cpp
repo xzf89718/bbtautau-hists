@@ -29,23 +29,6 @@ void SystCompTool::paint(const Config* c) const
     vector<ProcessInfo*>* ps = c->processes->content();
     auto &p = ps->front();
 
-    /// @todo: isolate this part
-    if (c->current_variable->binning) {
-        TH1* rebinned = p->histogram->Rebin(c->current_variable->n_bins, p->histogram->GetName(), c->current_variable->binning);
-        p->histogram = (TH1*)rebinned->Clone();
-        for (auto& pp : p->systematic_histograms)
-        {
-            TH1* rebinned_pp = pp.second->Rebin(c->current_variable->n_bins, pp.second->GetName(), c->current_variable->binning);
-            pp.second = (TH1*)rebinned_pp->Clone();
-        }
-    } else {
-        p->histogram->Rebin(c->current_variable->n_rebin);
-        for (auto& pp : p->systematic_histograms)
-        {
-            pp.second->Rebin(c->current_variable->n_rebin);
-        }
-    }
-
     p->histogram->SetLineWidth(2);
     p->histogram->SetLineStyle(1);
     p->histogram->SetMarkerSize(0);
@@ -69,6 +52,7 @@ void SystCompTool::paint(const Config* c) const
             pp.second->SetMarkerColor(Utils::paletteSysts[idx].second);
             pp.second->SetLineColor(Utils::paletteSysts[idx].second);
         }
+        idx++;
     }
 }
 
@@ -105,6 +89,19 @@ void SystCompTool::run(const Config* c) const
     lower_pad->Draw();
 
     upper_pad->cd();
+    if (m_info->shape_only) {
+        ps->front()->histogram->Scale(1.0 / ps->front()->histogram->Integral());
+        for (auto &pp : ps->front()->systematic_histograms)
+        {
+            pp.second->Scale(1.0 / pp.second->Integral());
+        }
+    } else {
+        ps->front()->histogram->Scale(ps->front()->norm_factor);
+        for (auto &pp : ps->front()->systematic_histograms)
+        {
+            pp.second->Scale(ps->front()->norm_factor);
+        }
+    }
 
     TH1* base = ps->front()->histogram;
     base->Draw("HIST E1");

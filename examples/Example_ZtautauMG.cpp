@@ -1,3 +1,5 @@
+#include "ExamplesInclude.h"
+
 #include "Config.h"
 #include "Utils.h"
 #include "CompTool.h"
@@ -99,10 +101,11 @@ void test_hadhad_ZtautauMG(const std::string& filename)
         info->parameter = "Presel";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
-        ct->output_path = "/tmp/zhangbw/ZtautauMG";
+        ct->output_path = "/tmp/bowenzhang/ZtautauMG";
         if (ct->check(c))
         {
             ct->manipulate(c);
+            ct->rebin(c, eRebinOption::Array);
             ct->makeYield(c);
             ct->paint(c);
             ct->run(c);
@@ -135,10 +138,11 @@ void test_hadhad_ZtautauMG(const std::string& filename)
         info->parameter = "PNN";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
-        ct->output_path = "/tmp/zhangbw/ZtautauMG";
+        ct->output_path = "/tmp/bowenzhang/ZtautauMG";
         if (ct->check(c))
         {
             ct->manipulate(c);
+            ct->rebin(c, eRebinOption::Array);
             ct->makeYield(c);
             ct->paint(c);
             ct->run(c);
@@ -153,7 +157,7 @@ void test_hadhad_ZtautauMG(const std::string& filename)
         delete c;
     }
 
-        for (VariableInfo* v : *(vs_bdt->content()))
+    for (VariableInfo* v : *(vs_bdt->content()))
     {
         Processes* ps = new Processes();
         ps->add("Zttbb",    "Zhf Nominal",  eProcessType::BKG,  eProcess::ZllHF,    "Zhf Nominal",  kBlue+1);
@@ -169,10 +173,11 @@ void test_hadhad_ZtautauMG(const std::string& filename)
         info->parameter = "BDT";
         c->updateHistogramPtr(rs->content()->front(), v);
         CompTool* ct = new CompTool(info);
-        ct->output_path = "/tmp/zhangbw/ZtautauMG";
+        ct->output_path = "/tmp/bowenzhang/ZtautauMG";
         if (ct->check(c))
         {
             ct->manipulate(c);
+            ct->rebin(c, eRebinOption::Array);
             ct->makeYield(c);
             ct->paint(c);
             ct->run(c);

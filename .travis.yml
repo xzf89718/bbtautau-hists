@@ -18,3 +18,5 @@ install:
 
 script:
   - ${SH} "./bbtautau-hists"
+  - ${SH} "./run-ranking"
+  - ${SH} "./run-pulls"

@@ -1,3 +1,5 @@
+#include "ExamplesInclude.h"
+
 #include "Config.h"
 #include "Utils.h"
 #include "DrawStackTool.h"
@@ -119,7 +121,7 @@ void test_hadhad_yield(const std::string& filename)
 
         c->updateHistogramPtr(r, vs->content()->front());
         DrawStackTool* ds = new DrawStackTool(info);
-        ds->output_path = "/tmp/zhangbw/";
+        ds->output_path = "/tmp/bowenzhang/";
         if (ds->check(c))
         {
             ds->makeYield(c);

@@ -3,7 +3,7 @@
 
 namespace Utils_WS
 {
-    constexpr float lumiRelError = 0.037;
+    constexpr float lumiRelError = 0.017;
 }
 
 #endif
