@@ -111,7 +111,6 @@ void test_hadhad(const std::string& filename)
         c->updateHistogramPtr(rs->content()->front(), v);
         DrawStackTool* ds = new DrawStackTool(info);
         ds->output_path = "/home/zifeng/HistCxAOD/plots";
-
         if (ds->check(c))
         {
             ds->manipulate(c);

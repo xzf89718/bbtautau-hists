@@ -210,7 +210,7 @@ logx	src/DrawStackTool.h	/^    bool logx = false;$/;"	m	class:DrawStackInfo
 logy	src/CompTool.h	/^    bool logy = false;$/;"	m	class:CompInfo
 logy	src/DrawStackTool.h	/^    bool logy = false;$/;"	m	class:DrawStackInfo
 lumiRelError	src/Utils_WS.h	/^    constexpr float lumiRelError = 0.037;$/;"	m	namespace:Utils_WS
-luminosity	src/Config.cpp	/^    : ecm(ecm), luminosity(lumi)$/;"	f
+luminosity	src/Config.cpp	/^: ecm(ecm), luminosity(lumi)$/;"	f
 luminosity	src/Config.h	/^    string luminosity;$/;"	m	class:BasicInfo
 m	src/RankingTool.h	/^    mutex m;$/;"	m	class:Engine
 m_allNPs_afterFit	src/WorkspaceTool.h	/^  std::vector<NPInfo> m_allNPs_afterFit;$/;"	m	class:WorkspaceTool
@@ -331,7 +331,7 @@ shape_only	src/CompTool.h	/^    bool shape_only = false;$/;"	m	class:CompInfo
 signal_scale	src/DrawStackTool.h	/^    double signal_scale = 100.;$/;"	m	class:DrawStackInfo
 systString	src/Utils.cpp	/^string systString(const SystematicInfo* s)$/;"	f	namespace:Utils
 systematic_histograms	src/Processes.h	/^    std::unordered_map<std::string, TH1*> systematic_histograms;$/;"	m	class:ProcessInfo
-systematics	src/Config.cpp	/^    : basic(b), processes(ps), regions(rs), variables(vs), systematics(ss)$/;"	f
+systematics	src/Config.cpp	/^: basic(b), processes(ps), regions(rs), variables(vs), systematics(ss)$/;"	f
 systematics	src/Config.h	/^    const Systematics* systematics;$/;"	m	class:Config
 test_hadhad	examples/Example.h	/^void test_hadhad(const std::string& filename)$/;"	f
 test_hadhad_NonRes	examples/Example_NonRes.h	/^void test_hadhad_NonRes(const std::string& filename)$/;"	f

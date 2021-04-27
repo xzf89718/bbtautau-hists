@@ -99,21 +99,35 @@ void test_hadhad_klambda(const std::string& filename="default")
             delete ct;
             delete c;
         }
-
+        else 
         {
-            Processes* ps = new Processes();
-            ps->assign_norm_factors = false;
-            ps->add("hhttbbKL1p0",          "HH (#kappa_{#lambda}=1) generated",   eProcessType::SIG,  eProcess::HHKL10,        "HH (#kappa_{#lambda}=10) generated",  kBlue+1);
-            ps->add("hhttbbKL1p0from10p0",  "HH (#kappa_{#lambda}=1) reweighted",  eProcessType::SIG,  eProcess::HHKLXFROM10,   "HH (#kappa_{#lambda}=10) reweighted", kRed+1);
+            clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
+        }
 
+<<<<<<< HEAD:examples/Example_klambda.cpp
             Config* c = new Config(b, ps, rs, vs);
 <<<<<<< HEAD:examples/Example_klambda.h
+=======
+        delete ps;
+        delete ct;
+        delete c;
+    }
+
+    {
+        Processes* ps = new Processes();
+        ps->assign_norm_factors = false;
+        ps->add("hhttbbKL1p0",          "HH (#kappa_{#lambda}=1) generated",   eProcessType::SIG,  eProcess::HHKL10,        "HH (#kappa_{#lambda}=10) generated",  kBlue+1);
+        ps->add("hhttbbKL1p0from10p0",  "HH (#kappa_{#lambda}=1) reweighted",  eProcessType::SIG,  eProcess::HHKLXFROM10,   "HH (#kappa_{#lambda}=10) reweighted", kRed+1);
+
+        Config* c = new Config(b, ps, rs, vs);
+>>>>>>> 7ff4ee575f62ff040bc0aaa3c68b1c119983a9bd:examples/Example_klambda.h
             //c->load("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
             c->load("/home/zifeng/HistCxAOD/KLReweight/output/KLReweight_py8.root", "Preselection");
             info->parameter = "from10p0";
             c->updateHistogramPtr(rs->content()->front(), v);
             CompTool* ct = new CompTool(info);
             ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/plots";
+<<<<<<< HEAD:examples/Example_klambda.cpp
 =======
             c->load("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
             info->parameter = "from10p0";
@@ -121,6 +135,8 @@ void test_hadhad_klambda(const std::string& filename="default")
             CompTool* ct = new CompTool(info);
             ct->output_path = "/tmp/bowenzhang/hhttbbKL1p0from10p0";
 >>>>>>> 98d72d13f4fa7a7bc5c25d9177afc89942cbdfdd:examples/Example_klambda.cpp
+=======
+>>>>>>> 7ff4ee575f62ff040bc0aaa3c68b1c119983a9bd:examples/Example_klambda.h
             if (ct->check(c))
             {
                 ct->rebin(c, eRebinOption::N_Rebin);
@@ -158,13 +174,17 @@ void test_hadhad_klambda(const std::string& filename="default")
                         "HH (#kappa_{#lambda}="+nice_kl()+") from #kappa_{#lambda}=10", kRed+1);
 
                 Config* c = new Config(b, ps, rs, vs);
+<<<<<<< HEAD:examples/Example_klambda.cpp
 <<<<<<< HEAD:examples/Example_klambda.h
+=======
+>>>>>>> 7ff4ee575f62ff040bc0aaa3c68b1c119983a9bd:examples/Example_klambda.h
                 //c->load("/scratchfs/atlas/zhangbw/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
                 c->load("/home/zifeng/HistCxAOD/KLReweight/output/KLReweight_py8.root", "Preselection");
                 info->parameter = "to"+klambda;
                 c->updateHistogramPtr(rs->content()->front(), v);
                 CompTool* ct = new CompTool(info);
                 ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/plots";
+<<<<<<< HEAD:examples/Example_klambda.cpp
 =======
                 c->load("/scratchfs/atlas/bowenzhang/CxAODReaderSemiBoosted/run/hist-klambda-v2.root", "Preselection");
                 info->parameter = "to"+klambda;
@@ -172,6 +192,8 @@ void test_hadhad_klambda(const std::string& filename="default")
                 CompTool* ct = new CompTool(info);
                 ct->output_path = "/tmp/bowenzhang/hhttbbKLxfrom1and10";
 >>>>>>> 98d72d13f4fa7a7bc5c25d9177afc89942cbdfdd:examples/Example_klambda.cpp
+=======
+>>>>>>> 7ff4ee575f62ff040bc0aaa3c68b1c119983a9bd:examples/Example_klambda.h
                 if (ct->check(c))
                 {
                     ct->rebin(c, eRebinOption::N_Rebin);

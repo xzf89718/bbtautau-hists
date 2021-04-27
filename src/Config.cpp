@@ -67,7 +67,6 @@ void Config::updateHistogramPtr(RegionInfo* r, VariableInfo* v)
 
     TDirectory* d = nullptr;
     d = m_fin->GetDirectory(m_dir.c_str());
-
     for (ProcessInfo* p : *(processes->content()))
     {
         const std::string& fullname = Utils::histString(p, r, v);

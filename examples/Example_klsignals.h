@@ -23,7 +23,7 @@ void hadhad_klsignals_examples(const std::string& filename="default")
     Variables* vs = new Variables();
     vs->add("mBB",                  "m_{BB} [GeV]",                                      10);
     vs->add("mMMC",                 "m_{#tau#tau} (MMC) [GeV]",                          12);
-    vs->add("mHH",                  "m_{HH} [GeV]",                                       1);
+    vs->add("mHH",                  "m_{HH} [GeV]",                                       2);
     vs->add("mHHScaled",            "m_{HH} (Scaled) [GeV]",                             12);
     vs->add("dRBB",                 "#Delta R(B,B)",                                     4 );
     vs->add("pTBB",                 "p_{T}^{b,b}",                                       10);
@@ -70,9 +70,9 @@ void hadhad_klsignals_examples(const std::string& filename="default")
                 for (auto &i : {0.0, 2.0, 5.0})
                 {
                     ps->add(base_name + transformFloat(i) +from_reco, 
-                            "HH Klambda = " + transformFloat(i) + " combine at reco level", 
+                            "HH Klambda = " + transformFloat(i), 
                             eProcessType::SIG, eProcess::HHKLXFROMRECO,
-                            "HH Klambda = " + transformFloat(i) + " combine at reco level", 
+                            "HH Klambda = " + transformFloat(i), 
                             kRed + i_color
                            );
                     i_color = i_color + 1;
@@ -86,7 +86,7 @@ void hadhad_klsignals_examples(const std::string& filename="default")
                 if (ct->check(c))
                 {
                     ct->paint(c);
-                    ct->run(c);
+                    ct->run_noratio(c);
                 }
                 else 
                 {
@@ -109,9 +109,9 @@ void hadhad_klsignals_examples(const std::string& filename="default")
                 for (auto &i : {-5.0, 1.0, 10.0})
                 {
                     ps->add(base_name + transformFloat(i) +from_reco, 
-                            "HH Klambda = " + transformFloat(i) + " combine at reco level", 
+                            "HH Klambda = " + transformFloat(i), 
                             eProcessType::SIG, eProcess::HHKLXFROMRECO,
-                            "HH Klambda = " + transformFloat(i) + " combine at reco level", 
+                            "HH Klambda = " + transformFloat(i), 
                             kRed + i_color
                            );
                     i_color = i_color + 1;
@@ -131,16 +131,318 @@ void hadhad_klsignals_examples(const std::string& filename="default")
                 {
                     clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
                 }
-
                 delete ps;
                 delete ct;
                 delete c;
             }
         }
+
+        {   
+            {
+                std::string base_name = "hhttbbKL";
+                std::string from_reco = "fromReco";
+                {
+                    Processes* ps = new Processes();
+                    ps->assign_norm_factors = false;
+                    int i_color = 0;
+                    for (float i=2.8; i<3.2; i=i+0.2)
+                    {
+                        ps->add(base_name + transformFloat(i) +from_reco, 
+                                "HH Klambda = " + transformFloat(i), 
+                                eProcessType::SIG, eProcess::HHKLXFROMRECO,
+                                "HH Klambda = " + transformFloat(i), 
+                                kRed + i_color
+                               );
+                        i_color = i_color + 1;
+                    }
+                    Config* c = new Config(b, ps, rs, vs);
+                    c->load(filename, "Preselection");
+                    info->parameter = "scan_peak";
+                    c->updateHistogramPtr(rs->content()->front(), v);
+                    CompTool* ct = new CompTool(info);
+                    ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/test_signals";
+                    if (ct->check(c))
+                    {
+                        ct->paint(c);
+                        ct->run_noratio(c);
+                    }
+                    else 
+                    {
+                        clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
+                    }
+
+                    delete ps;
+                    delete ct;
+                    delete c;
+                }
+            }
+
+        }
+
+        {   
+            {
+                std::string base_name = "hhttbbKL";
+                std::string from_reco = "fromReco";
+                {
+                    Processes* ps = new Processes();
+                    ps->assign_norm_factors = false;
+                    int i_color = 0;
+                    for (float i=-20; i<-15; i++)
+                    {
+                        ps->add(base_name + transformFloat(i) +from_reco, 
+                                "HH Klambda = " + transformFloat(i), 
+                                eProcessType::SIG, eProcess::HHKLXFROMRECO,
+                                "HH Klambda = " + transformFloat(i), 
+                                kRed + i_color
+                               );
+                        i_color = i_color + 1;
+                    }
+                    Config* c = new Config(b, ps, rs, vs);
+                    c->load(filename, "Preselection");
+                    info->parameter = "scan_peak_shape_only_n20";
+                    c->updateHistogramPtr(rs->content()->front(), v);
+                    CompTool* ct = new CompTool(info);
+                    ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/test_signals";
+
+                    info->shape_only = true;
+                    if (ct->check(c))
+                    {
+                        ct->paint(c);
+                        ct->run_noratio(c);
+                    }
+                    else 
+                    {
+                        clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
+                    }
+                    info->shape_only = false;
+                    delete ps;
+                    delete ct;
+                    delete c;
+                }
+            }
+
+        }
+        {   
+            {
+                std::string base_name = "hhttbbKL";
+                std::string from_reco = "fromReco";
+                {
+                    Processes* ps = new Processes();
+                    ps->assign_norm_factors = false;
+                    int i_color = 0;
+                    for (float i=-15; i<-10; i++)
+                    {
+                        ps->add(base_name + transformFloat(i) +from_reco, 
+                                "HH Klambda = " + transformFloat(i), 
+                                eProcessType::SIG, eProcess::HHKLXFROMRECO,
+                                "HH Klambda = " + transformFloat(i), 
+                                kRed + i_color
+                               );
+                        i_color = i_color + 1;
+                    }
+                    Config* c = new Config(b, ps, rs, vs);
+                    c->load(filename, "Preselection");
+                    info->parameter = "scan_peak_shape_only_n15";
+                    c->updateHistogramPtr(rs->content()->front(), v);
+                    CompTool* ct = new CompTool(info);
+                    ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/test_signals";
+
+                    info->shape_only = true;
+                    if (ct->check(c))
+                    {
+                        ct->paint(c);
+                        ct->run_noratio(c);
+                    }
+                    else 
+                    {
+                        clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
+                    }
+                    info->shape_only = false;
+                    delete ps;
+                    delete ct;
+                    delete c;
+                }
+            }
+
+        }
+        {   
+            {
+                std::string base_name = "hhttbbKL";
+                std::string from_reco = "fromReco";
+                {
+                    Processes* ps = new Processes();
+                    ps->assign_norm_factors = false;
+                    int i_color = 0;
+                    for (float i=-10; i<-5; i++)
+                    {
+                        ps->add(base_name + transformFloat(i) +from_reco, 
+                                "HH Klambda = " + transformFloat(i), 
+                                eProcessType::SIG, eProcess::HHKLXFROMRECO,
+                                "HH Klambda = " + transformFloat(i), 
+                                kRed + i_color
+                               );
+                        i_color = i_color + 1;
+                    }
+                    Config* c = new Config(b, ps, rs, vs);
+                    c->load(filename, "Preselection");
+                    info->parameter = "scan_peak_shape_only_n10";
+                    c->updateHistogramPtr(rs->content()->front(), v);
+                    CompTool* ct = new CompTool(info);
+                    ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/test_signals";
+
+                    info->shape_only = true;
+                    if (ct->check(c))
+                    {
+                        ct->paint(c);
+                        ct->run_noratio(c);
+                    }
+                    else 
+                    {
+                        clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
+                    }
+                    info->shape_only = false;
+                    delete ps;
+                    delete ct;
+                    delete c;
+                }
+            }
+
+        }
+        {   
+            {
+                std::string base_name = "hhttbbKL";
+                std::string from_reco = "fromReco";
+                {
+                    Processes* ps = new Processes();
+                    ps->assign_norm_factors = false;
+                    int i_color = 0;
+                    for (float i=-5; i<0; i++)
+                    {
+                        ps->add(base_name + transformFloat(i) +from_reco, 
+                                "HH Klambda = " + transformFloat(i), 
+                                eProcessType::SIG, eProcess::HHKLXFROMRECO,
+                                "HH Klambda = " + transformFloat(i), 
+                                kRed + i_color
+                               );
+                        i_color = i_color + 1;
+                    }
+                    Config* c = new Config(b, ps, rs, vs);
+                    c->load(filename, "Preselection");
+                    info->parameter = "scan_peak_shape_only_n5";
+                    c->updateHistogramPtr(rs->content()->front(), v);
+                    CompTool* ct = new CompTool(info);
+                    ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/test_signals";
+
+                    info->shape_only = true;
+                    if (ct->check(c))
+                    {
+                        ct->paint(c);
+                        ct->run_noratio(c);
+                    }
+                    else 
+                    {
+                        clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
+                    }
+                    info->shape_only = false;
+                    delete ps;
+                    delete ct;
+                    delete c;
+                }
+            }
+
+        }
+
+        {   
+            {
+                std::string base_name = "hhttbbKL";
+                std::string from_reco = "fromReco";
+                {
+                    Processes* ps = new Processes();
+                    ps->assign_norm_factors = false;
+                    int i_color = 0;
+                    for (float i=0; i<5; i++)
+                    {
+                        ps->add(base_name + transformFloat(i) +from_reco, 
+                                "HH Klambda = " + transformFloat(i), 
+                                eProcessType::SIG, eProcess::HHKLXFROMRECO,
+                                "HH Klambda = " + transformFloat(i), 
+                                kRed + i_color
+                               );
+                        i_color = i_color + 1;
+                    }
+                    Config* c = new Config(b, ps, rs, vs);
+                    c->load(filename, "Preselection");
+                    info->parameter = "scan_peak_shape_only_0";
+                    c->updateHistogramPtr(rs->content()->front(), v);
+                    CompTool* ct = new CompTool(info);
+                    ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/test_signals";
+
+                    info->shape_only = true;
+                    if (ct->check(c))
+                    {
+                        ct->paint(c);
+                        ct->run_noratio(c);
+                    }
+                    else 
+                    {
+                        clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
+                    }
+                    info->shape_only = false;
+                    delete ps;
+                    delete ct;
+                    delete c;
+                }
+            }
+
+        }
+
+        {   
+            {
+                std::string base_name = "hhttbbKL";
+                std::string from_reco = "fromReco";
+                {
+                    Processes* ps = new Processes();
+                    ps->assign_norm_factors = false;
+                    int i_color = 0;
+                    for (float i=5; i<10; i++)
+                    {
+                        ps->add(base_name + transformFloat(i) +from_reco, 
+                                "HH Klambda = " + transformFloat(i), 
+                                eProcessType::SIG, eProcess::HHKLXFROMRECO,
+                                "HH Klambda = " + transformFloat(i), 
+                                kRed + i_color
+                               );
+                        i_color = i_color + 1;
+                    }
+                    Config* c = new Config(b, ps, rs, vs);
+                    c->load(filename, "Preselection");
+                    info->parameter = "scan_peak_shape_only_5";
+                    c->updateHistogramPtr(rs->content()->front(), v);
+                    CompTool* ct = new CompTool(info);
+                    ct->output_path = "/home/zifeng/HistCxAOD/KLReweight/test_signals";
+
+                    info->shape_only = true;
+                    if (ct->check(c))
+                    {
+                        ct->paint(c);
+                        ct->run_noratio(c);
+                    }
+                    else 
+                    {
+                        clog << "Can not draw " << c->current_region->name << " " << c->current_variable->name << '\n';
+                    }
+                    info->shape_only = false;
+                    delete ps;
+                    delete ct;
+                    delete c;
+                }
+            }
+
+        }
     }
 
 
-    
+
     delete b;
     delete rs;
     delete vs;
